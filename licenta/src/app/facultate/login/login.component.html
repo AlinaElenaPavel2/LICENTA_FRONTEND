@@ -1,0 +1,48 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+<div class="background">
+
+<div class="login-reg-panel">
+		<div class="login-info-box">
+		</div>
+							
+		<div class="register-info-box">
+
+			<label id="label-login" for="log-login-show">Forgot password?</label>
+			<input type="radio" name="active-log-panel" id="log-login-show">
+		</div>
+							
+		<div class="white-panel">
+            <div class="icon"><img src="assets/pictures/classroom.png" width="100" height="100">
+            </div>
+
+         <div class="right">
+		  <div class="form">
+                <form  [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                    <div class="form-group">
+                        <label for="email">Email*</label>
+                        <input id = "email" placeholder="nume@student.tuiasi.ro" type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+                        <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                            <div class="error-message" id="error-email-required" *ngIf="f.email.errors.required">Email is required</div>
+                            <div class="error-message" id="error-wrong-format" *ngIf="f.email.errors.pattern">Wrong format</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password*</label>
+                        <input id="password" placeholder="********" type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+                        <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                            <div class="error-message" id="error-password-required" *ngIf="f.password.errors.required">Password is required</div>   
+                            <div class="error-message" id="error-password-minLength" *ngIf="f.password.errors.minLength">Password is too short</div> 
+                             
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button [disabled]="loading" class="btn btn-primary" type="submit" id="submit" >
+                            Login
+                        </button>
+                    </div>
+                </form>	
+		    </div>
+        </div>
+	</div>
+</div>

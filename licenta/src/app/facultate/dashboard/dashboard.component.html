@@ -1,0 +1,45 @@
+<mdb-navbar SideClass="navbar navbar-expand-lg navbar- cyan darken-3 lighten-1"  class="navCss" [containerInside]="false">
+
+  <mdb-navbar-brand class="nv"></mdb-navbar-brand>
+
+  <links>
+
+    <ul class="navbar-nav ml-auto nav-flex-icons">
+  
+     <li class="nav-item">
+     <div class="profilePicture">
+        <a class="nav-link">1 <mdb-icon fas icon="envelope"></mdb-icon></a>
+        </div>
+      </li>
+
+      <li class="nav-item">
+       <div class="profilePicture"> <img src="assets/pictures/profile.png" width="40" height="40"></div>
+      </li>
+
+      <li class="nav-item avatar dropdown" dropdown>
+       <div class="profilePicture"> <a dropdownToggle mdbWavesEffect type="button" class="nav-link dropdown-toggle waves-light" mdbWavesEffect></a>
+       </div>
+
+        <div *dropdownMenu class="dropdown-menu dropdown-menu-right dropdown dropdown-primary" role="menu">
+          <a class="dropdown-item waves-light" mdbWavesEffect href="#">My account</a>
+          <a class="dropdown-item waves-light" mdbWavesEffect href="/university/login">Log out</a>
+        </div>
+
+      </li>
+      
+    </ul>
+  </links>
+ 
+
+</mdb-navbar>
+
+
+<div class="sidenav">
+  <a href="#about">About</a>
+  <a href="#services">Services</a>
+  <a href="#clients">Clients</a>
+  <a href="#contact">Contact</a>
+  <a class="nav-link">1 <mdb-icon fas icon="envelope"></mdb-icon></a>
+  <a class="nav-link">1 <mdb-icon fas icon="envelope"></mdb-icon></a>
+  <a class="nav-link">1 <mdb-icon fas icon="envelope"></mdb-icon></a>
+</div>
