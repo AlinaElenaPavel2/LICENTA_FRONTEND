@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
     this.submitted = true
     console.log("*********Credentiale*********")
     console.log(this.f.email.value, this.f.password.value)
-    this.router.navigate(['/university/dashboard']);
+    this.router.navigate(['/university/announces']);
   }
 
   get f () {
