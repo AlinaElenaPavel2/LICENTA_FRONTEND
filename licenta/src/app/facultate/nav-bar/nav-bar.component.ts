@@ -7,7 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavBarComponent implements OnInit {
 
-  constructor() { }
+  name = '';
+
+  
+  constructor() {
+    setTimeout(() => {
+      this.name = sessionStorage.getItem('name');
+    },
+    100);
+   }
 
   ngOnInit(): void {
   }

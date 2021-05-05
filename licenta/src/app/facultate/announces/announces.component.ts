@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./announces.component.css']
 })
 export class AnnouncesComponent implements OnInit {
+  public panelOpenState = false;
 
   constructor() { }
 

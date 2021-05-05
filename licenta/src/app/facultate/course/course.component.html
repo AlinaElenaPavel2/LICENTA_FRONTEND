@@ -1,2 +1,75 @@
 <app-navigation-bar></app-navigation-bar>
-<p class="first">course works!</p>
+<h1 class="first">{{ disciplinaName }} {{ disciplina.abreviere }}</h1>
+<mat-tab-group mat-align-tabs="center" class="first" animationDuration="1000ms">
+  <mat-tab label="Cursuri">
+    <div class="curs">
+      Cursuri
+      <hr />
+    </div>
+    <div class="curs">
+      Laboratoare
+      <hr />
+    </div>
+  </mat-tab>
+  <mat-tab label="Prezente">
+    <button mat-button id="recuperare" (click)="recuperare()">
+      Recuperare
+    </button>
+    <app-student-table></app-student-table>
+  </mat-tab>
+  <mat-tab label="Detalii disciplina si anunturi">
+    <mat-grid-list cols="3" rowHeight="450px">
+      <mat-grid-tile>
+        <div
+          class="card text-dark teal lighten-3 mb-3"
+          style="max-width: 25rem"
+        >
+          <h4 class="card-header">Anunturi</h4>
+          <div class="card-body">
+            <h5 class="card-title">Something</h5>
+            <p class="card-text">Something Something</p>
+            <h5 class="card-title">Something</h5>
+            <p class="card-text">Something Something</p>
+          </div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <div class="card text-dark bg-light mb-3" style="max-width: 25rem">
+          <h4 class="card-header">Profesori</h4>
+          <div class="card-body">
+            <h5 class="card-title">Profesor curs:</h5>
+            <p class="card-text">Email:</p>
+            <h5 class="card-title">Profesor laborator:</h5>
+            <p class="card-text">Email:</p>
+          </div>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <div
+          class="card text-dark bg-light mb-3"
+          style="max-width: 25rem;margin left:20rem"
+        >
+          <h4 class="card-header">Evaluare</h4>
+          <div class="card-body">
+            <h5 class="card-title">
+              Pondere examen: {{ procents.pondere_examen }}%
+            </h5>
+            <p class="card-text">Nota obtinuta:</p>
+            <h5 class="card-title">
+              Pondere laborator: {{ procents.pondere_lab }}%
+            </h5>
+            <p class="card-text">Nota obtinuta:</p>
+            <h5 class="card-title">
+              Pondere partial: {{ procents.pondere_partial }}%
+            </h5>
+            <p class="card-text">Nota obtinuta:</p>
+            <h5 class="card-title">
+              Pondere proiect: {{ procents.pondere_proiect }}%
+            </h5>
+            <p class="card-text">Nota obtinuta: -</p>
+          </div>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </mat-tab>
+</mat-tab-group>

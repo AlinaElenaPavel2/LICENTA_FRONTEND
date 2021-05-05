@@ -1,3 +1,12 @@
+
+.container{
+    margin-left: 5rem;
+    margin-right: 5rem;
+
+}
+
+
+
 .wrapper {
     margin-top: 3%;
     margin-left: 10%;
@@ -6,3 +15,17 @@
 .leftSpace {
     margin-left: 0.5rem;
 }
+
+
+        .mat-tab-group.vertical {
+            flex-direction: row;
+        }
+        .mat-tab-group.horizontal {
+            flex-direction: column;
+        }
+        .vertical .mat-tab-labels {
+            flex-direction: column;
+        }
+        .horizontal .mat-tab-labels {
+            flex-direction: row;
+        }

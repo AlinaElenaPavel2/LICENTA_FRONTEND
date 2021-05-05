@@ -1,3 +1,40 @@
 .first {
     margin: 400px;
 }
+
+
+.aboutMong img {
+    width: 200px;
+    height: 200px;
+    padding: 10%;
+}
+
+.aboutMong h1
+{
+    font-size: 50px;
+    font-weight: bold;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.aboutMongContent {
+    text-align: center;
+    border-radius: 25px;
+    padding: 20px; 
+    width: 90%;
+    height:auto;  
+    margin: auto;
+    margin-top: 10px;
+  }
+
+.aboutMongContent p
+{
+  text-align: left;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.aboutMongContent h2{
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+}

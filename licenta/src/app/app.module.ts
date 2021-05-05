@@ -22,6 +22,19 @@ import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns'
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatExpansionModule} from '@angular/material/expansion';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { StudentTableComponent } from './facultate/course/studentTable/student-table/student-table.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { EmailRecuperareComponent } from './facultate/course/email-recuperare/email-recuperare.component';
+import {MatDialogModule, MatDialogRef} from '@angular/material/dialog';
+import {MatGridListModule} from '@angular/material/grid-list';
+
+import { NgCircleProgressModule } from 'ng-circle-progress';
+import {FileUploadModule} from "ng2-file-upload";
 
 // import { DemoUtilsModule } from '../demo-utils/module';
 // import { DemoComponent } from './component';
@@ -37,7 +50,9 @@ import { HttpClientModule } from '@angular/common/http';
     LibraryComponent,
     CalendarComponent,
     CourseComponent,
-    ProfileComponent
+    ProfileComponent,
+    StudentTableComponent,
+    EmailRecuperareComponent
   ],
   imports: [
     MDBBootstrapModule.forRoot(),
@@ -47,19 +62,34 @@ import { HttpClientModule } from '@angular/common/http';
     IconsModule,
     BrowserModule,   
     HttpClientModule,
+    MatTabsModule,
+    MatExpansionModule,
+    BrowserAnimationsModule,
+    MatDialogModule,
+    MatGridListModule,
+    FileUploadModule,
+    NgCircleProgressModule.forRoot({
+      radius: 100,
+      outerStrokeWidth: 16,
+      innerStrokeWidth: 8,
+      outerStrokeColor: "#78C000",
+      innerStrokeColor: "#C7E596",
+      animationDuration: 300,
+    }),
     RouterModule.forRoot([
       {
         path: '',
-        redirectTo: 'university',
+        redirectTo: 'university/login',
         pathMatch: 'full'
       },
+   
       { path: 'university/login', component: LoginComponent },
       { path: 'university/dashboard', component: DashboardComponent },
       { path: 'university/statistics', component: StatisticsComponent },
       { path: 'university/announces', component: AnnouncesComponent },
       { path: 'university/library', component: LibraryComponent },
       { path: 'university/calendar', component: CalendarComponent },
-      { path: 'university/course', component: CourseComponent },
+      { path: 'university/course/:name', component: CourseComponent },
       { path: 'university/profile', component: ProfileComponent }
 
     ]),
@@ -68,7 +98,10 @@ import { HttpClientModule } from '@angular/common/http';
     NoopAnimationsModule,
     CommonModule,
     HttpClientModule,
-    CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
+    CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory }),
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,2 +1,36 @@
 <app-navigation-bar></app-navigation-bar>
-<p class="first">statistics works!</p>
+
+<mat-grid-list cols="2" rowHeight="2:1">
+  <mat-grid-tile>1</mat-grid-tile>
+  <mat-grid-tile
+    >Until semester is finished
+    <circle-progress
+      [percent]="60"
+      [radius]="100"
+      [outerStrokeWidth]="16"
+      [innerStrokeWidth]="8"
+      [outerStrokeColor]="'#78C000'"
+      [innerStrokeColor]="'#C7E596'"
+      [animation]="true"
+      [animationDuration]="300"
+      [subtitleFormat]="formatSubtitle"
+      [titleFormat]="titleFormat"
+    ></circle-progress>
+  </mat-grid-tile>
+</mat-grid-list>
+
+<div class="first">
+  <mat-grid-list cols="2" rowHeight="2:1">
+    <mat-grid-tile>
+      <canvas #lineChart></canvas>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <canvas #barChart></canvas>
+    </mat-grid-tile>
+        <mat-grid-tile>
+      <canvas #pieChart height="150"></canvas>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
+
+

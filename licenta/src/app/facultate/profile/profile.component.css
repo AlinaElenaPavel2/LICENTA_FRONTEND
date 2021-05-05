@@ -4,13 +4,15 @@ body {
 }
 
 .image-container {
+    margin-top:2.5rem;
     position: relative;
+    width: 18%;
 }
 
 .image {
     opacity: 1;
     display: block;
-    width: 100%;
+    /* width: 100%; */
     height: auto;
     transition: .5s ease;
     backface-visibility: hidden;
@@ -36,8 +38,8 @@ body {
 }
 
 .wrapper {
-    margin-top: 5%;
-    margin-left: 23%;
+    margin-top: 8%;
+    margin-left: 20%;
 }
 
 .studentName {
@@ -47,5 +49,16 @@ body {
 
 .studentIcon {
     margin-top: 1.5rem;
-    margin-left: 40rem;
+    margin-left: 20rem;
+}
+
+.card-wrapper {
+    margin-right: 1.0rem;
+    margin-left: 4rem;
+    width: 80%;
+}
+
+.informations{
+    margin-top: 1.5rem;
+    width: 80%;
 }

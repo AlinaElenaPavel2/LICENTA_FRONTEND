@@ -1,0 +1,14 @@
+<p>Trimite email profesorului de laborator</p>
+<hr>
+<form [formGroup]="sendEmail" (ngSubmit)="onSubmit()">
+  <label>
+    Titlu:
+    <input type="text" formControlName="titlu" />
+  </label>
+
+  <label>
+    Continut:
+    <input type="text" formControlName="mesaj" />
+  </label>
+  <button type="submit">Trimite email</button>
+</form>
