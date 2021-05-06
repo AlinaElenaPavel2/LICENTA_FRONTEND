@@ -3,6 +3,8 @@ import { FileUploader } from 'ng2-file-upload'
 import { StudentService } from '../Services/StudentService/student.service'
 import { Student } from '../Models/student'
 import { ProgramaScolaraService } from '../Services/ProgramaScolaraService/programa-scolara.service'
+import { ProfilePictureService } from '../Services/ProfilePictureService/profile-picture.service'
+
 import { Disciplina } from '../Models/disciplina2'
 
 @Component({
@@ -16,7 +18,7 @@ export class ProfileComponent implements OnInit {
   student: Student = new Student()
   disciplina: Disciplina[] = []
   base64textString = []
-  semestru:number=2;
+  semestru: number = 2
 
   async getData () {
     var discip
@@ -33,6 +35,10 @@ export class ProfileComponent implements OnInit {
       stud.grupa,
       stud.program_studiu
     )
+     var item=await this.profilePictureService.getProfilePicture(this.student.id_student)
+    console.log('BASE64STRING')
+    console.log(item)
+    this.base64textString.push('data:image/png;base64,'+ item)
 
     discip = await this.programaScolaraService.sendDisciplineDetails(
       this.student.program_studiu,
@@ -45,18 +51,22 @@ export class ProfileComponent implements OnInit {
     }
   }
 
+
   constructor (
     private studentService: StudentService,
-    private programaScolaraService: ProgramaScolaraService
+    private programaScolaraService: ProgramaScolaraService,
+    private profilePictureService: ProfilePictureService
   ) {
     this.getData()
     console.log(this.disciplina)
     console.log(this.student)
+
   }
 
   ngOnInit (): void {}
 
   onFileChanged (event) {
+    this.base64textString.length = 0
     this.selectedFile = event.target.files[0]
     console.log(this.selectedFile.name)
     this.path = 'assets/images/' + this.selectedFile.name
@@ -78,5 +88,8 @@ export class ProfileComponent implements OnInit {
 
   handleReaderLoaded (e) {
     this.base64textString.push('data:image/png;base64,' + btoa(e.target.result))
+    this.profilePictureService.storeProfilePhoto(this.student.id_student,this.base64textString[0]);
   }
+
+
 }

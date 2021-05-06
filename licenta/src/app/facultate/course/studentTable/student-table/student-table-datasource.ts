@@ -3,46 +3,47 @@ import { MatPaginator } from '@angular/material/paginator'
 import { MatSort } from '@angular/material/sort'
 import { map } from 'rxjs/operators'
 import { Observable, of as observableOf, merge } from 'rxjs'
+import { PrezentaService } from 'src/app/facultate/Services/PrezentaService/prezenta.service'
 
-// TODO: Replace this with your own data model type
 export interface StudentTableItem {
   data: string
   laborator: number
   prezenta: string
 }
 
-// TODO: replace this with real data from your application
-const EXAMPLE_DATA: StudentTableItem[] = [
-  { laborator: 1, data: '2020-03-01', prezenta: 'prezent' },
-  { laborator: 2, data: '2020-03-01', prezenta: 'prezent' },
-  { laborator: 3, data: '2020-03-01', prezenta: 'prezent' },
-  { laborator: 4, data: '2020-03-01', prezenta: 'prezent' },
-  { laborator: 5, data: '2020-03-01', prezenta: 'prezent' },
-  { laborator: 6, data: '2020-03-01', prezenta: 'prezent' },
-  { laborator: 7, data: '2020-03-01', prezenta: 'prezent' },
-  { laborator: 8, data: '2020-03-01', prezenta: 'prezent' },
-  { laborator: 9, data: '2020-03-01', prezenta: 'prezent' },
-  { laborator: 10, data: '2020-03-01', prezenta: 'prezent' },
-  { laborator: 11, data: '2020-03-01', prezenta: 'prezent' },
-  { laborator: 12, data: '2020-03-01', prezenta: 'prezent' },
-  { laborator: 13, data: '2020-03-01', prezenta: 'prezent' },
-  { laborator: 14, data: '2020-03-01', prezenta: 'prezent' }
-]
-
-/**
- * Data source for the StudentTable view. This class should
- * encapsulate all logic for fetching and manipulating the displayed data
- * (including sorting, pagination, and filtering).
- */
 export class StudentTableDataSource extends DataSource<StudentTableItem> {
-  data: StudentTableItem[] = EXAMPLE_DATA
+  data: StudentTableItem[] = []
   paginator: MatPaginator | undefined
   sort: MatSort | undefined
 
-  constructor () {
+  constructor (private prezenteService:PrezentaService,disciplinaName:string) {
     super()
+    this.data=this.getStudentPrezente(disciplinaName);
   }
 
+  getStudentPrezente (disciplinaName:string): StudentTableItem[] {
+    var data
+    var laborator
+    var prezenta
+    var aux
+
+    var returnArray: StudentTableItem[] = []
+    this.prezenteService
+      .getPrezente(disciplinaName, sessionStorage.getItem('name'))
+      .then(function (resp) {
+        for (let i = 0; i < resp.length; i++) {
+          data = resp[i].data.substring(0,10)
+          laborator = resp[i].laborator
+          prezenta = resp[i].prezenta
+          aux = { data: data, laborator: laborator, prezenta: prezenta }
+          returnArray.push(aux)
+        }
+      })
+    console.log(returnArray)
+    this.data = returnArray
+
+    return returnArray
+  }
   /**
    * Connect this data source to the table. The table will only update when
    * the returned stream emits new items.

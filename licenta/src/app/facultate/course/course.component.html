@@ -15,7 +15,7 @@
     <button mat-button id="recuperare" (click)="recuperare()">
       Recuperare
     </button>
-    <app-student-table></app-student-table>
+    <app-student-table [childToMaster]=disciplinaName ></app-student-table>
   </mat-tab>
   <mat-tab label="Detalii disciplina si anunturi">
     <mat-grid-list cols="3" rowHeight="450px">
@@ -37,10 +37,10 @@
         <div class="card text-dark bg-light mb-3" style="max-width: 25rem">
           <h4 class="card-header">Profesori</h4>
           <div class="card-body">
-            <h5 class="card-title">Profesor curs:</h5>
-            <p class="card-text">Email:</p>
-            <h5 class="card-title">Profesor laborator:</h5>
-            <p class="card-text">Email:</p>
+            <h5 class="card-title">Profesor curs:  {{profesorCurs.nume}}</h5>
+            <p class="card-text">Email: {{profesorCurs.email}}</p>
+            <h5 class="card-title">Profesor laborator:  {{profesorLab.nume}}</h5>
+            <p class="card-text">Email:  {{profesorLab.email}}</p>
           </div>
         </div>
       </mat-grid-tile>

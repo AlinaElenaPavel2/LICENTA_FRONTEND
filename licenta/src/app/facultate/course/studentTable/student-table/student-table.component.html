@@ -1,4 +1,8 @@
 
+<mat-form-field color="mat-teal">
+  <mat-label  >Filter</mat-label>
+  <input id="filtrare" matInput (keyup)="applyFilter($event.target.value)"  placeholder="ex. prezent, absent, recuperat" #input>
+</mat-form-field>
 
   <div class="mat-elevation-z8 wrapper">
   <table mat-table class="full-width-table" matSort aria-label="Elements">

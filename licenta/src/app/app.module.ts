@@ -36,6 +36,8 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import {FileUploadModule} from "ng2-file-upload";
 
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 // import { DemoUtilsModule } from '../demo-utils/module';
 // import { DemoComponent } from './component';
 
@@ -68,6 +70,8 @@ import {FileUploadModule} from "ng2-file-upload";
     MatDialogModule,
     MatGridListModule,
     FileUploadModule,
+    MatFormFieldModule,
+    MatInputModule,
     NgCircleProgressModule.forRoot({
       radius: 100,
       outerStrokeWidth: 16,

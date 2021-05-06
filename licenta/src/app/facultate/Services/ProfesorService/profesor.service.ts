@@ -11,7 +11,7 @@ const baseUrl = 'http://localhost:8080/api/licenta/teachers'
 export class ProfesorService {
 
   constructor(private http: HttpClient) { }
-  data;
+  private data;
   public getProfesorById (id:number): Observable<Profesor> {
     return this.http.get<any>(
       `${baseUrl}/` +id

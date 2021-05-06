@@ -5,12 +5,14 @@ import { Profesor } from '../Models/profesor'
 import { Student } from '../Models/student'
 import { Laborator } from '../Models/laborator'
 import { Evaluare } from '../Models/evaluare'
+import { Prezenta } from '../Models/prezenta'
 
 import { DisciplinaService } from '../Services/DisciplinaService/disciplina.service'
 import { ProfesorService } from '../Services/ProfesorService/profesor.service'
 import { StudentService } from '../Services/StudentService/student.service'
 import { LaboratorService } from '../Services/LaboratorService/laborator.service'
 import { EvaluareService } from '../Services/EvaluareService/evaluare.service'
+import { PrezentaService } from '../Services/PrezentaService/prezenta.service'
 
 import { MatDialog } from '@angular/material/dialog'
 import {
@@ -32,8 +34,11 @@ export class CourseComponent implements OnInit {
   laborator: Laborator = new Laborator()
   procents: Evaluare = new Evaluare()
 
+  prezente: Prezenta[] = []
+
+
   note: String[] = ['', '', '', '']
-  disciplinaName: String
+  disciplinaName: string
   studentId: number
 
   constructor (
@@ -44,7 +49,9 @@ export class CourseComponent implements OnInit {
     private studentService: StudentService,
     private laboratorService: LaboratorService,
     private evaluareService: EvaluareService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private prezentaService: PrezentaService,
+
   ) {
     this.studentId = parseInt(sessionStorage.getItem('ID'))
   }
@@ -95,28 +102,28 @@ export class CourseComponent implements OnInit {
 
     console.log(this.disciplina.titlu)
 
-    // var lab = await this.laboratorService.setProfLaboratorDetails(
-    //   this.disciplinaName,
-    //   this.student.grupa
-    // )
-    // this.laborator.setComponents(lab.id_disciplina, lab.id_profesor, lab.grupa)
+    var lab = await this.laboratorService.setProfLaboratorDetails(
+      this.disciplinaName,
+      this.student.grupa
+    )
+    this.laborator.setComponents(lab.id_disciplina, lab.id_profesor, lab.grupa)
 
-    // console.log('*************')
-    // console.log(this.laborator)
+    console.log('*************')
+    console.log(this.laborator)
 
-    // var profLab = await this.profesorService.sendProfesorDetails(
-    //   this.laborator.id_profesor
-    // )
+    var profLab = await this.profesorService.sendProfesorDetails(
+      this.laborator.id_profesor
+    )
 
-    // this.profesorLab.setComponents(
-    //   profLab.id_profesor,
-    //   profLab.nume,
-    //   profLab.email,
-    //   profLab.telefon,
-    //   profLab.functia
-    // )
-    // console.log('*************')
-    // console.log(this.profesorLab)
+    this.profesorLab.setComponents(
+      profLab.id_profesor,
+      profLab.nume,
+      profLab.email,
+      profLab.telefon,
+      profLab.functia
+    )
+    console.log('*************')
+    console.log(this.profesorLab)
 
     var pond = await this.evaluareService.sendProcentsDetails(
       this.disciplinaName
@@ -146,6 +153,12 @@ export class CourseComponent implements OnInit {
 
     console.log('*************')
     console.log(this.procents)
+
+    var prezent=await this.prezentaService.getPrezente(
+      this.disciplinaName,this.student.nume
+    )
+    console.log('*************')
+    console.log(prezent)
   }
 
   sub
