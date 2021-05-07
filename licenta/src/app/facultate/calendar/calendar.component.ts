@@ -1,9 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import {
-  ChangeDetectionStrategy,
-  ViewChild,
-  TemplateRef,
-} from '@angular/core';
+import { FlatpickrModule } from 'angularx-flatpickr';
+
+import { Component, OnInit } from '@angular/core'
+import { ChangeDetectionStrategy, ViewChild, TemplateRef } from '@angular/core'
 import {
   startOfDay,
   endOfDay,
@@ -12,31 +10,31 @@ import {
   endOfMonth,
   isSameDay,
   isSameMonth,
-  addHours,
-} from 'date-fns';
-import { Subject } from 'rxjs';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+  addHours
+} from 'date-fns'
+import { Subject } from 'rxjs'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import {
   CalendarEvent,
   CalendarEventAction,
   CalendarEventTimesChangedEvent,
-  CalendarView,
-} from 'angular-calendar';
+  CalendarView
+} from 'angular-calendar'
 
 const colors: any = {
   red: {
     primary: '#ad2121',
-    secondary: '#FAE3E3',
+    secondary: '#FAE3E3'
   },
   blue: {
     primary: '#1e90ff',
-    secondary: '#D1E8FF',
+    secondary: '#D1E8FF'
   },
   yellow: {
     primary: '#e3bc08',
-    secondary: '#FDF1BA',
-  },
-};
+    secondary: '#FDF1BA'
+  }
+}
 
 @Component({
   selector: 'app-calendar',
@@ -44,39 +42,39 @@ const colors: any = {
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css']
 })
-export class CalendarComponent  {
-  @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>;
+export class CalendarComponent {
+  @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>
 
-  view: CalendarView = CalendarView.Month;
+  view: CalendarView = CalendarView.Month
 
-  CalendarView = CalendarView;
+  CalendarView = CalendarView
 
-  viewDate: Date = new Date();
+  viewDate: Date = new Date()
 
   modalData: {
-    action: string;
-    event: CalendarEvent;
-  };
+    action: string
+    event: CalendarEvent
+  }
 
   actions: CalendarEventAction[] = [
     {
       label: '<i class="fas fa-fw fa-pencil-alt"></i>',
       a11yLabel: 'Edit',
       onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.handleEvent('Edited', event);
-      },
+        this.handleEvent('Edited', event)
+      }
     },
     {
       label: '<i class="fas fa-fw fa-trash-alt"></i>',
       a11yLabel: 'Delete',
       onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.events = this.events.filter((iEvent) => iEvent !== event);
-        this.handleEvent('Deleted', event);
-      },
-    },
-  ];
+        this.events = this.events.filter(iEvent => iEvent !== event)
+        this.handleEvent('Deleted', event)
+      }
+    }
+  ]
 
-  refresh: Subject<any> = new Subject();
+  refresh: Subject<any> = new Subject()
 
   events: CalendarEvent[] = [
     {
@@ -88,22 +86,22 @@ export class CalendarComponent  {
       allDay: true,
       resizable: {
         beforeStart: true,
-        afterEnd: true,
+        afterEnd: true
       },
-      draggable: true,
+      draggable: true
     },
     {
       start: startOfDay(new Date()),
       title: 'An event with no end date',
       color: colors.yellow,
-      actions: this.actions,
+      actions: this.actions
     },
     {
       start: subDays(endOfMonth(new Date()), 3),
       end: addDays(endOfMonth(new Date()), 3),
       title: 'A long event that spans 2 months',
       color: colors.blue,
-      allDay: true,
+      allDay: true
     },
     {
       start: addHours(startOfDay(new Date()), 2),
@@ -113,54 +111,54 @@ export class CalendarComponent  {
       actions: this.actions,
       resizable: {
         beforeStart: true,
-        afterEnd: true,
+        afterEnd: true
       },
-      draggable: true,
-    },
-  ];
+      draggable: true
+    }
+  ]
 
-  activeDayIsOpen: boolean = true;
+  activeDayIsOpen: boolean = true
 
-  constructor(private modal: NgbModal) {}
+  constructor (private modal: NgbModal) {}
 
-  dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+  dayClicked ({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate)) {
       if (
         (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
         events.length === 0
       ) {
-        this.activeDayIsOpen = false;
+        this.activeDayIsOpen = false
       } else {
-        this.activeDayIsOpen = true;
+        this.activeDayIsOpen = true
       }
-      this.viewDate = date;
+      this.viewDate = date
     }
   }
 
-  eventTimesChanged({
+  eventTimesChanged ({
     event,
     newStart,
-    newEnd,
+    newEnd
   }: CalendarEventTimesChangedEvent): void {
-    this.events = this.events.map((iEvent) => {
+    this.events = this.events.map(iEvent => {
       if (iEvent === event) {
         return {
           ...event,
           start: newStart,
-          end: newEnd,
-        };
+          end: newEnd
+        }
       }
-      return iEvent;
-    });
-    this.handleEvent('Dropped or resized', event);
+      return iEvent
+    })
+    this.handleEvent('Dropped or resized', event)
   }
 
-  handleEvent(action: string, event: CalendarEvent): void {
-    this.modalData = { event, action };
-    this.modal.open(this.modalContent, { size: 'lg' });
+  handleEvent (action: string, event: CalendarEvent): void {
+    this.modalData = { event, action }
+    this.modal.open(this.modalContent, { size: 'lg' })
   }
 
-  addEvent(): void {
+  addEvent (): void {
     this.events = [
       ...this.events,
       {
@@ -171,21 +169,21 @@ export class CalendarComponent  {
         draggable: true,
         resizable: {
           beforeStart: true,
-          afterEnd: true,
-        },
-      },
-    ];
+          afterEnd: true
+        }
+      }
+    ]
   }
 
-  deleteEvent(eventToDelete: CalendarEvent) {
-    this.events = this.events.filter((event) => event !== eventToDelete);
+  deleteEvent (eventToDelete: CalendarEvent) {
+    this.events = this.events.filter(event => event !== eventToDelete)
   }
 
-  setView(view: CalendarView) {
-    this.view = view;
+  setView (view: CalendarView) {
+    this.view = view
   }
 
-  closeOpenMonthViewDay() {
-    this.activeDayIsOpen = false;
+  closeOpenMonthViewDay () {
+    this.activeDayIsOpen = false
   }
 }

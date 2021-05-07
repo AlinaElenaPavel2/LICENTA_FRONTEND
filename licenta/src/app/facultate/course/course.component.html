@@ -7,15 +7,34 @@
       <hr />
     </div>
     <div class="curs">
-      Laboratoare
+      <h3>Laboratoare</h3>
       <hr />
+      <br />
+      <img src="assets/images/pdf.png" alt="Pdf icon" width="30" height="30">
+      <a
+        href="http://localhost:8080/api/licenta/fileStorage/Arbori%20binari%20-%20operatii.pdf"
+        target="_blank"
+        >Labortor 1</a
+      >
+      <br />
+      <a
+        href="http://localhost:8080/api/licenta/fileStorage/Arbori%20binari%20-%20operatii.pdf"
+        target="_blank"
+        >Labortor 2</a
+      >
+      <br />
+      <a
+        href="http://localhost:8080/api/licenta/fileStorage/Arbori%20binari%20-%20operatii.pdf"
+        target="_blank"
+        >Labortor 3</a
+      >
     </div>
   </mat-tab>
   <mat-tab label="Prezente">
     <button mat-button id="recuperare" (click)="recuperare()">
       Recuperare
     </button>
-    <app-student-table [childToMaster]=disciplinaName ></app-student-table>
+    <app-student-table [childToMaster]="disciplinaName"></app-student-table>
   </mat-tab>
   <mat-tab label="Detalii disciplina si anunturi">
     <mat-grid-list cols="3" rowHeight="450px">
@@ -37,10 +56,12 @@
         <div class="card text-dark bg-light mb-3" style="max-width: 25rem">
           <h4 class="card-header">Profesori</h4>
           <div class="card-body">
-            <h5 class="card-title">Profesor curs:  {{profesorCurs.nume}}</h5>
-            <p class="card-text">Email: {{profesorCurs.email}}</p>
-            <h5 class="card-title">Profesor laborator:  {{profesorLab.nume}}</h5>
-            <p class="card-text">Email:  {{profesorLab.email}}</p>
+            <h5 class="card-title">Profesor curs: {{ profesorCurs.nume }}</h5>
+            <p class="card-text">Email: {{ profesorCurs.email }}</p>
+            <h5 class="card-title">
+              Profesor laborator: {{ profesorLab.nume }}
+            </h5>
+            <p class="card-text">Email: {{ profesorLab.email }}</p>
           </div>
         </div>
       </mat-grid-tile>

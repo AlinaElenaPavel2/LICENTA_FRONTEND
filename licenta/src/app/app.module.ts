@@ -1,3 +1,4 @@
+
 import { BrowserModule } from '@angular/platform-browser'
 import { NgModule } from '@angular/core'
 import { RouterModule } from '@angular/router'
@@ -40,6 +41,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 // import { DemoUtilsModule } from '../demo-utils/module';
 // import { DemoComponent } from './component';
+import { FlatpickrModule } from 'angularx-flatpickr';
 
 @NgModule({
   declarations: [
@@ -72,6 +74,8 @@ import { MatInputModule } from '@angular/material/input';
     FileUploadModule,
     MatFormFieldModule,
     MatInputModule,
+    FormsModule, 
+    FlatpickrModule.forRoot(),
     NgCircleProgressModule.forRoot({
       radius: 100,
       outerStrokeWidth: 16,
@@ -97,7 +101,7 @@ import { MatInputModule } from '@angular/material/input';
       { path: 'university/profile', component: ProfileComponent }
 
     ]),
-    FormsModule,
+
     ReactiveFormsModule,
     NoopAnimationsModule,
     CommonModule,

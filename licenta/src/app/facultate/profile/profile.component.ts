@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core'
-import { FileUploader } from 'ng2-file-upload'
 import { StudentService } from '../Services/StudentService/student.service'
 import { Student } from '../Models/student'
 import { ProgramaScolaraService } from '../Services/ProgramaScolaraService/programa-scolara.service'

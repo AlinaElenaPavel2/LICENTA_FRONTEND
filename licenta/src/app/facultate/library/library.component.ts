@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core'
 import { FileUploader } from 'ng2-file-upload'
-const URL = 'https://evening-anchorage-3159.herokuapp.com/api/'
+import { FileUploadService } from 'src/app/facultate/Services/UploadFilesService/file-upload.service'
+
+
+const URL = 'http://localhost:8080/api/licenta/fileStorage/uploadMultipleFiles'
 
 @Component({
   selector: 'app-library',
@@ -12,11 +15,12 @@ export class LibraryComponent implements OnInit {
   hasBaseDropZoneOver: boolean
   hasAnotherDropZoneOver: boolean
   response: string
-  constructor () {
+  constructor (private fileUploadService:FileUploadService) {
+  
     this.uploader = new FileUploader({
       url: URL,
-      disableMultipart: true, // 'DisableMultipart' must be 'true' for formatDataFunction to be called.
-      formatDataFunctionIsAsync: true,
+      // disableMultipart: true, // 'DisableMultipart' must be 'true' for formatDataFunction to be called.
+      // formatDataFunctionIsAsync: true,
       formatDataFunction: async item => {
         return new Promise((resolve, reject) => {
           resolve({
@@ -35,9 +39,13 @@ export class LibraryComponent implements OnInit {
     this.response = ''
 
     this.uploader.response.subscribe(res => (this.response = res))
+
   }
 
-  ngOnInit (): void {}
+  ngOnInit (): void {
+    this.uploader.onBeforeUploadItem = (item) => {
+    item.withCredentials = false;
+  }}
 
   public fileOverAnother (e: any): void {
     this.hasAnotherDropZoneOver = e
