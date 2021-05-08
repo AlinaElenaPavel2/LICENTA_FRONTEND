@@ -1,5 +1,3 @@
-import { FlatpickrModule } from 'angularx-flatpickr';
-
 import { Component, OnInit } from '@angular/core'
 import { ChangeDetectionStrategy, ViewChild, TemplateRef } from '@angular/core'
 import {
@@ -10,7 +8,8 @@ import {
   endOfMonth,
   isSameDay,
   isSameMonth,
-  addHours
+  addHours,
+  format
 } from 'date-fns'
 import { Subject } from 'rxjs'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
@@ -50,6 +49,7 @@ export class CalendarComponent {
   CalendarView = CalendarView
 
   viewDate: Date = new Date()
+  dateTimeValue: Date = new Date()
 
   modalData: {
     action: string
@@ -80,9 +80,8 @@ export class CalendarComponent {
     {
       start: subDays(startOfDay(new Date()), 1),
       end: addDays(new Date(), 1),
-      title: 'A 3 day event',
+      title: 'Tema de casa',
       color: colors.red,
-      actions: this.actions,
       allDay: true,
       resizable: {
         beforeStart: true,
@@ -92,28 +91,25 @@ export class CalendarComponent {
     },
     {
       start: startOfDay(new Date()),
-      title: 'An event with no end date',
-      color: colors.yellow,
-      actions: this.actions
+      title: 'Proiect',
+      color: colors.blue,
     },
     {
       start: subDays(endOfMonth(new Date()), 3),
       end: addDays(endOfMonth(new Date()), 3),
-      title: 'A long event that spans 2 months',
+      title: 'Partial',
       color: colors.blue,
       allDay: true
     },
     {
       start: addHours(startOfDay(new Date()), 2),
       end: addHours(new Date(), 2),
-      title: 'A draggable and resizable event',
+      title: 'Deadline',
       color: colors.yellow,
-      actions: this.actions,
       resizable: {
         beforeStart: true,
         afterEnd: true
       },
-      draggable: true
     }
   ]
 

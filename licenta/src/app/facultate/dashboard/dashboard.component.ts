@@ -12,17 +12,18 @@ import { Disciplina } from '../Models/disciplina2'
 export class DashboardComponent implements OnInit {
   student: Student = new Student()
   discipline: Disciplina[] = []
-  years: number[] = []
 
+  years: number[] = []
+  name;
   semestru: number = 0
   an: number = 0
 
   selectedDiscippline:Disciplina[]=[]
 
-  async getData () {
+  async getData (name) {
     var discip
     var stud
-    stud = await this.studentService.sendStudentDetails()
+    stud = await this.studentService.sendStudentDetails(name)
 
     this.student.add(
       stud.id_student,
@@ -57,9 +58,14 @@ export class DashboardComponent implements OnInit {
     private studentService: StudentService,
     private programaScolaraService: ProgramaScolaraService
   ) {
-    this.getData()
-    console.log(this.discipline)
+    setTimeout(() => {
+      this.name = sessionStorage.getItem('name')
+      console.log(this.name)
+      this.getData(this.name)
+    }, 100)
+    
     console.log(this.student)
+    
   }
 
   ngOnInit (): void {}
@@ -99,8 +105,6 @@ export class DashboardComponent implements OnInit {
     console.log(this.discipline)
 
   }
-
-
 
   getSelectedDiscipline()
   {

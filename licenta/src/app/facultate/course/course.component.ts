@@ -35,7 +35,7 @@ export class CourseComponent implements OnInit {
   procents: Evaluare = new Evaluare()
 
   prezente: Prezenta[] = []
-
+  name
 
   note: String[] = ['', '', '', '']
   disciplinaName: string
@@ -56,7 +56,7 @@ export class CourseComponent implements OnInit {
     this.studentId = parseInt(sessionStorage.getItem('ID'))
   }
 
-  async getData () {
+  async getData (name) {
     var discip = await this.disciplinaService.sendDisciplinaDetails(
       this.disciplinaName
     )
@@ -85,7 +85,7 @@ export class CourseComponent implements OnInit {
     console.log('*************')
     console.log(this.profesorCurs)
 
-    var stud = await this.studentService.sendStudentDetails()
+    var stud = await this.studentService.sendStudentDetails(name)
 
     this.student.add(
       stud.id_student,
@@ -168,7 +168,10 @@ export class CourseComponent implements OnInit {
       this.disciplinaName = params.get('name')
       console.log(this.disciplinaName)
     })
-    await this.getData()
+    setTimeout(() => {
+      this.name = sessionStorage.getItem('name')
+    }, 1000)
+    await this.getData(this.name)
   }
 
   ngOnDestroy () {

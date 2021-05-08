@@ -10,48 +10,42 @@ const baseUrl = 'http://localhost:8080/api/licenta/students'
 })
 export class StudentService {
   constructor (private http: HttpClient) {}
-  data;
+  data
 
-  private getStudentByName (): Observable<Student> {
-    return this.http.get<any>(
-      `${baseUrl}/fullname=` + sessionStorage.getItem('name')
-    ) 
+  private getStudentByName (name): Observable<Student> {
+
+    return this.http.get<any>(`${baseUrl}/fullname=` + name)
   }
 
-  
   private getStudentById (): Observable<Student> {
-    return this.http.get<any>(
-      `${baseUrl}/id=` + sessionStorage.getItem('ID')
-    ) 
+    return this.http.get<any>(`${baseUrl}/id=` + sessionStorage.getItem('ID'))
   }
 
-  private getStudentDetails () {
+  private getStudentDetails (name) {
     return new Promise(resolve => {
-      this.getStudentByName()
-        .subscribe(data => {
-          this.data = data;
-          resolve(this.data);
-        });
-    });
+      this.getStudentByName(name).subscribe(data => {
+        this.data = data
+        resolve(this.data)
+      })
+    })
   }
 
   private getStudentDetailsById () {
     return new Promise(resolve => {
-      this.getStudentById()
-        .subscribe(data => {
-          this.data = data;
-          resolve(this.data);
-        });
-    });
+      this.getStudentById().subscribe(data => {
+        this.data = data
+        resolve(this.data)
+      })
+    })
   }
 
-  async sendStudentDetails() {
-    await this.getStudentDetails();
-    return this.data;
+  async sendStudentDetails (name) {
+    await this.getStudentDetails(name)
+    return this.data
   }
 
-  async sendStudentDetailsById() {
-    await this.getStudentDetailsById();
-    return this.data;
+  async sendStudentDetailsById () {
+    await this.getStudentDetailsById()
+    return this.data
   }
 }

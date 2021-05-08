@@ -3,6 +3,7 @@
   <mat-tab-group
     mat-align-tabs="center"
     (selectedTabChange)="getYearDiscipline($event)"
+    
   >
     <div *ngFor="let year of years">
       <mat-tab label="An {{ year }}">
@@ -44,7 +45,7 @@
           >
           <mat-tab
             label="Semestrul 1"
-            (click)="getDisciplinesForSemester($event)"
+            (selectedTabChange)="getDisciplinesForSemester($event)"
           >
             <link
               rel="stylesheet"

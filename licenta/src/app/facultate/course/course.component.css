@@ -18,3 +18,8 @@ a:link {
 a {
   color: black;
 }
+
+html
+{
+  height: 100%;
+}

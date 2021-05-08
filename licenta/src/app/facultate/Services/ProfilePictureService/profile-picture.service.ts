@@ -11,36 +11,50 @@ export class ProfilePictureService {
   private data
   constructor (private http: HttpClient) {}
 
-  private getPhotoRequest (id: number): Observable<any> {
-    return this.http.get(`${baseUrl}/profilePicture/user/id=` + id,  {responseType: 'text'});
+  private getPhotoRequest (role:string,id: number): Observable<any> {
+    return this.http.get(`${baseUrl}/profilePicture/user/role=` + role+"/id="+id, {
+      responseType: 'text'
+    })
   }
 
-  public async getProfilePicture (id: number) {
+  public async getProfilePicture (role:string,id: number) {
     await new Promise(resolve => {
-      this.getPhotoRequest(id).subscribe(data => {
-        this.data = data
-        resolve(this.data)
-      })
+      // this.getPhotoRequest(id).subscribe(data => {
+      //   this.data = data
+      //   resolve(this.data)
+      // })
+      this.getPhotoRequest(role,id).subscribe(
+        data => {
+          this.data = data
+          resolve(this.data)
+        },
+        err => {
+          this.data = null
+          resolve(this.data)
+          console.log('HTTP request error.')
+        },
+        () => console.log('HTTP request completed.')
+      )
     })
     return this.data
   }
 
-  private storePhotoRequest (id: number, encodedImg: string): Observable<any> {
-    console.log("POST REQUEST")
+  private storePhotoRequest (role:string,id: number, encodedImg: string): Observable<any> {
+    console.log('POST REQUEST')
     console.log(encodedImg)
 
     return this.http.post(
-      `${baseUrl}/uploadProfilePicture/user/id=` + id,
+      `${baseUrl}/uploadProfilePicture/user/role=`+role+"/id=" + id,
       encodedImg,
       {
-        headers: new HttpHeaders()
-          .set('Content-Type', 'text/plain')
-      });
-  
+        headers: new HttpHeaders().set('Content-Type', 'text/plain'),
+        responseType: 'text'
+      }
+    )
   }
 
-  async storeProfilePhoto (id: number, encodedImg) {
-    await this.storePhotoRequest(id, encodedImg).subscribe({
+  async storeProfilePhoto (role:string,id: number, encodedImg) {
+    await this.storePhotoRequest(role,id,encodedImg).subscribe({
       next: data => {
         console.log('POST SUCCESSFULLY! - Store profile picture')
       },

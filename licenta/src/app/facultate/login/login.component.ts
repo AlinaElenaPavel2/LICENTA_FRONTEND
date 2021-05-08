@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, HostListener } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
 import { LoginService } from '../Services/LoginService/login.service'
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -26,7 +25,9 @@ export class LoginComponent implements OnInit {
         '',
         [
           Validators.required,
-          Validators.pattern('^[A-Za-z0-9._%+-]+@student.tuiasi.ro$')
+          Validators.pattern(
+            '^[A-Za-z0-9._%+-]+@+(student|profesor)+.tuiasi.ro$'
+          )
         ]
       ],
       password: ['', [Validators.required, Validators.minLength(6)]]
@@ -36,30 +37,32 @@ export class LoginComponent implements OnInit {
   async onSubmit () {
     this.submitted = true
     console.log('*********Credentiale*********')
-    console.log(this.getCredentials.email.value, this.getCredentials.password.value)
+    console.log(
+      this.getCredentials.email.value,
+      this.getCredentials.password.value
+    )
 
     // if (this.loginForm.invalid) {
     //   return;
     // }
-
-    this.router.navigate(['/university/announces'])
-
-    await this.loginservice.authenticate(this.getCredentials.email.value, this.getCredentials.password.value);
-
-    
+    await this.loginservice.authenticate(
+      this.getCredentials.email.value,
+      this.getCredentials.password.value
+    )
     setTimeout(() => {
-      if (sessionStorage.getItem("role").valueOf() == 'wrongCredentials') {
-        // this.router.navigate(['/university']);
-        this.invalidLogin = true;
-      }
-      else {
-        console.log("da")
-        // this.router.navigate(['/university/dashboard']);
-        this.invalidLogin = false;
-      }
-    },
-      1000);
+      this.router.navigate(['/university/announces'])
+    }, 1000)
 
+    setTimeout(() => {
+      if (sessionStorage.getItem('role').valueOf() == 'wrongCredentials') {
+        // this.router.navigate(['/university']);
+        this.invalidLogin = true
+      } else {
+        console.log('da')
+        // this.router.navigate(['/university/dashboard']);
+        this.invalidLogin = false
+      }
+    }, 100)
   }
 
   get getCredentials () {

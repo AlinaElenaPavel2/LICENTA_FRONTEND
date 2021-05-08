@@ -25,8 +25,6 @@ export class LoginService {
 
   public isAuthenticated (): boolean {
     const role = sessionStorage.getItem('role')
-    console.log('role:')
-    console.log(role)
     return role == 'student' || role == 'profesor'
   }
 
@@ -38,16 +36,15 @@ export class LoginService {
       role => {
         console.log('POST authenticate successful', role)
         sessionStorage.setItem('role', role)
-        user_role = sessionStorage.getItem('role')
-        if (user_role === 'student') {
+        user_role = role
+        if (user_role == 'student') {
           this.getStudentByEmail(username).subscribe(val => {
-            console.log("Student by email")
-            console.log(val.id_student)
+
             sessionStorage.setItem('ID', val.id_student)
             sessionStorage.setItem('name', val.nume)
           })
         } else {
-          this.getStudentByEmail(username).subscribe(val => {
+          this.getProfesorIdByEmail(username).subscribe(val => {
             sessionStorage.setItem('ID', val.id_profesor)
             sessionStorage.setItem('name', val.nume)
           })
