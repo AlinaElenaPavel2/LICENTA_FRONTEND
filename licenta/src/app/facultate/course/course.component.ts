@@ -100,7 +100,7 @@ export class CourseComponent implements OnInit {
     console.log('*************')
     console.log(this.student)
 
-    console.log(this.disciplina.titlu)
+    console.log(this.disciplina.nume)
 
     var lab = await this.laboratorService.setProfLaboratorDetails(
       this.disciplinaName,

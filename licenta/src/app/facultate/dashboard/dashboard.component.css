@@ -1,11 +1,17 @@
-
+.curs {
+    margin-left:10rem;
+  
+  }
+  
 .container{
     margin-left: 5rem;
     margin-right: 5rem;
 
 }
 
-
+.uploadButon{
+    margin-left: 35rem;
+}
 
 .wrapper {
     margin-top: 3%;

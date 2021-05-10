@@ -2,7 +2,7 @@ export class Disciplina {
   id_disciplina: number
   id_titular: number
   titular: string
-  titlu: string
+  nume: string
   credite: number
   abreviere: string
 
@@ -24,13 +24,13 @@ export class Disciplina {
   setComponents (
     id_disciplina: number,
     id_titular: number,
-    titlu: string,
+    nume: string,
     credite: number,
     abreviere: string
   ) {
     this.id_disciplina = id_disciplina
     this.id_titular = id_titular
-    this.titlu = titlu
+    this.nume = nume
     this.credite = credite
     this.abreviere = abreviere
   }
@@ -38,13 +38,13 @@ export class Disciplina {
     id_disciplina: number,
     id_titular: number,
     titular: string,
-    titlu: string,
+    nume: string,
     credite: number,
     abreviere: string
   ) {
     this.id_disciplina = id_disciplina
     this.id_titular = id_titular
-    this.titlu = titlu
+    this.nume = nume
     this.credite = credite
     this.abreviere = abreviere
     this.titular = titular

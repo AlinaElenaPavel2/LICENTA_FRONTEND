@@ -1,87 +1,195 @@
 <app-navigation-bar></app-navigation-bar>
-<div class="contaier">
-  <mat-tab-group
-    mat-align-tabs="center"
-    (selectedTabChange)="getYearDiscipline($event)"
-    
-  >
-    <div *ngFor="let year of years">
-      <mat-tab label="An {{ year }}">
-        <mat-tab-group
-          mat-align-tabs="center"
-          (selectedTabChange)="getDisciplinesForSemester($event)"
-        >
-          <mat-tab
-            label="Semestrul 2"
-            (click)="getDisciplinesForSemester($event)"
-            ><link
-              rel="stylesheet"
-              href="https://www.w3schools.com/w3css/4/w3.css"
-            />
-            <div class="wrapper">
-              <div *ngFor="let dis of discipline">
-                <div class="w3-third" style="width: 30%">
-                  <div
-                    class="w3-card"
-                    style="width: 80%; margin: 20px; padding: 0px"
-                  >
-                    <a [routerLink]="['/university/course/', dis.nume]"
-                      ><img
-                        src="assets/images/online-learning2.png"
-                        style="
-                          width: 80%;
-                          margin: 20px;
-                          padding: 0px;
-                          margin-left: 3px;
-                        "
-                    /></a>
-                    <div class="w3-container">
-                      <h5>{{ dis.nume }}</h5>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div></mat-tab
-          >
-          <mat-tab
-            label="Semestrul 1"
+<div *ngIf="userRole == 'student'; else elseBlock">
+  <div class="contaier">
+    <mat-tab-group
+      mat-align-tabs="center"
+      (selectedTabChange)="getYearDiscipline($event)"
+    >
+      <div *ngFor="let year of years">
+        <mat-tab label="An {{ year }}">
+          <mat-tab-group
+            mat-align-tabs="center"
             (selectedTabChange)="getDisciplinesForSemester($event)"
           >
-            <link
-              rel="stylesheet"
-              href="https://www.w3schools.com/w3css/4/w3.css"
-            />
-            <div class="wrapper">
-              <div *ngFor="let dis of discipline">
-                <div
-                  class="w3-third"
-                  style="width: 30%"
-                  routerLink="/university/course"
-                >
+            <mat-tab
+              label="Semestrul 2"
+              (click)="getDisciplinesForSemester($event)"
+              ><link
+                rel="stylesheet"
+                href="https://www.w3schools.com/w3css/4/w3.css"
+              />
+              <div class="wrapper">
+                <div *ngFor="let dis of discipline">
+                  <div class="w3-third" style="width: 30%">
+                    <div
+                      class="w3-card"
+                      style="width: 80%; margin: 20px; padding: 0px"
+                    >
+                      <a [routerLink]="['/university/course/', dis.nume]"
+                        ><img
+                          src="assets/images/online-learning2.png"
+                          style="
+                            width: 80%;
+                            margin: 20px;
+                            padding: 0px;
+                            margin-left: 3px;
+                          "
+                      /></a>
+                      <div class="w3-container">
+                        <h5>{{ dis.nume }}</h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div></mat-tab
+            >
+            <mat-tab
+              label="Semestrul 1"
+              (selectedTabChange)="getDisciplinesForSemester($event)"
+            >
+              <link
+                rel="stylesheet"
+                href="https://www.w3schools.com/w3css/4/w3.css"
+              />
+              <div class="wrapper">
+                <div *ngFor="let dis of discipline">
                   <div
-                    class="w3-card"
-                    style="width: 80%; margin: 20px; padding: 0px"
+                    class="w3-third"
+                    style="width: 30%"
+                    routerLink="/university/course"
                   >
-                    <a [routerLink]="['/university/course/', dis.nume]"
-                      ><img
-                        src="assets/images/online-learning2.png"
-                        style="
-                          width: 80%;
-                          margin: 20px;
-                          padding: 0px;
-                          margin-left: 3px;
-                        "
-                    /></a>
-                    <div class="w3-container">
-                      <h5>{{ dis.nume }}</h5>
+                    <div
+                      class="w3-card"
+                      style="width: 80%; margin: 20px; padding: 0px"
+                    >
+                      <a [routerLink]="['/university/course/', dis.nume]"
+                        ><img
+                          src="assets/images/online-learning2.png"
+                          style="
+                            width: 80%;
+                            margin: 20px;
+                            padding: 0px;
+                            margin-left: 3px;
+                          "
+                      /></a>
+                      <div class="w3-container">
+                        <h5>{{ dis.nume }}</h5>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </mat-tab>
-        </mat-tab-group>
-      </mat-tab>
-    </div>
-  </mat-tab-group>
+            </mat-tab>
+          </mat-tab-group>
+        </mat-tab>
+      </div>
+    </mat-tab-group>
+  </div>
 </div>
+
+<ng-template #elseBlock>
+  <div class="contaier">
+    <mat-tab-group mat-align-tabs="center">
+      <mat-tab label="Discipline">
+        <div class="curs">
+          <h3>Cursuri</h3>
+          <hr />
+          <button mat-button class="uploadButon"  (click)="addCurs()">
+            ADAUGARE CURS
+          </button>
+
+          <br />
+          <img
+            src="assets/images/pdf.png"
+            alt="Pdf icon"
+            width="30"
+            height="30"
+          />
+          <a
+            href="http://localhost:8080/api/licenta/fileStorage/Arbori%20binari%20-%20operatii.pdf"
+            target="_blank"
+            >Curs 1</a
+          >
+          <br />
+          <img
+            src="assets/images/pdf.png"
+            alt="Pdf icon"
+            width="30"
+            height="30"
+          />
+
+          <a
+            href="http://localhost:8080/api/licenta/fileStorage/Arbori%20binari%20-%20operatii.pdf"
+            target="_blank"
+            >Curs 2</a
+          >
+          <br />
+          <img
+            src="assets/images/pdf.png"
+            alt="Pdf icon"
+            width="30"
+            height="30"
+          />
+
+          <a
+            href="http://localhost:8080/api/licenta/fileStorage/Arbori%20binari%20-%20operatii.pdf"
+            target="_blank"
+            >Curs 3</a
+          >
+        </div>
+        <hr />
+        <div class="curs">
+          <h3>Laboratoare</h3>
+          <hr />
+          <button mat-button class="uploadButon" (click)="addLaborator()">
+            ADAUGARE LABORATOR
+          </button>
+
+          <br />
+          <img
+            src="assets/images/pdf.png"
+            alt="Pdf icon"
+            width="30"
+            height="30"
+          />
+          <a
+            href="http://localhost:8080/api/licenta/fileStorage/Arbori%20binari%20-%20operatii.pdf"
+            target="_blank"
+            >Labortor 1</a
+          >
+          <br />
+          <img
+            src="assets/images/pdf.png"
+            alt="Pdf icon"
+            width="30"
+            height="30"
+          />
+
+          <a
+            href="http://localhost:8080/api/licenta/fileStorage/Arbori%20binari%20-%20operatii.pdf"
+            target="_blank"
+            >Labortor 2</a
+          >
+          <br />
+          <img
+            src="assets/images/pdf.png"
+            alt="Pdf icon"
+            width="30"
+            height="30"
+          />
+
+          <a
+            href="http://localhost:8080/api/licenta/fileStorage/Arbori%20binari%20-%20operatii.pdf"
+            target="_blank"
+            >Labortor 3</a
+          >
+        </div>
+      </mat-tab>
+     
+      <mat-tab label="Prezente"> 
+      <app-prezente-table></app-prezente-table>
+       </mat-tab>
+      <mat-tab label="Detalii si anunturi"> Content 3 </mat-tab>
+    </mat-tab-group>
+  </div>
+</ng-template>

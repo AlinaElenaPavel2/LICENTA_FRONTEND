@@ -37,7 +37,6 @@ export class StudentTableComponent implements AfterViewInit {
 
   update() {
     this.ngOnInit();
-
   }
 
   ngAfterViewInit(): void {

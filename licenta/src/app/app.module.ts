@@ -42,6 +42,10 @@ import { MatInputModule } from '@angular/material/input';
 // import { DemoUtilsModule } from '../demo-utils/module';
 // import { DemoComponent } from './component';
 import { FlatpickrModule } from 'angularx-flatpickr';
+import { UploadFilesComponent } from './facultate/upload-files/upload-files.component';
+import { UploadFileComponent } from './facultate/dashboard/upload-file/upload-file.component';
+import { PrezenteTableComponent } from './facultate/dashboard/prezente-table/prezente-table.component';
+import { QrScanComponent } from './facultate/qr-scan/qr-scan.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +60,11 @@ import { FlatpickrModule } from 'angularx-flatpickr';
     CourseComponent,
     ProfileComponent,
     StudentTableComponent,
-    EmailRecuperareComponent
+    EmailRecuperareComponent,
+    UploadFilesComponent,
+    UploadFileComponent,
+    PrezenteTableComponent,
+    QrScanComponent
   ],
   imports: [
     MDBBootstrapModule.forRoot(),
@@ -98,7 +106,8 @@ import { FlatpickrModule } from 'angularx-flatpickr';
       { path: 'university/library', component: LibraryComponent },
       { path: 'university/calendar', component: CalendarComponent },
       { path: 'university/course/:name', component: CourseComponent },
-      { path: 'university/profile', component: ProfileComponent }
+      { path: 'university/profile', component: ProfileComponent },
+      { path: 'university/qr-scan/successfully', component: QrScanComponent }
 
     ]),
 
