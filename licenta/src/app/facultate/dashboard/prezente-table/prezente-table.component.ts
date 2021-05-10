@@ -1,8 +1,9 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { PrezenteTableDataSource, PrezenteTableItem } from './prezente-table-datasource';
+import { Student } from 'src/app/facultate/Models/student'
 
 @Component({
   selector: 'app-prezente-table',
@@ -16,7 +17,7 @@ export class PrezenteTableComponent implements AfterViewInit {
   dataSource: PrezenteTableDataSource;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['id', 'name'];
+  displayedColumns = ['name','grupa','prezente','absente','recuperari','Actions'];
 
   constructor() {
     this.dataSource = new PrezenteTableDataSource();
@@ -26,5 +27,15 @@ export class PrezenteTableComponent implements AfterViewInit {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.table.dataSource = this.dataSource;
+   
+  }
+
+  ngOnInit() {
+   
+  }
+
+  OpenDialog()
+  {
+    console.log("detalii Studenti")
   }
 }

@@ -8,6 +8,8 @@ import { Disciplina } from '../Models/disciplina2'
 import { Student } from '../Models/student'
 import { Profesor } from '../Models/profesor'
 
+import * as fs from 'fs'
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -115,9 +117,13 @@ export class ProfileComponent implements OnInit {
 
       this.getData(this.userName, this.userRole)
     }, 1000)
+
+  
   }
 
-  ngOnInit (): void {}
+  ngOnInit (): void {
+    
+  }
 
   onFileChanged (event) {
     this.base64textString.length = 0

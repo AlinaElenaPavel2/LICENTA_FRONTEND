@@ -161,7 +161,7 @@ export class CourseComponent implements OnInit {
     console.log(prezent)
   }
 
-  sub
+  sub;
   async ngOnInit (): Promise<void> {
     this.sub = this._Activatedroute.paramMap.subscribe(params => {
       console.log(params)

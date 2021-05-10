@@ -33,7 +33,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { EmailRecuperareComponent } from './facultate/course/email-recuperare/email-recuperare.component';
 import {MatDialogModule, MatDialogRef} from '@angular/material/dialog';
 import {MatGridListModule} from '@angular/material/grid-list';
-
+import {MatIconModule} from '@angular/material/icon';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import {FileUploadModule} from "ng2-file-upload";
 
@@ -83,6 +83,7 @@ import { QrScanComponent } from './facultate/qr-scan/qr-scan.component';
     MatFormFieldModule,
     MatInputModule,
     FormsModule, 
+    MatIconModule,
     FlatpickrModule.forRoot(),
     NgCircleProgressModule.forRoot({
       radius: 100,
@@ -98,6 +99,11 @@ import { QrScanComponent } from './facultate/qr-scan/qr-scan.component';
         redirectTo: 'university/login',
         pathMatch: 'full'
       },
+      {
+        path: 'university',
+        redirectTo: 'university/login',
+        pathMatch: 'full'
+      },
    
       { path: 'university/login', component: LoginComponent },
       { path: 'university/dashboard', component: DashboardComponent },
@@ -107,7 +113,7 @@ import { QrScanComponent } from './facultate/qr-scan/qr-scan.component';
       { path: 'university/calendar', component: CalendarComponent },
       { path: 'university/course/:name', component: CourseComponent },
       { path: 'university/profile', component: ProfileComponent },
-      { path: 'university/qr-scan/successfully', component: QrScanComponent }
+      { path: 'university/:name/present/successfully', component: QrScanComponent }
 
     ]),
 
