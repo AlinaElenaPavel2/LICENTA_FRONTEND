@@ -8,7 +8,6 @@ import { Disciplina } from '../Models/disciplina2'
 import { Student } from '../Models/student'
 import { Profesor } from '../Models/profesor'
 
-import * as fs from 'fs'
 
 @Component({
   selector: 'app-profile',

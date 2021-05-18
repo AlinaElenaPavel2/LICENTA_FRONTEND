@@ -9,6 +9,9 @@ import * as moment from 'moment';
 })
 export class QrScanComponent implements OnInit {
   disciplinaName: string
+  student: string
+  laborator: string
+
   constructor (
     private _Activatedroute: ActivatedRoute
 
@@ -19,8 +22,13 @@ export class QrScanComponent implements OnInit {
 
     this.sub = this._Activatedroute.paramMap.subscribe(params => {
       this.disciplinaName = params.get('name')
+      this.student = params.get('student')
+      this.laborator = params.get('laborator')
+
     })
     console.log(this.disciplinaName)
+    console.log(this.student)
+    console.log(this.laborator)
     console.log(currentdate)
 
   }

@@ -36,6 +36,9 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import {MatIconModule} from '@angular/material/icon';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import {FileUploadModule} from "ng2-file-upload";
+import { MatFormFieldControl } from '@angular/material/form-field';
+import { MatSelectModule } from "@angular/material/select";
+import {MatButtonModule} from '@angular/material/button';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -84,6 +87,8 @@ import { QrScanComponent } from './facultate/qr-scan/qr-scan.component';
     MatInputModule,
     FormsModule, 
     MatIconModule,
+    MatSelectModule,
+    MatButtonModule,
     FlatpickrModule.forRoot(),
     NgCircleProgressModule.forRoot({
       radius: 100,
@@ -113,7 +118,7 @@ import { QrScanComponent } from './facultate/qr-scan/qr-scan.component';
       { path: 'university/calendar', component: CalendarComponent },
       { path: 'university/course/:name', component: CourseComponent },
       { path: 'university/profile', component: ProfileComponent },
-      { path: 'university/:name/present/successfully', component: QrScanComponent }
+      { path: 'university/course/:name/student/:student/laborator/:laborator/present/successfully', component: QrScanComponent }
 
     ]),
 

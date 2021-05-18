@@ -8,15 +8,18 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
 })
 export class UploadFileComponent implements OnInit {
   component: string
+  materie: string
   constructor (
     public dialogRef: MatDialogRef<UploadFileComponent>,
     @Inject(MAT_DIALOG_DATA) public data: UploadFileDocumentModel
   ) {
     this.component = data.component
+    this.materie = data.materie
+
   }
 
   ngOnInit (): void {}
 }
 export class UploadFileDocumentModel {
-  constructor (public component: string) {}
+  constructor (public component: string,public materie: string) {}
 }

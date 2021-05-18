@@ -9,6 +9,14 @@
 
 }
 
+.sendEmail{
+    margin-left: 150px;
+    margin-bottom: 150px;
+}
+
+
+
+
 .uploadButon{
     margin-left: 85rem;
 }
@@ -35,3 +43,4 @@
         .horizontal .mat-tab-labels {
             flex-direction: row;
         }
+

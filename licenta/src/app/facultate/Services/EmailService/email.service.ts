@@ -31,5 +31,23 @@ export class EmailService {
       });
 
   }
+ 
+  private sendStudentsEmail(disciplina,grupa,laborator): Observable<any> {
+    return this.http.post(`${baseUrl}/disciplina=`+disciplina+"/grupa="+grupa+"/laborator="+laborator+"/studenti", {
+      headers: new HttpHeaders().set('Access-Control-Allow-Origin', '*')
+    })
+  }
 
+  async sendEmailtoStudents(disciplina,grupa,laborator ) {
+    await this.sendStudentsEmail(disciplina,grupa,laborator)
+      .subscribe({
+        next: data => {
+          console.log("POST SUCCESSFULLY! - Send email to all students")
+        },
+        error: error => {
+          console.log("POST ERROR " + error.message);
+        }
+      });
+
+  }
 }

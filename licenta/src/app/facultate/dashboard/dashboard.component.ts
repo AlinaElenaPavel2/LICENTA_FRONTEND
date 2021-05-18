@@ -3,6 +3,9 @@ import { ProgramaScolaraService } from '../Services/ProgramaScolaraService/progr
 import { StudentService } from '../Services/StudentService/student.service'
 import { ProfesorService } from '../Services/ProfesorService/profesor.service'
 import { PrezentaService } from '../Services/PrezentaService/prezenta.service'
+import { EmailService } from '../Services/EmailService/email.service'
+
+import { FormBuilder, FormGroup, Validators,FormControl } from '@angular/forms'
 
 import { Student } from '../Models/student'
 import { Disciplina } from '../Models/disciplina2'
@@ -32,6 +35,11 @@ export class DashboardComponent implements OnInit {
   studenti: Student[] = []
   prezente: Prezenta[] = []
   nbOfPrezente = [] as any
+
+  grupe: string[] = ["1307","1308"]
+  laboratoare: number[] = [1,2,3,4,5,6,7,8,9,10,11,12,13,14]
+  email: FormGroup
+
   async getDataForStudent (name) {
     var discip
     var stud
@@ -129,7 +137,8 @@ export class DashboardComponent implements OnInit {
     private programaScolaraService: ProgramaScolaraService,
     private profesorService: ProfesorService,
     public dialog: MatDialog,
-    private prezentaService: PrezentaService
+    private prezentaService: PrezentaService,
+    private emailService: EmailService
   ) {
     setTimeout(async () => {
       this.name = sessionStorage.getItem('name')
@@ -145,7 +154,12 @@ export class DashboardComponent implements OnInit {
     console.log(this.student)
   }
 
-  ngOnInit (): void {}
+  ngOnInit (): void {
+    this.email = new FormGroup({
+      grupa: new FormControl(this.grupe),
+      laborator: new FormControl(this.laboratoare),
+   });
+  }
 
   getYearDiscipline (event) {
     const tab = event.tab.textLabel
@@ -189,9 +203,10 @@ export class DashboardComponent implements OnInit {
   }
 
   addLaborator () {
-    console.log('adaugare laborator')
-    const component = 'laborator'
-    const dialogData = new UploadFileDocumentModel(component)
+    const component = 'Laborator'
+    const dialogData = new UploadFileDocumentModel(component,this.discipline[0].nume)
+    console.log(component)
+    console.log(this.discipline[0].nume)
 
     const dialogRef = this.dialog.open(UploadFileComponent, {
       width: '1050px',
@@ -201,14 +216,29 @@ export class DashboardComponent implements OnInit {
   }
 
   addCurs () {
-    console.log('adaugare curs')
-    const component = 'curs'
-    const dialogData = new UploadFileDocumentModel(component)
 
+    const component = 'Curs'
+    const dialogData = new UploadFileDocumentModel(component,this.discipline[0].nume)
+    console.log(component)
+    console.log(this.discipline[0].nume)
     const dialogRef = this.dialog.open(UploadFileComponent, {
       width: '1050px',
       height: '400px',
       data: dialogData
     })
+  }
+
+  sendEmail()
+  {
+    console.log("sending email to ")
+    var sendEmails={
+      "materie":this.discipline[0].nume,
+      "grupa":this.email.value.grupa,
+      "laborator":this.email.value.laborator
+    
+    }
+    this.emailService.sendEmailtoStudents(this.discipline[0].nume,this.email.value.grupa,this.email.value.laborator);
+    console.log(sendEmails)
+
   }
 }

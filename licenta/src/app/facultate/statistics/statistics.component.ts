@@ -35,7 +35,7 @@ export class StatisticsComponent implements OnInit {
             {
               label: 'An 1',
               data: [8.01, 7.83],
-              backgroundColor: ['rgba(54, 162, 235, 0.0)'],
+              backgroundColor: ['rgba(54, 162, 235, 0.2)'],
               borderColor: ['rgba(54, 162, 235, 1)'],
 
               borderWidth: 3
