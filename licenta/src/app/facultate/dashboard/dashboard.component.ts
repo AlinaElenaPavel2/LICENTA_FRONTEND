@@ -4,6 +4,7 @@ import { StudentService } from '../Services/StudentService/student.service'
 import { ProfesorService } from '../Services/ProfesorService/profesor.service'
 import { PrezentaService } from '../Services/PrezentaService/prezenta.service'
 import { EmailService } from '../Services/EmailService/email.service'
+import { FileStorageService } from '../Services/FileStorageService/file-storage.service'
 
 import { FormBuilder, FormGroup, Validators,FormControl } from '@angular/forms'
 
@@ -35,7 +36,8 @@ export class DashboardComponent implements OnInit {
   studenti: Student[] = []
   prezente: Prezenta[] = []
   nbOfPrezente = [] as any
-
+  fileLab:string[]=[]
+  fileCurs:string[]=[]
   grupe: string[] = ["1307","1308"]
   laboratoare: number[] = [1,2,3,4,5,6,7,8,9,10,11,12,13,14]
   email: FormGroup
@@ -89,12 +91,29 @@ export class DashboardComponent implements OnInit {
     var discip = await this.programaScolaraService.getDisciplineTitular(
       this.profesor.nume
     )
+    var files = await this.fileStorage.getFilesForDisciplineComponent(discip[0].nume,"Laborator")
+
+    console.log(files)
+    for(let i=0;i<files.length;i++)
+    {
+      this.fileLab.push(files[i])
+    }
+
+    var f = await this.fileStorage.getFilesForDisciplineComponent(discip[0].nume,"Curs")
+
+    console.log(f)
+    for(let i=0;i<f.length;i++)
+    {
+      this.fileCurs.push(f[i])
+    }
+
 
     for (let i = 0; i < discip.length; i++) {
       this.discipline.push(discip[i])
     }
 
     console.log(this.discipline)
+
 
     for (let i = 0; i < this.discipline.length; i++) {
       this.studenti = await this.studentService.getStudentiDetails(
@@ -122,6 +141,13 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  getFileName(path)
+  {
+    var array= path.split("/");
+    var fileName=array[8]
+    return fileName
+
+  }
   // async getStudentsDetails(discipline)
   // {
   //   var dis=discipline
@@ -138,7 +164,8 @@ export class DashboardComponent implements OnInit {
     private profesorService: ProfesorService,
     public dialog: MatDialog,
     private prezentaService: PrezentaService,
-    private emailService: EmailService
+    private emailService: EmailService,
+    private fileStorage: FileStorageService
   ) {
     setTimeout(async () => {
       this.name = sessionStorage.getItem('name')
@@ -152,6 +179,7 @@ export class DashboardComponent implements OnInit {
     }, 100)
 
     console.log(this.student)
+  
   }
 
   ngOnInit (): void {
@@ -209,7 +237,7 @@ export class DashboardComponent implements OnInit {
     console.log(this.discipline[0].nume)
 
     const dialogRef = this.dialog.open(UploadFileComponent, {
-      width: '1050px',
+      width: '1450px',
       height: '400px',
       data: dialogData
     })

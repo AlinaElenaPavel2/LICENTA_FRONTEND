@@ -102,43 +102,17 @@
             </button>
 
             <br />
-            <img
-              src="assets/images/pdf.png"
-              alt="Pdf icon"
-              width="30"
-              height="30"
-            />
-            <a
-              href="http://localhost:8080/api/licenta/fileStorage/Arbori%20binari%20-%20operatii.pdf"
-              target="_blank"
-              >Curs 1</a
-            >
-            <br />
-            <img
-              src="assets/images/pdf.png"
-              alt="Pdf icon"
-              width="30"
-              height="30"
-            />
+                <div *ngFor="let file of fileCurs ">
+              <img
+                src="assets/images/pdf.png"
+                alt="Pdf icon"
+                width="30"
+                height="30"
+              />
+              <a href={{file}} target="_blank">{{getFileName(file)}}</a>
+              <br />
+            </div>
 
-            <a
-              href="http://localhost:8080/api/licenta/fileStorage/Arbori%20binari%20-%20operatii.pdf"
-              target="_blank"
-              >Curs 2</a
-            >
-            <br />
-            <img
-              src="assets/images/pdf.png"
-              alt="Pdf icon"
-              width="30"
-              height="30"
-            />
-
-            <a
-              href="http://localhost:8080/api/licenta/fileStorage/Arbori%20binari%20-%20operatii.pdf"
-              target="_blank"
-              >Curs 3</a
-            >
           </div>
           <hr />
           <div class="curs">
@@ -149,43 +123,19 @@
             </button>
 
             <br />
-            <img
-              src="assets/images/pdf.png"
-              alt="Pdf icon"
-              width="30"
-              height="30"
-            />
-            <a
-              href="http://localhost:8080/api/licenta/fileStorage/Arbori%20binari%20-%20operatii.pdf"
-              target="_blank"
-              >Labortor 1</a
-            >
-            <br />
-            <img
-              src="assets/images/pdf.png"
-              alt="Pdf icon"
-              width="30"
-              height="30"
-            />
 
-            <a
-              href="http://localhost:8080/api/licenta/fileStorage/Arbori%20binari%20-%20operatii.pdf"
-              target="_blank"
-              >Labortor 2</a
-            >
-            <br />
-            <img
-              src="assets/images/pdf.png"
-              alt="Pdf icon"
-              width="30"
-              height="30"
-            />
+            <div *ngFor="let file of fileLab ">
+              <img
+                src="assets/images/pdf.png"
+                alt="Pdf icon"
+                width="30"
+                height="30"
+              />
+              <a href={{file}} target="_blank">{{getFileName(file)}}</a>
+              <br />
+            </div>
 
-            <a
-              href="http://localhost:8080/api/licenta/fileStorage/Arbori%20binari%20-%20operatii.pdf"
-              target="_blank"
-              >Labortor 3</a
-            >
+          
           </div>
         </div>
       </mat-tab>
@@ -205,7 +155,7 @@
 
             <mat-form-field appearance="fill">
               <mat-label>Selecteaza un laborator</mat-label>
-              <mat-select  formControlName="laborator">
+              <mat-select formControlName="laborator">
                 <mat-option>None</mat-option>
                 <mat-option *ngFor="let lab of laboratoare" [value]="lab">{{
                   lab
