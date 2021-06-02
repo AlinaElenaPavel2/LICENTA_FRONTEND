@@ -8,7 +8,7 @@
       <div class="col-md-3">
         <h3>Select multiple files</h3>
 
-        <input type="file" ng2FileSelect [uploader]="uploader" multiple /><br />
+        <input type="file" ng2FileSelect [uploader]="uploader" multiple (click)="handleFileInput()" /><br />
       </div>
 
       <div class="col-md-9" style="margin-bottom: 40px">

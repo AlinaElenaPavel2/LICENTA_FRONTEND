@@ -1,115 +1,145 @@
 <app-navigation-bar></app-navigation-bar>
-<link
-  href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"
-  rel="stylesheet"
-/>
-<div class="wrapper">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-3">
-        <h3>Select multiple files</h3>
-
-        <input type="file" ng2FileSelect [uploader]="uploader" multiple /><br />
-      </div>
-
-      <div class="col-md-9" style="margin-bottom: 40px">
-        <h3>Upload queue</h3>
-        <p>Queue length: {{ uploader?.queue?.length }}</p>
-
-        <table class="table">
-          <thead>
-            <tr>
-              <th width="50%">Name</th>
-              <th>Size</th>
-              <th>Progress</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of uploader.queue">
-              <td>
-                <strong>{{ item?.file?.name }}</strong>
-              </td>
-              <td *ngIf="uploader.options.isHTML5" nowrap>
-                {{ item?.file?.size / 1024 / 1024 | number: ".2" }} MB
-              </td>
-              <td *ngIf="uploader.options.isHTML5">
-                <div class="progress" style="margin-bottom: 0">
-                  <div
-                    class="progress-bar"
-                    role="progressbar"
-                    [ngStyle]="{ width: item.progress + '%' }"
-                  ></div>
-                </div>
-              </td>
-              <td class="text-center">
-                <span *ngIf="item.isSuccess"
-                  ><i class="glyphicon glyphicon-ok"></i
-                ></span>
-                <span *ngIf="item.isCancel"
-                  ><i class="glyphicon glyphicon-ban-circle"></i
-                ></span>
-                <span *ngIf="item.isError"
-                  ><i class="glyphicon glyphicon-remove"></i
-                ></span>
-              </td>
-              <td nowrap>
-                <button
-                  type="button"
-                  class="btn btn-danger btn-xs"
-                  (click)="item.remove()"
-                >
-                  <span class="glyphicon glyphicon-trash"></span> Remove
-                </button>
-        
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
+<div *ngIf="userRole == 'profesor'; else elseBlock">
+  <div class="wrapper">
+    <mat-tab-group mat-align-tabs="center">
+      <mat-tab label="Adaugare materiale auxiliare"
+        ><div class="incarcareFisier">
+          <h1 style="margin-bottom: 20px">Incarcare carti suplimentare:</h1>
+          <app-upload-files></app-upload-files>
+        </div>
         <div>
-          <div>
-            Queue progress:
-            <div class="progress" style="">
-              <div
-                class="progress-bar"
-                role="progressbar"
-                [ngStyle]="{ width: uploader.progress + '%' }"
-              ></div>
+          <h1 style="margin-bottom: 20px">Postare linkuri utile:</h1>
+
+          <form [formGroup]="postLinks" (ngSubmit)="onSubmit()">
+            <label>
+              Link:
+              <input type="text" formControlName="link" />
+            </label>
+
+            <label>
+              Titlu:
+              <input type="text" formControlName="titlu" />
+            </label>
+
+            <label>
+              Descriere:
+              <input type="text" formControlName="descriere" />
+            </label>
+
+            <button type="submit">Posteaza</button>
+          </form>
+        </div>
+      </mat-tab>
+      <mat-tab label="Vizualizare materiale auxiliare">
+        <hr />
+        <h3>Link-uri</h3>
+        <div class="linksContainer">
+          <div *ngFor="let element of links">
+            <img
+              src="assets/images/link.png"
+              alt="Pdf icon"
+              width="30"
+              height="30"
+              style="margin-right: 20px; margin-bottom: 10px"
+            />
+            <a href="{{ element.link }}" target="_blank">{{ element.name }}</a>
+            <br />
+          </div>
+        </div>
+        <hr />
+        <h3>Carti</h3>
+        <div class="bookMargine">
+          <div class="grid-books">
+            <div *ngFor="let book of books">
+              <div class="grid-item-book">
+                <div class="card">
+                  <div class="grid-container">
+                    <img
+                      src="assets/images/book.png"
+                      alt="Avatar"
+                      style="width: 80%"
+                      class="grid-item"
+                    />
+
+                    <h5 class="grid-item">
+                      <b
+                        ><a href="{{ book }}" target="_blank">{{
+                          getFileName(book)
+                        }}</a></b
+                      >
+                      <p>descriere</p>
+                    </h5>
+                  </div>
+                  <br />
+                </div>
+              </div>
             </div>
           </div>
-          <button
-            type="button"
-            class="btn btn-success btn-s"
-            (click)="uploader.uploadAll()"
-            [disabled]="!uploader.getNotUploadedItems().length"
-          >
-            <span class="glyphicon glyphicon-upload"></span> Upload all
-          </button>
-          <button
-            type="button"
-            class="btn btn-warning btn-s"
-            (click)="uploader.cancelAll()"
-            [disabled]="!uploader.isUploading"
-          >
-            <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
-          </button>
         </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
+
+<ng-template #elseBlock>
+  <div class="first">
+    <mat-form-field color="warn">
+      <mat-label>Filter by course</mat-label>
+      <input
+        id="filtrare"
+        matInput
+        (keyup)="applyFilter($event.target.value)"
+        placeholder="Ex. Marketing"
+        #input
+      />
+    </mat-form-field>
+    <hr />
+    <h3>Linkuri</h3>
+    <hr />
+    <div class="linksContainer">
+      <div *ngFor="let element of links">
+        <img
+          src="assets/images/link.png"
+          alt="Pdf icon"
+          width="30"
+          height="30"
+          style="margin-right: 20px; margin-bottom: 10px"
+        />
+        <a href="{{ element.link }}" target="_blank">{{ element.name }}</a>
+        <br />
       </div>
     </div>
+    <hr />
+    <h3>Carti</h3>
+    <hr />
 
-    <br /><br />
+    <div class="bookMargine">
+      <div class="grid-books">
+        <div *ngFor="let book of books">
+          <div class="grid-item-book">
+            <div class="card">
+              <div class="grid-container">
+                <img
+                  src="assets/images/book.png"
+                  alt="Avatar"
+                  style="width: 80%"
+                  class="grid-item"
+                />
 
-    <div class="row">
-      <div class="col-md-12">
-        <div class="panel panel-default">
-          <div class="panel-heading">Response</div>
-          <div class="panel-body">
-            {{ response }}
+                <h5 class="grid-item">
+                  <b
+                    ><a href="{{ book }}" target="_blank">{{
+                      getFileName(book)
+                    }}</a></b
+                  >
+                  <p>descriere</p>
+                </h5>
+              </div>
+              <br />
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</ng-template>

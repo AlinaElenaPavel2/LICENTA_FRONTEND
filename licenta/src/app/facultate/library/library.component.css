@@ -1,7 +1,53 @@
 .first {
-    margin: 400px;
+    margin:  50px 200px 200px 200px;
 }
 
 .wrapper {
-    margin: 200px;
+    margin: 40px 40px 40px 110px;
 }
+
+.incarcareFisier{
+    margin: 60px;
+}
+
+
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    grid-template-columns: 0.5fr 2fr;
+    width: 80%;
+    margin-bottom: 10px;
+  }
+  
+  .card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  }
+  
+  .container {
+    padding: 2px 16px;
+  }
+
+  .grid-container {
+    display: grid;
+    grid-template-columns:0.5fr 2fr;
+    padding: 10px;
+  }
+  .grid-item {
+    padding: 10px;   
+  }
+
+  .bookMargine{
+    margin-left: 100px;
+  }
+
+  .grid-books {
+    display: grid;
+    grid-template-columns:1fr 1fr;
+  }
+
+  .grid-item-book {
+    padding: 1px;   
+  }
+
+  .linksContainer{
+    margin-left: 150px;
+  }

@@ -49,6 +49,8 @@ import { UploadFilesComponent } from './facultate/upload-files/upload-files.comp
 import { UploadFileComponent } from './facultate/dashboard/upload-file/upload-file.component';
 import { PrezenteTableComponent } from './facultate/dashboard/prezente-table/prezente-table.component';
 import { QrScanComponent } from './facultate/qr-scan/qr-scan.component';
+import { NgApexchartsModule } from "ng-apexcharts";
+
 
 @NgModule({
   declarations: [
@@ -89,6 +91,7 @@ import { QrScanComponent } from './facultate/qr-scan/qr-scan.component';
     MatIconModule,
     MatSelectModule,
     MatButtonModule,
+    NgApexchartsModule,
     FlatpickrModule.forRoot(),
     NgCircleProgressModule.forRoot({
       radius: 100,

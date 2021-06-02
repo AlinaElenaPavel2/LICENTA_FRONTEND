@@ -1,16 +1,16 @@
 <app-navigation-bar></app-navigation-bar>
 
-<mat-grid-list cols="2" rowHeight="2:1">
+<mat-grid-list cols="2" rowHeight="4:1">
   <mat-grid-tile>1</mat-grid-tile>
   <mat-grid-tile
-    >Until semester is finished
+    ><h4>Semestru parcurs</h4>
     <circle-progress
-      [percent]="60"
+      [percent]="82"
       [radius]="100"
       [outerStrokeWidth]="16"
       [innerStrokeWidth]="8"
-      [outerStrokeColor]="'#78C000'"
-      [innerStrokeColor]="'#C7E596'"
+      [outerStrokeColor]="'#e3667d'"
+      [innerStrokeColor]="'#e3a6b1'"
       [animation]="true"
       [animationDuration]="300"
       [subtitleFormat]="formatSubtitle"
@@ -20,17 +20,53 @@
 </mat-grid-list>
 
 <div class="first">
-  <mat-grid-list cols="2" rowHeight="2:1">
-    <mat-grid-tile>
-      <canvas #lineChart></canvas>
-    </mat-grid-tile>
-    <mat-grid-tile>
-      <canvas #barChart></canvas>
-    </mat-grid-tile>
-        <mat-grid-tile>
-      <canvas #pieChart height="150"></canvas>
-    </mat-grid-tile>
-  </mat-grid-list>
+  <mat-tab-group mat-align-tabs="center">
+    <mat-tab label="Note">
+      <div class="grid-container">
+        <div class="grid-item">
+          <mat-form-field appearance="fill">
+            <mat-label>Anul selectat</mat-label>
+            <mat-select [(value)]="selected" (selectionChange)="yearChangedNote($event.value)">
+              <mat-option *ngFor="let year of years" [value]="year">
+                {{ year }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="grid-item">
+          <div class="charts"><canvas #lineChart></canvas></div>
+        </div>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Evolutie">
+      <div class="grid-container">
+        <div class="grid-item">
+          <mat-form-field appearance="fill">
+            <mat-label>Anul selectat</mat-label>
+            <mat-select [(value)]="selected" (selectionChange)="yearChangedEvolutie($event.value)">
+              <mat-option *ngFor="let year of years" [value]="year">
+                {{ year }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="grid-item">
+          <div class="charts"><canvas #barChart></canvas></div>
+        </div>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Examinari">
+      <div class="pieChart" id="chart">
+        <apx-chart
+          [series]="chartOptions.series"
+          [chart]="chartOptions.chart"
+          [labels]="chartOptions.labels"
+          [responsive]="chartOptions.responsive"
+        ></apx-chart>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
 </div>
-
-

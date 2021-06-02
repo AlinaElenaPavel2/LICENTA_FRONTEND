@@ -6,7 +6,7 @@ import { PrezentaService } from '../Services/PrezentaService/prezenta.service'
 import { EmailService } from '../Services/EmailService/email.service'
 import { FileStorageService } from '../Services/FileStorageService/file-storage.service'
 
-import { FormBuilder, FormGroup, Validators,FormControl } from '@angular/forms'
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 
 import { Student } from '../Models/student'
 import { Disciplina } from '../Models/disciplina2'
@@ -36,10 +36,10 @@ export class DashboardComponent implements OnInit {
   studenti: Student[] = []
   prezente: Prezenta[] = []
   nbOfPrezente = [] as any
-  fileLab:string[]=[]
-  fileCurs:string[]=[]
-  grupe: string[] = ["1307","1308"]
-  laboratoare: number[] = [1,2,3,4,5,6,7,8,9,10,11,12,13,14]
+  fileLab: string[] = []
+  fileCurs: string[] = []
+  grupe: string[] = ['1307', '1308']
+  laboratoare: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
   email: FormGroup
 
   async getDataForStudent (name) {
@@ -91,29 +91,31 @@ export class DashboardComponent implements OnInit {
     var discip = await this.programaScolaraService.getDisciplineTitular(
       this.profesor.nume
     )
-    var files = await this.fileStorage.getFilesForDisciplineComponent(discip[0].nume,"Laborator")
+    var files = await this.fileStorage.getFilesForDisciplineComponent(
+      discip[0].nume,
+      'Laborator'
+    )
 
     console.log(files)
-    for(let i=0;i<files.length;i++)
-    {
+    for (let i = 0; i < files.length; i++) {
       this.fileLab.push(files[i])
     }
 
-    var f = await this.fileStorage.getFilesForDisciplineComponent(discip[0].nume,"Curs")
+    var f = await this.fileStorage.getFilesForDisciplineComponent(
+      discip[0].nume,
+      'Curs'
+    )
 
     console.log(f)
-    for(let i=0;i<f.length;i++)
-    {
+    for (let i = 0; i < f.length; i++) {
       this.fileCurs.push(f[i])
     }
-
 
     for (let i = 0; i < discip.length; i++) {
       this.discipline.push(discip[i])
     }
 
     console.log(this.discipline)
-
 
     for (let i = 0; i < this.discipline.length; i++) {
       this.studenti = await this.studentService.getStudentiDetails(
@@ -141,12 +143,10 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  getFileName(path)
-  {
-    var array= path.split("/");
-    var fileName=array[8]
+  getFileName (path) {
+    var array = path.split('/')
+    var fileName = array[8]
     return fileName
-
   }
   // async getStudentsDetails(discipline)
   // {
@@ -179,14 +179,13 @@ export class DashboardComponent implements OnInit {
     }, 100)
 
     console.log(this.student)
-  
   }
 
   ngOnInit (): void {
     this.email = new FormGroup({
       grupa: new FormControl(this.grupe),
-      laborator: new FormControl(this.laboratoare),
-   });
+      laborator: new FormControl(this.laboratoare)
+    })
   }
 
   getYearDiscipline (event) {
@@ -232,9 +231,15 @@ export class DashboardComponent implements OnInit {
 
   addLaborator () {
     const component = 'Laborator'
-    const dialogData = new UploadFileDocumentModel(component,this.discipline[0].nume)
-    console.log(component)
+    const dialogData = new UploadFileDocumentModel(
+      component,
+      this.discipline[0].nume
+    )
+
     console.log(this.discipline[0].nume)
+
+    localStorage.setItem('Materie', this.discipline[0].nume)
+    localStorage.setItem('Componenta', component)
 
     const dialogRef = this.dialog.open(UploadFileComponent, {
       width: '1450px',
@@ -244,11 +249,17 @@ export class DashboardComponent implements OnInit {
   }
 
   addCurs () {
-
     const component = 'Curs'
-    const dialogData = new UploadFileDocumentModel(component,this.discipline[0].nume)
+    const dialogData = new UploadFileDocumentModel(
+      component,
+      this.discipline[0].nume
+    )
     console.log(component)
     console.log(this.discipline[0].nume)
+
+    localStorage.setItem('Materie', this.discipline[0].nume)
+    localStorage.setItem('Componenta', component)
+
     const dialogRef = this.dialog.open(UploadFileComponent, {
       width: '1050px',
       height: '400px',
@@ -256,17 +267,18 @@ export class DashboardComponent implements OnInit {
     })
   }
 
-  sendEmail()
-  {
-    console.log("sending email to ")
-    var sendEmails={
-      "materie":this.discipline[0].nume,
-      "grupa":this.email.value.grupa,
-      "laborator":this.email.value.laborator
-    
+  sendEmail () {
+    console.log('sending email to ')
+    var sendEmails = {
+      materie: this.discipline[0].nume,
+      grupa: this.email.value.grupa,
+      laborator: this.email.value.laborator
     }
-    this.emailService.sendEmailtoStudents(this.discipline[0].nume,this.email.value.grupa,this.email.value.laborator);
+    this.emailService.sendEmailtoStudents(
+      this.discipline[0].nume,
+      this.email.value.grupa,
+      this.email.value.laborator
+    )
     console.log(sendEmails)
-
   }
 }
