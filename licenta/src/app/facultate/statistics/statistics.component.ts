@@ -46,8 +46,8 @@ export class StatisticsComponent implements OnInit {
   student: Student = new Student()
   years: number[] = []
   selected: number
-  labels: string[] = ['ECBD', 'PSB', 'PAW']
-  data: number[] = [8.01, 7.83, 9.0]
+  labels: string[] = ['ECBD', 'PSB', 'PAW','SVA','PDM','ALG','SD','PA']
+  data: number[] = [8.01, 7.83, 9.0,7.0,8.23,7.8,8.8,9.0]
   backgroundColor: string[] = [
     'rgba(54, 162, 235, 0.2)',
     'rgba(219, 81, 123, 0.2)',

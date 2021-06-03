@@ -30,7 +30,7 @@
           </form>
         </div>
       </mat-tab>
-      <mat-tab label="Vizualizare materiale auxiliare">
+      <mat-tab label="Vizualizare materiale auxiliare" (selectedTabIndex)="getData($event)">
         <hr />
         <h3>Link-uri</h3>
         <div class="linksContainer">
@@ -42,8 +42,9 @@
               height="30"
               style="margin-right: 20px; margin-bottom: 10px"
             />
-            <a href="{{ element.link }}" target="_blank">{{ element.name }}</a>
+            <a href="{{ element.path }}" target="_blank">{{ element.titlu }}</a>
             <br />
+            <p>{{ element.descriere }}</p>
           </div>
         </div>
         <hr />
@@ -105,8 +106,9 @@
           height="30"
           style="margin-right: 20px; margin-bottom: 10px"
         />
-        <a href="{{ element.link }}" target="_blank">{{ element.name }}</a>
+        <a href="{{ element.path }}" target="_blank">{{ element.titlu }}</a>
         <br />
+        <p>{{ element.descriere }}</p>
       </div>
     </div>
     <hr />
@@ -115,7 +117,7 @@
 
     <div class="bookMargine">
       <div class="grid-books">
-        <div *ngFor="let book of books">
+        <div *ngFor="let book of studentBooks">
           <div class="grid-item-book">
             <div class="card">
               <div class="grid-container">
@@ -128,8 +130,8 @@
 
                 <h5 class="grid-item">
                   <b
-                    ><a href="{{ book }}" target="_blank">{{
-                      getFileName(book)
+                    ><a href="{{ book.book }}" target="_blank">{{
+                      getFileName(book.book)
                     }}</a></b
                   >
                   <p>descriere</p>

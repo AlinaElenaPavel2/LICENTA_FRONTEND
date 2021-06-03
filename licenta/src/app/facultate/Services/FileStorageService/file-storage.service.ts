@@ -1,29 +1,68 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core'
 import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { Observable } from 'rxjs'
 
 const baseUrl = 'http://localhost:8080/api/licenta/fileStorage'
 
+const materialeUrl = 'http://localhost:8080/api/licenta/materiale'
+
 @Injectable({
   providedIn: 'root'
 })
 export class FileStorageService {
-data;
-  constructor(private http: HttpClient) { }
+  data
+  constructor (private http: HttpClient) {}
 
-  private getFiles( disciplina,tip): Observable<any> {
-    return this.http.get<any>(`${baseUrl}/`+disciplina+"/"+ tip);
+  private getFiles (disciplina, tip): Observable<any> {
+    return this.http.get<any>(`${baseUrl}/` + disciplina + '/' + tip)
   }
 
-  async getFilesForDisciplineComponent(disciplina,tip) {
+  private getLinks (disciplina): Observable<any> {
+    return this.http.get<any>(`${materialeUrl}/disciplina=` + disciplina)
+  }
+
+  async getFilesForDisciplineComponent (disciplina, tip) {
     await new Promise(resolve => {
-      this.getFiles(disciplina,tip).subscribe(
-        data => {
-          this.data = data
-          resolve(this.data)
-        }
-      )
+      this.getFiles(disciplina, tip).subscribe(data => {
+        this.data = data
+        resolve(this.data)
+      })
     })
     return this.data
+  }
+
+  async getLinksForDisciplineComponent (disciplina) {
+    await new Promise(resolve => {
+      this.getLinks(disciplina).subscribe(data => {
+        this.data = data
+        resolve(this.data)
+      })
+    })
+    return this.data
+  }
+
+  httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  }
+  private addLink (disciplina, link): Observable<any> {
+    return this.http.post(
+      `${materialeUrl}/disciplina=` + disciplina,
+      JSON.stringify(link),
+      this.httpOptions
+    )
+  }
+
+  async postareLink (link, disciplina: string) {
+    console.log(link)
+    await this.addLink(disciplina, link).subscribe({
+      next: data => {
+        console.log('POST SUCCESSFULLY! - Send link')
+      },
+      error: error => {
+        console.log('POST ERROR ' + error.message)
+      }
+    })
   }
 }

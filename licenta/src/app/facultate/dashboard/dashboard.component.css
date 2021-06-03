@@ -20,7 +20,7 @@ a {
 
 
 .uploadButon{
-    margin-left: 85rem;
+    margin-left: 65rem;
 }
 
 .wrapper {
@@ -45,4 +45,8 @@ a {
         .horizontal .mat-tab-labels {
             flex-direction: row;
         }
+
+.wrapper-glob{
+    margin-left: 90px;
+}
 

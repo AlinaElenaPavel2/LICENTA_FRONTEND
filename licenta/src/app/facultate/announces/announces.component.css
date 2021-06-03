@@ -1,12 +1,8 @@
-.first {
-    margin: 400px;
-}
 
+.wrapper  {
+ margin-left: 90px;
 
-.aboutMong img {
-    width: 200px;
-    height: 200px;
-    padding: 10%;
+ background-color:#f2f1f0;
 }
 
 .aboutMong h1
@@ -18,7 +14,7 @@
 }
 
 .aboutMongContent {
-    text-align: center;
+    /* text-align: center; */
     border-radius: 25px;
     padding: 20px; 
     width: 90%;
@@ -37,4 +33,19 @@
 .aboutMongContent h2{
   color: white;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+
+  padding: 10px;
+}
+.grid-item {
+  padding: 20px;
+  font-size: 30px;
+  /* text-align: center; */
+  align-items: center;
+
 }
