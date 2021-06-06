@@ -44,3 +44,15 @@
       text-align: center;
   }
   
+
+  .grid-progress {
+    display: grid;
+    grid-template-columns:  1fr 1fr;
+   
+  }
+  .grid-item-progress {
+    margin-left: 200px;
+    padding: 20px;
+    font-size: 15px;
+
+  }

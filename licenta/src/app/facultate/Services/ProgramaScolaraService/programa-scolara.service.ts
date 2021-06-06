@@ -5,6 +5,7 @@ import { Disciplina } from '../../Models/disciplina2'
 
 const baseUrl = 'http://localhost:8080/api/licenta/programaScolara'
 const discipUrl = 'http://localhost:8080/api/licenta/discipline'
+
 @Injectable({
   providedIn: 'root'
 })

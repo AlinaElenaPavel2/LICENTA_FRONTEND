@@ -1,23 +1,58 @@
 <app-navigation-bar></app-navigation-bar>
+<link
+  rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+/>
 
-<mat-grid-list cols="2" rowHeight="4:1">
-  <mat-grid-tile>1</mat-grid-tile>
-  <mat-grid-tile
-    ><h4>Semestru parcurs</h4>
-    <circle-progress
-      [percent]="82"
-      [radius]="100"
-      [outerStrokeWidth]="16"
-      [innerStrokeWidth]="8"
-      [outerStrokeColor]="'#e3667d'"
-      [innerStrokeColor]="'#e3a6b1'"
-      [animation]="true"
-      [animationDuration]="300"
-      [subtitleFormat]="formatSubtitle"
-      [titleFormat]="titleFormat"
-    ></circle-progress>
-  </mat-grid-tile>
-</mat-grid-list>
+<div class="grid-progress">
+  <div class="grid-item-progress">
+   <h4>Timp ramas pana la examene:</h4>
+    <div *ngFor="let ev of evenimente"style="
+          margin-left: 250px ;
+        " >
+      <p>{{ ev.examen }}</p>
+      <div
+        class="progress"
+        style="
+          height: 25px;
+          margin-left: 40px;
+          margin-bottom: 20px;
+          width: 250px;
+        "
+      >
+        <div
+          class="progress-bar"
+          role="progressbar"
+          style="background-color: #f0c837; color: black"
+          [style.width]="ev.procent + '%'"
+          attr.aria-valuenow="{{ ev.procent }}"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        >
+          {{ ev.procent }} %
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-item-progress">
+    <h4>Semestru parcurs</h4>
+    <div style="margin-left: 300px">
+      <circle-progress
+        [percent]="82"
+        [radius]="100"
+        [outerStrokeWidth]="16"
+        [innerStrokeWidth]="8"
+        [outerStrokeColor]="'#e3667d'"
+        [innerStrokeColor]="'#e3a6b1'"
+        [animation]="true"
+        [animationDuration]="300"
+        [subtitleFormat]="formatSubtitle"
+        [titleFormat]="titleFormat"
+      ></circle-progress>
+    </div>
+  </div>
+</div>
 
 <div class="first">
   <mat-tab-group mat-align-tabs="center">
@@ -26,7 +61,10 @@
         <div class="grid-item">
           <mat-form-field appearance="fill">
             <mat-label>Anul selectat</mat-label>
-            <mat-select [(value)]="selected" (selectionChange)="yearChangedNote($event.value)">
+            <mat-select
+              [(value)]="selected"
+              (selectionChange)="yearChangedNote($event.value)"
+            >
               <mat-option *ngFor="let year of years" [value]="year">
                 {{ year }}
               </mat-option>
@@ -45,7 +83,10 @@
         <div class="grid-item">
           <mat-form-field appearance="fill">
             <mat-label>Anul selectat</mat-label>
-            <mat-select [(value)]="selected" (selectionChange)="yearChangedEvolutie($event.value)">
+            <mat-select
+              [(value)]="selected"
+              (selectionChange)="yearChangedEvolutie($event.value)"
+            >
               <mat-option *ngFor="let year of years" [value]="year">
                 {{ year }}
               </mat-option>
