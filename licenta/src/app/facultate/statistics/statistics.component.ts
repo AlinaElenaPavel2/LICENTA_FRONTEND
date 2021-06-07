@@ -56,6 +56,8 @@ export class StatisticsComponent implements OnInit {
   private ctxLine: CanvasRenderingContext2D
   private ctxBar: CanvasRenderingContext2D
   private ctxPie: CanvasRenderingContext2D
+  butDisabled: boolean = false;
+
   name: string
   student: Student = new Student()
   years: number[] = []
@@ -278,6 +280,10 @@ export class StatisticsComponent implements OnInit {
       this.years.push(i + 1)
     }
     this.years.reverse()
+    if(this.years.length==1)
+    {
+      this.butDisabled=true
+    }
     this.selected = this.years[0]
     this.label = 'Grafic note obtinute in anul ' + this.selected
 

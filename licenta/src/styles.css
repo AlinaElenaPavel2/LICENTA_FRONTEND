@@ -2,3 +2,4 @@
 /* @import "../node_modules/angular-calendar/css/angular-calendar.css";
 @import "~@angular/material/prebuilt-themes/purple-green.css";*/
 @import "../node_modules/flatpickr/dist/flatpickr.min.css"; 
+@import "../node_modules/angular-notifier/styles";

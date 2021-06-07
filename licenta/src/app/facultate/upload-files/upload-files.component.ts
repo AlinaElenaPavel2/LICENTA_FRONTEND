@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { FileUploader } from 'ng2-file-upload'
 import { FileUploadService } from 'src/app/facultate/Services/UploadFilesService/file-upload.service'
+import { NotifierService } from 'angular-notifier'
 
 @Component({
   selector: 'app-upload-files',
@@ -15,6 +16,7 @@ export class UploadFilesComponent implements OnInit {
   response: string
   materie: string
   componenta: string
+  private notifier: NotifierService
 
   handleFileInput () {
     this.URL =
@@ -50,9 +52,20 @@ export class UploadFilesComponent implements OnInit {
 
     this.response = ''
 
-    this.uploader.response.subscribe(res => (this.response = res))
+    this.uploader.response.subscribe(res => {
+      this.response = res
+      if (this.response.split(',')[1].includes('fileDownloadUri') == true) {
+        this.showNotification('success', 'Fisierele s-au incarcat cu succes!')
+      } else {
+        this.showNotification('error', 'Fisierele nu s-au putut incarca!')
+      }
+    })
   }
-  constructor (private fileUploadService: FileUploadService) {
+  constructor (
+    private fileUploadService: FileUploadService,
+    notifier: NotifierService
+  ) {
+    this.notifier = notifier;
     setTimeout(async () => {
       this.materie = localStorage.getItem('Materie')
       this.componenta = localStorage.getItem('Componenta')
@@ -89,11 +102,14 @@ export class UploadFilesComponent implements OnInit {
     // this.uploader.onBeforeUploadItem = item => {
     //   item.withCredentials = false
     // }
-    this.uploader = new FileUploader({ url: this.URL });
-
+    this.uploader = new FileUploader({ url: this.URL })
   }
 
   public fileOverAnother (e: any): void {
     this.hasAnotherDropZoneOver = e
+  }
+
+  public showNotification (type: string, message: string): void {
+    this.notifier.notify(type, message)
   }
 }

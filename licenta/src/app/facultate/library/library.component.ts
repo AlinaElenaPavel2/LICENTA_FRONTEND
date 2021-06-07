@@ -10,6 +10,7 @@ import { StudentService } from '../Services/StudentService/student.service'
 import { Profesor } from '../Models/profesor'
 import { Disciplina } from '../Models/disciplina2'
 import { Student } from '../Models/student'
+import { NotifierService } from 'angular-notifier';
 
 const URL = 'http://localhost:8080/api/licenta/fileStorage/uploadMultipleFiles'
 
@@ -22,7 +23,13 @@ interface Link {
 
 interface StudentBooks {
   disciplina: string
-  book: string
+  book: string,
+  descriere:string
+}
+
+interface Book {
+  titlu: string,
+  descriere:string
 }
 @Component({
   selector: 'app-library',
@@ -39,7 +46,7 @@ export class LibraryComponent implements OnInit {
 
   studentBooks: StudentBooks[] = []
 
-  books: string[] = []
+  books: Book[] = []
   links: Link[] = []
 
   postLinks = new FormGroup({
@@ -47,7 +54,7 @@ export class LibraryComponent implements OnInit {
     descriere: new FormControl(''),
     titlu: new FormControl('')
   })
-
+	private notifier: NotifierService;
   async getDataForProfesor () {
     var prof = await this.profesorService.sendProfesorDetails(
       parseInt(sessionStorage.getItem('ID'))
@@ -73,8 +80,13 @@ export class LibraryComponent implements OnInit {
       discip[0].nume
     )
 
+    var descrieri=await this.fileStorage.getDescriptionForComponent( discip[0].nume, 'Auxiliare')
+        console.log("----------------------------")
+        console.log(descrieri)
+
     for (let i = 0; i < fisiere.length; i++) {
-      this.books.push(fisiere[i])
+      var book={titlu:fisiere[i],descriere:descrieri[i]}
+      this.books.push(book)
     }
 
     for (let i = 0; i < linkuri.length; i++) {
@@ -116,8 +128,12 @@ export class LibraryComponent implements OnInit {
       )
       var disciplina = discip[i].nume
       if (fisiere.length > 0) {
+        var descrieri=await this.fileStorage.getDescriptionForComponent( discip[i].nume, 'Auxiliare')
+        console.log("----------------------------")
+        console.log(descrieri)
+
         for (let j = 0; j < fisiere.length; j++) {
-          var book = { disciplina: disciplina, book: fisiere[j] }
+          var book = { disciplina: disciplina, book: fisiere[j],descriere: descrieri[j]}
           this.studentBooks.push(book)
         }
       }
@@ -138,6 +154,7 @@ export class LibraryComponent implements OnInit {
       }
     }
 
+
     console.log(this.links)
     console.log(this.studentBooks)
   }
@@ -145,8 +162,11 @@ export class LibraryComponent implements OnInit {
     private profesorService: ProfesorService,
     private programaScolaraService: ProgramaScolaraService,
     private fileStorage: FileStorageService,
-    private studentService: StudentService
+    private studentService: StudentService,
+    notifier: NotifierService
   ) {
+    this.notifier = notifier;
+
     setTimeout(async () => {
       this.name = sessionStorage.getItem('name')
       this.userRole = sessionStorage.getItem('role')
@@ -191,7 +211,7 @@ export class LibraryComponent implements OnInit {
     }
     console.log(JSON.stringify(postLink))
 
-    await this.fileStorage.postareLink(postLink, discip[0].nume)
+    // await this.fileStorage.postareLink(postLink, discip[0].nume)
   }
 
   applyFilter (filterValue: string) {
@@ -221,4 +241,9 @@ export class LibraryComponent implements OnInit {
 
     this.getDataForProfesor()
   }
+
+  public showNotification( type: string, message: string ): void {
+    console.log("message")
+		this.notifier.notify( type, message );
+	}
 }

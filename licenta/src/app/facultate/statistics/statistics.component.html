@@ -64,6 +64,7 @@
             <mat-select
               [(value)]="selected"
               (selectionChange)="yearChangedNote($event.value)"
+              [disabled]="butDisabled"
             >
               <mat-option *ngFor="let year of years" [value]="year">
                 {{ year }}
@@ -86,6 +87,7 @@
             <mat-select
               [(value)]="selected"
               (selectionChange)="yearChangedEvolutie($event.value)"
+              [disabled]="butDisabled"
             >
               <mat-option *ngFor="let year of years" [value]="year">
                 {{ year }}

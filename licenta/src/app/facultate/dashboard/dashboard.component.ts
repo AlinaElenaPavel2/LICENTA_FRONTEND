@@ -261,7 +261,7 @@ export class DashboardComponent implements OnInit {
     localStorage.setItem('Componenta', component)
 
     const dialogRef = this.dialog.open(UploadFileComponent, {
-      width: '1050px',
+      width: '1150px',
       height: '400px',
       data: dialogData
     })

@@ -4,33 +4,40 @@
     <mat-tab-group mat-align-tabs="center">
       <mat-tab label="Adaugare materiale auxiliare"
         ><div class="incarcareFisier">
-          <h1 style="margin-bottom: 20px">Incarcare carti suplimentare:</h1>
+          <h1 style="margin-bottom: 40px">Incarcare carti suplimentare:</h1>
           <app-upload-files></app-upload-files>
         </div>
         <div>
-          <h1 style="margin-bottom: 20px">Postare linkuri utile:</h1>
-
-          <form [formGroup]="postLinks" (ngSubmit)="onSubmit()">
-            <label>
-              Link:
-              <input type="text" formControlName="link" />
-            </label>
-
-            <label>
-              Titlu:
-              <input type="text" formControlName="titlu" />
-            </label>
-
-            <label>
-              Descriere:
-              <input type="text" formControlName="descriere" />
-            </label>
-
-            <button type="submit">Posteaza</button>
-          </form>
+          <h1 style="margin-bottom: 40px">Postare linkuri utile:</h1>
+          <div class="formular">
+            <form [formGroup]="postLinks" (ngSubmit)="onSubmit()">
+              <label> Link: </label>
+              <input
+                type="text"
+                formControlName="link"
+                placeholder="https://start.spring.io/"
+              />
+              <label> Titlu: </label>
+              <input
+                type="text"
+                formControlName="titlu"
+                placeholder="Spring Initializr"
+              />
+              <label> Descriere: </label>
+              <input
+                type="text"
+                formControlName="descriere"
+                placeholder="Set up proiect utilizan Spring framework"
+              />
+              <button class="button button--primary" type="submit" (click)="showNotification( 'success', 'S-a postat cu succes linkul!' )">Posteaza</button>
+            </form>
+          </div>
         </div>
       </mat-tab>
-      <mat-tab label="Vizualizare materiale auxiliare" (selectedTabIndex)="getData($event)">
+      <mat-tab
+        label="Vizualizare materiale auxiliare"
+        (selectedTabIndex)="getData($event)"
+      >
         <hr />
         <h3>Link-uri</h3>
         <div class="linksContainer">
@@ -64,11 +71,11 @@
 
                     <h5 class="grid-item">
                       <b
-                        ><a href="{{ book }}" target="_blank">{{
-                          getFileName(book)
+                        ><a href="{{ book.titlu }}" target="_blank">{{
+                          getFileName(book.titlu)
                         }}</a></b
                       >
-                      <p>descriere</p>
+                      <p style="margin-top: 25px">{{ book.descriere }}</p>
                     </h5>
                   </div>
                   <br />
@@ -134,7 +141,7 @@
                       getFileName(book.book)
                     }}</a></b
                   >
-                  <p>descriere</p>
+                  <p style="margin-top: 25px">{{ book.descriere }}</p>
                 </h5>
               </div>
               <br />
@@ -145,3 +152,5 @@
     </div>
   </div>
 </ng-template>
+
+<notifier-container></notifier-container>

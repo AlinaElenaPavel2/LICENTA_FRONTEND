@@ -21,6 +21,12 @@ export class FileStorageService {
     return this.http.get<any>(`${materialeUrl}/disciplina=` + disciplina)
   }
 
+  private getDescriptionRequest (disciplina, tip): Observable<any> {
+    return this.http.get<any>(
+      `${baseUrl}/` + disciplina + '/' + tip + '/descriptions'
+    )
+  }
+
   async getFilesForDisciplineComponent (disciplina, tip) {
     await new Promise(resolve => {
       this.getFiles(disciplina, tip).subscribe(data => {
@@ -34,6 +40,16 @@ export class FileStorageService {
   async getLinksForDisciplineComponent (disciplina) {
     await new Promise(resolve => {
       this.getLinks(disciplina).subscribe(data => {
+        this.data = data
+        resolve(this.data)
+      })
+    })
+    return this.data
+  }
+
+  async getDescriptionForComponent (disciplina, tip) {
+    await new Promise(resolve => {
+      this.getDescriptionRequest(disciplina, tip).subscribe(data => {
         this.data = data
         resolve(this.data)
       })

@@ -3,7 +3,7 @@
 }
 
 .wrapper {
-    margin: 40px 40px 40px 110px;
+    margin: 10px 40px 40px 110px;
 }
 
 .incarcareFisier{
@@ -58,3 +58,38 @@
     width: 80%;
     margin-bottom: 10px;
   }
+
+
+  input[type=text], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: none;
+    border-bottom: 2px solid #00838f;
+  }
+  
+  button[type=submit] {
+    width: 30%;
+    background-color: #00838f;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button[type=submit]:hover {
+    background-color: #00838f;
+  }
+
+  .formular {
+    /* border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px; */
+    margin-left:150px;
+    margin-right:150px;
+  }
+
+ 
