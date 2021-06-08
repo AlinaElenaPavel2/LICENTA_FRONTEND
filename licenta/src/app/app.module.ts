@@ -39,6 +39,7 @@ import {FileUploadModule} from "ng2-file-upload";
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { MatSelectModule } from "@angular/material/select";
 import {MatButtonModule} from '@angular/material/button';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -52,6 +53,7 @@ import { QrScanComponent } from './facultate/qr-scan/qr-scan.component';
 import { NgApexchartsModule } from "ng-apexcharts";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NotifierModule, NotifierOptions } from 'angular-notifier';
+import { MatNativeDateModule } from '@angular/material/core';
 const customNotifierOptions: NotifierOptions = {
   position: {
 		horizontal: {
@@ -131,6 +133,8 @@ const customNotifierOptions: NotifierOptions = {
     MatIconModule,
     MatSelectModule,
     MatButtonModule,
+    MatDatepickerModule,
+    MatNativeDateModule, 
     NgApexchartsModule,
     NgbModule,
     NotifierModule.withConfig(customNotifierOptions),

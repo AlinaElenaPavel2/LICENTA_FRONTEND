@@ -15,8 +15,10 @@ export class EmailRecuperareComponent implements OnInit {
 
   sendEmail = new FormGroup({
     titlu: new FormControl(''),
-    mesaj: new FormControl('')
+    mesaj: new FormControl(''),
+    dataRecuperare:new FormControl('')
   })
+
 
   constructor (
     public dialog: MatDialogRef<EmailRecuperareComponent>,
@@ -29,6 +31,8 @@ export class EmailRecuperareComponent implements OnInit {
   ngOnInit (): void {}
 
   async onSubmit () {
+    console.warn(this.sendEmail.value.dataRecuperare)
+
     console.log('---------')
     console.warn(this.sendEmail.value)
     this.dialog.close()
@@ -37,7 +41,7 @@ export class EmailRecuperareComponent implements OnInit {
     console.log(this.profesor_email)
 
     console.log(this.email)
-    await this.emailService.emailNotification(this.email,this.profesor_email);
+    // await this.emailService.emailNotification(this.email,this.profesor_email);
 
   }
 }

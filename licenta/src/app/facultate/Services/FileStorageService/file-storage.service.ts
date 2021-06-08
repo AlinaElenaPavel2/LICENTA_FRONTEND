@@ -70,11 +70,31 @@ export class FileStorageService {
     )
   }
 
+  private addBook (disciplina, tip, book): Observable<any> {
+    return this.http.post(
+      `${materialeUrl}/disciplina=` + disciplina + '/tip=' + tip,
+      JSON.stringify(book),
+      this.httpOptions
+    )
+  }
+
   async postareLink (link, disciplina: string) {
     console.log(link)
     await this.addLink(disciplina, link).subscribe({
       next: data => {
         console.log('POST SUCCESSFULLY! - Send link')
+      },
+      error: error => {
+        console.log('POST ERROR ' + error.message)
+      }
+    })
+  }
+
+  async postareBook (disciplina, tip, book) {
+    console.log(book)
+    await this.addBook(disciplina, tip, book).subscribe({
+      next: data => {
+        console.log('POST SUCCESSFULLY! - Send book')
       },
       error: error => {
         console.log('POST ERROR ' + error.message)

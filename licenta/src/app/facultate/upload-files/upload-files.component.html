@@ -25,6 +25,7 @@
           <thead>
             <tr>
               <th width="50%">Nume</th>
+              <th>Descriere</th>
               <th>Dimensiune</th>
               <th>Progress</th>
               <th>Status</th>
@@ -32,9 +33,15 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of uploader.queue">
+            <tr *ngFor="let item of uploader.queue; let i = index">
               <td>
                 <strong>{{ item?.file?.name }}</strong>
+              </td>
+              <td>
+                <mat-form-field  >
+                  <mat-label>Descriere</mat-label>
+                  <textarea matInput  name="{{item.file.name}}" #input (change)="onKey(input.value,i)"></textarea>
+                </mat-form-field>
               </td>
               <td *ngIf="uploader.options.isHTML5" nowrap>
                 {{ item?.file?.size / 1024 / 1024 | number: ".2" }} MB
@@ -42,7 +49,7 @@
               <td *ngIf="uploader.options.isHTML5">
                 <div class="progress" style="margin-bottom: 0">
                   <div
-                    style="background-color: #c70411"
+                    style="background-color: #00838f"
                     class="progress-bar"
                     role="progressbar"
                     [ngStyle]="{ width: item.progress + '%' }"
@@ -78,7 +85,7 @@
             <p style="margin-top: 20px">Progresul incarcarii:</p>
             <div class="progress" style="margin-top: 20px; margin-bottom: 20px">
               <div
-                style="background-color: #c70411"
+                style="background-color: #00838f"
                 class="progress-bar"
                 role="progressbar"
                 [ngStyle]="{ width: uploader.progress + '%' }"

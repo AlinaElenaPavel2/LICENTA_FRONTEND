@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core'
 import { FileUploader } from 'ng2-file-upload'
 import { FileUploadService } from 'src/app/facultate/Services/UploadFilesService/file-upload.service'
 import { NotifierService } from 'angular-notifier'
+import { FileStorageService } from '../Services/FileStorageService/file-storage.service'
 
 @Component({
   selector: 'app-upload-files',
@@ -18,6 +19,7 @@ export class UploadFilesComponent implements OnInit {
   componenta: string
   private notifier: NotifierService
 
+  descrieri: string[] = []
   handleFileInput () {
     this.URL =
       'http://localhost:8080/api/licenta/fileStorage/disciplina=' +
@@ -51,21 +53,49 @@ export class UploadFilesComponent implements OnInit {
     this.hasAnotherDropZoneOver = false
 
     this.response = ''
-
+    let i = 0
     this.uploader.response.subscribe(res => {
       this.response = res
       if (this.response.split(',')[1].includes('fileDownloadUri') == true) {
-        this.showNotification('success', 'Fisierele s-au incarcat cu succes!')
+        var filename = this.response
+          .split(',')[0]
+          .substring(14, this.response.split(',')[0].length - 1)
+        var path =
+          'aplicatie/src/main/resources/Files/' +
+          this.materie +
+          '/' +
+          this.componenta +
+          '/' +
+          filename
+        // console.log(path)
+        // console.log(this.descrieri[i])
+        console.log('---------')
+        var book = {
+          path: path,
+          descriere: this.descrieri[i]
+        }
+        console.log(JSON.stringify(book))
+
+        this.fileStorage.postareBook(this.materie, this.componenta,book)
+
+        i += 1
+        this.showNotification('success', 'Fisierul s-a incarcat cu succes!')
       } else {
         this.showNotification('error', 'Fisierele nu s-au putut incarca!')
       }
     })
   }
+
+  onKey (descriere, i) {
+    this.descrieri.push(descriere)
+  }
+
   constructor (
     private fileUploadService: FileUploadService,
+    private fileStorage: FileStorageService,
     notifier: NotifierService
   ) {
-    this.notifier = notifier;
+    this.notifier = notifier
     setTimeout(async () => {
       this.materie = localStorage.getItem('Materie')
       this.componenta = localStorage.getItem('Componenta')
@@ -99,9 +129,6 @@ export class UploadFilesComponent implements OnInit {
   }
 
   ngOnInit (): void {
-    // this.uploader.onBeforeUploadItem = item => {
-    //   item.withCredentials = false
-    // }
     this.uploader = new FileUploader({ url: this.URL })
   }
 
