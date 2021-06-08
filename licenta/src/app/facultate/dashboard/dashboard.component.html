@@ -1,182 +1,188 @@
 <app-navigation-bar></app-navigation-bar>
 <div class="wrapper-glob">
-<div *ngIf="userRole == 'student'; else elseBlock">
-  <div class="contaier">
-    <mat-tab-group
-      mat-align-tabs="center"
-      (selectedTabChange)="getYearDiscipline($event)"
-    >
-      <div *ngFor="let year of years">
-        <mat-tab label="An {{ year }}">
-          <mat-tab-group
-            mat-align-tabs="center"
-            (selectedTabChange)="getDisciplinesForSemester($event)"
-          >
-            <mat-tab
-              label="Semestrul 2"
-              (click)="getDisciplinesForSemester($event)"
-              ><link
-                rel="stylesheet"
-                href="https://www.w3schools.com/w3css/4/w3.css"
-              />
-              <div class="wrapper">
-                <div *ngFor="let dis of discipline">
-                  <div class="w3-third" style="width: 30%">
-                    <div
-                      class="w3-card"
-                      style="width: 80%; margin: 30px; padding: 0px; align-items: center;"
-                    >
-                      <a [routerLink]="['/university/course/', dis.nume]"
-                        ><img
-                          src="assets/images/online-learning2.png"
-                          style="
-                            width: 60%;
-                            margin: 30px;
-                            padding: 0px;
-                          
-                          "
-                      /></a>
-                      <div class="w3-container">
-                        <h5>{{ dis.nume }}</h5>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div></mat-tab
-            >
-            <mat-tab
-              label="Semestrul 1"
+  <div *ngIf="userRole == 'student'; else elseBlock">
+    <div class="contaier">
+      <mat-tab-group
+        mat-align-tabs="center"
+        (selectedTabChange)="getYearDiscipline($event)"
+      >
+        <div *ngFor="let year of years">
+          <mat-tab label="An {{ year }}">
+            <mat-tab-group
+              mat-align-tabs="center"
               (selectedTabChange)="getDisciplinesForSemester($event)"
             >
-              <link
-                rel="stylesheet"
-                href="https://www.w3schools.com/w3css/4/w3.css"
-              />
-              <div class="wrapper">
-                <div *ngFor="let dis of discipline">
-                  <div
-                    class="w3-third"
-                    style="width: 30%"
-                    routerLink="/university/course"
-                  >
+              <mat-tab
+                label="Semestrul 2"
+                (click)="getDisciplinesForSemester($event)"
+                ><link
+                  rel="stylesheet"
+                  href="https://www.w3schools.com/w3css/4/w3.css"
+                />
+                <div class="wrapper">
+                  <div *ngFor="let dis of discipline">
+                    <div class="w3-third" style="width: 30%">
+                      <div
+                        class="w3-card"
+                        style="
+                          width: 80%;
+                          margin: 30px;
+                          padding: 0px;
+                          align-items: center;
+                        "
+                      >
+                        <a [routerLink]="['/university/course/', dis.nume]"
+                          ><img
+                            src="assets/images/online-learning2.png"
+                            style="width: 60%; margin: 30px; padding: 0px"
+                        /></a>
+                        <div class="w3-container">
+                          <h5>{{ dis.nume }}</h5>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div></mat-tab
+              >
+              <mat-tab
+                label="Semestrul 1"
+                (selectedTabChange)="getDisciplinesForSemester($event)"
+              >
+                <link
+                  rel="stylesheet"
+                  href="https://www.w3schools.com/w3css/4/w3.css"
+                />
+                <div class="wrapper">
+                  <div *ngFor="let dis of discipline">
                     <div
-                      class="w3-card"
-                      style="width: 80%; margin: 20px; padding: 0px"
+                      class="w3-third"
+                      style="width: 30%"
+                      routerLink="/university/course"
                     >
-                      <a [routerLink]="['/university/course/', dis.nume]"
-                        ><img
-                          src="assets/images/online-learning2.png"
-                          style="
-                            width: 60%;
-                            margin: 30px;
-                            padding: 0px;
-         
-                          "
-                      /></a>
-                      <div class="w3-container">
-                        <h5>{{ dis.nume }}</h5>
+                      <div
+                        class="w3-card"
+                        style="width: 80%; margin: 20px; padding: 0px"
+                      >
+                        <a [routerLink]="['/university/course/', dis.nume]"
+                          ><img
+                            src="assets/images/online-learning2.png"
+                            style="width: 60%; margin: 30px; padding: 0px"
+                        /></a>
+                        <div class="w3-container">
+                          <h5>{{ dis.nume }}</h5>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
+              </mat-tab>
+            </mat-tab-group>
+          </mat-tab>
+        </div>
+      </mat-tab-group>
+    </div>
+  </div>
+
+  <ng-template #elseBlock>
+    <div class="contaier">
+      <mat-tab-group mat-align-tabs="center">
+        <mat-tab label="Disciplina">
+          <div *ngFor="let dis of discipline">
+            <div class="curs">
+              <h3>{{ dis.nume }} - {{ dis.abreviere }}</h3>
+              <hr />
+              <h3>Cursuri</h3>
+              <button mat-button class="uploadButon" (click)="addCurs()">
+                ADAUGARE CURS
+              </button>
+              <hr />
+
+              <br />
+              <div *ngFor="let file of fileCurs">
+                <div>
+                  <img
+                    src="assets/images/pdf.png"
+                    alt="Pdf icon"
+                    width="30"
+                    height="30"
+                    style="margin-right: 20px"
+                  />
+                  <a href="{{ file }}" target="_blank">{{
+                    getFileName(file)
+                  }}</a>
+                </div>
+                <br />
               </div>
-            </mat-tab>
-          </mat-tab-group>
+            </div>
+            <hr />
+            <div class="curs">
+              <h3>Laboratoare</h3>
+              <button mat-button class="uploadButon" (click)="addLaborator()">
+                ADAUGARE LABORATOR
+              </button>
+              <hr />
+
+              <br />
+
+              <div *ngFor="let file of fileLab">
+                <div  style="margin-bottom: 20px">
+                  <img
+                    src="assets/images/pdf.png"
+                    alt="Pdf icon"
+                    width="30"
+                    height="30"
+                    style="margin-right: 20px"
+                  />
+                  <a href="{{ file }}" target="_blank">{{
+                    getFileName(file)
+                  }}</a>
+                  <br />
+                </div>
+              </div>
+            </div>
+          </div>
         </mat-tab>
-      </div>
-    </mat-tab-group>
-  </div>
+
+        <mat-tab label="Prezente">
+          <div class="grid-container">
+          <h3>Trimitere email pentru validarea prezentei: </h3>
+            <form [formGroup]="email">
+              <mat-form-field class="grid-item">
+                <mat-label>Selecteaza o grupa</mat-label>
+                <mat-select formControlName="grupa">
+                  <mat-option>None</mat-option>
+                  <mat-option *ngFor="let grup of grupe" [value]="grup">{{
+                    grup
+                  }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field class="grid-item" >
+                <mat-label>Selecteaza un laborator</mat-label>
+                <mat-select formControlName="laborator">
+                  <mat-option>None</mat-option>
+                  <mat-option *ngFor="let lab of laboratoare" [value]="lab">{{
+                    lab
+                  }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </form>
+
+            <button
+              class="grid-item"
+              mat-fab
+              color="warn"
+              aria-label="Example icon button with a delete icon"
+            >
+              <mat-icon (click)="sendEmail()">mail</mat-icon>
+            </button>
+          </div>
+          <app-prezente-table></app-prezente-table>
+        </mat-tab>
+        <mat-tab label="Detalii si anunturi"> Content 3 </mat-tab>
+      </mat-tab-group>
+    </div>
+  </ng-template>
 </div>
 
-<ng-template #elseBlock>
-  <div class="contaier">
-    <mat-tab-group mat-align-tabs="center">
-      <mat-tab label="Disciplina">
-        <div *ngFor="let dis of discipline">
-          <div class="curs">
-            <h3>{{ dis.nume }} - {{ dis.abreviere }}</h3>
-            <hr />
-            <h3>Cursuri</h3>
-            <hr />
-            <button mat-button class="uploadButon" (click)="addCurs()">
-              ADAUGARE CURS
-            </button>
-
-            <br />
-                <div *ngFor="let file of fileCurs ">
-              <img
-                src="assets/images/pdf.png"
-                alt="Pdf icon"
-                width="30"
-                height="30"
-              />
-              <a href={{file}} target="_blank">{{getFileName(file)}}</a>
-              <br />
-            </div>
-
-          </div>
-          <hr />
-          <div class="curs">
-            <h3>Laboratoare</h3>
-            <hr />
-            <button mat-button class="uploadButon" (click)="addLaborator()">
-              ADAUGARE LABORATOR
-            </button>
-
-            <br />
-
-            <div *ngFor="let file of fileLab ">
-              <img
-                src="assets/images/pdf.png"
-                alt="Pdf icon"
-                width="30"
-                height="30"
-              />
-              <a href={{file}} target="_blank">{{getFileName(file)}}</a>
-              <br />
-            </div>
-
-          
-          </div>
-        </div>
-      </mat-tab>
-
-      <mat-tab label="Prezente">
-        <div class="sendEmail">
-          <form [formGroup]="email">
-            <mat-form-field appearance="fill">
-              <mat-label>Selecteaza o grupa</mat-label>
-              <mat-select formControlName="grupa">
-                <mat-option>None</mat-option>
-                <mat-option *ngFor="let grup of grupe" [value]="grup">{{
-                  grup
-                }}</mat-option>
-              </mat-select>
-            </mat-form-field>
-
-            <mat-form-field appearance="fill">
-              <mat-label>Selecteaza un laborator</mat-label>
-              <mat-select formControlName="laborator">
-                <mat-option>None</mat-option>
-                <mat-option *ngFor="let lab of laboratoare" [value]="lab">{{
-                  lab
-                }}</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </form>
-
-          <button
-            mat-fab
-            color="warn"
-            aria-label="Example icon button with a delete icon"
-          >
-            <mat-icon (click)="sendEmail()">mail</mat-icon>
-          </button>
-        </div>
-        <app-prezente-table></app-prezente-table>
-      </mat-tab>
-      <mat-tab label="Detalii si anunturi"> Content 3 </mat-tab>
-    </mat-tab-group>
-  </div>
-</ng-template>
-</div>
+<notifier-container></notifier-container>

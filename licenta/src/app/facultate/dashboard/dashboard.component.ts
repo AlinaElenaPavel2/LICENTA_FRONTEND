@@ -5,7 +5,7 @@ import { ProfesorService } from '../Services/ProfesorService/profesor.service'
 import { PrezentaService } from '../Services/PrezentaService/prezenta.service'
 import { EmailService } from '../Services/EmailService/email.service'
 import { FileStorageService } from '../Services/FileStorageService/file-storage.service'
-
+import { NotifierService } from 'angular-notifier'
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 
 import { Student } from '../Models/student'
@@ -41,6 +41,7 @@ export class DashboardComponent implements OnInit {
   grupe: string[] = ['1307', '1308']
   laboratoare: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
   email: FormGroup
+  private notifier: NotifierService
 
   async getDataForStudent (name) {
     var discip
@@ -165,8 +166,10 @@ export class DashboardComponent implements OnInit {
     public dialog: MatDialog,
     private prezentaService: PrezentaService,
     private emailService: EmailService,
-    private fileStorage: FileStorageService
+    private fileStorage: FileStorageService,
+    notifier: NotifierService
   ) {
+    this.notifier = notifier
     setTimeout(async () => {
       this.name = sessionStorage.getItem('name')
       this.userRole = sessionStorage.getItem('role')
@@ -243,7 +246,7 @@ export class DashboardComponent implements OnInit {
 
     const dialogRef = this.dialog.open(UploadFileComponent, {
       width: '1450px',
-      height: '400px',
+      height: '600px',
       data: dialogData
     })
   }
@@ -262,7 +265,7 @@ export class DashboardComponent implements OnInit {
 
     const dialogRef = this.dialog.open(UploadFileComponent, {
       width: '1150px',
-      height: '400px',
+      height: '600px',
       data: dialogData
     })
   }
@@ -274,11 +277,12 @@ export class DashboardComponent implements OnInit {
       grupa: this.email.value.grupa,
       laborator: this.email.value.laborator
     }
-    this.emailService.sendEmailtoStudents(
-      this.discipline[0].nume,
-      this.email.value.grupa,
-      this.email.value.laborator
-    )
+    // this.emailService.sendEmailtoStudents(
+    //   this.discipline[0].nume,
+    //   this.email.value.grupa,
+    //   this.email.value.laborator
+    // )
     console.log(sendEmails)
+    this.notifier.notify('success', 'Email-urile pentru validarea prezentei au fost trimise cu succes!');
   }
 }

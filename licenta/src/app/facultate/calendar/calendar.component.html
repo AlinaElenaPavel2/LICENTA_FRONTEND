@@ -10,14 +10,14 @@
           [(viewDate)]="viewDate"
           (viewDateChange)="closeOpenMonthViewDay()"
         >
-          Previous
+          Anterioara
         </div>
         <div
           class="btn btn-outline-secondary"
           mwlCalendarToday
           [(viewDate)]="viewDate"
         >
-          Current
+          Curenta
         </div>
         <div
           class="btn btn-info"
@@ -26,7 +26,7 @@
           [(viewDate)]="viewDate"
           (viewDateChange)="closeOpenMonthViewDay()"
         >
-          Next
+          Urmatoare
         </div>
       </div>
     </div>
@@ -40,21 +40,21 @@
           (click)="setView(CalendarView.Month)"
           [class.active]="view === CalendarView.Month"
         >
-          Month
+          Luna
         </div>
         <div
           class="btn btn-info"
           (click)="setView(CalendarView.Week)"
           [class.active]="view === CalendarView.Week"
         >
-          Week
+          Saptamana
         </div>
         <div
           class="btn btn-info"
           (click)="setView(CalendarView.Day)"
           [class.active]="view === CalendarView.Day"
         >
-          Day
+          Zi
         </div>
       </div>
     </div>
@@ -98,8 +98,8 @@
 <br /><br /><br />
 <div class="wrapper">
   <h3>
-    Edit events
-    <button class="btn btn-primary float-right" (click)="addEvent()">
+    Eveniment
+    <button class="btn btn-info float-right" (click)="addEvent()">
       Add new
     </button>
     <div class="clearfix"></div>
@@ -110,11 +110,10 @@
       <thead>
         <tr>
           <th>Title</th>
-          <th>Primary color</th>
-          <th>Secondary color</th>
-          <th>Starts at</th>
-          <th>Ends at</th>
-          <th>Remove</th>
+          <th>Descriere</th>
+          <th>Incepe la</th>
+          <th>Se termina</th>
+          <th>Eliminare</th>
         </tr>
       </thead>
 
@@ -130,16 +129,10 @@
           </td>
           <td>
             <input
-              type="color"
-              [(ngModel)]="event.color.primary"
-              (change)="refresh.next()"
-            />
-          </td>
-          <td>
-            <input
-              type="color"
-              [(ngModel)]="event.color.secondary"
-              (change)="refresh.next()"
+              type="text"
+              class="form-control"
+              [(ngModel)]="event.title"
+              (keyup)="refresh.next()"
             />
           </td>
           <td>
