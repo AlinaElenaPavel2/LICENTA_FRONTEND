@@ -54,6 +54,8 @@ import { NgApexchartsModule } from "ng-apexcharts";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NotifierModule, NotifierOptions } from 'angular-notifier';
 import { MatNativeDateModule } from '@angular/material/core';
+import { DetailsDialogComponent } from './facultate/calendar/details-dialog/details-dialog.component';
+import { AddNewEventComponent } from './facultate/calendar/add-new-event/add-new-event.component';
 const customNotifierOptions: NotifierOptions = {
   position: {
 		horizontal: {
@@ -111,7 +113,9 @@ const customNotifierOptions: NotifierOptions = {
     UploadFilesComponent,
     UploadFileComponent,
     PrezenteTableComponent,
-    QrScanComponent
+    QrScanComponent,
+    DetailsDialogComponent,
+    AddNewEventComponent
   ],
   imports: [
     MDBBootstrapModule.forRoot(),

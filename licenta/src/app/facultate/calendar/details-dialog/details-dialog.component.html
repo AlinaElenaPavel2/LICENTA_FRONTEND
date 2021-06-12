@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>{{ eveniment.title }}</h1>
+<div mat-dialog-content>
+  <hr />
+  <p>Incepe : {{ start_date }} {{ start_hour }}</p>
+
+  <p>Deadline : {{ end_date }} {{ end_hour }}</p>
+  <hr />
+  <p>Descriere : {{ descriere }}</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onClick()">Ok</button>
+</div>
