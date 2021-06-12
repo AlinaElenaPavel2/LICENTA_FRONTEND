@@ -4,11 +4,30 @@
 
 .wrapper {
     margin-top: 80px;
-    margin-left: 120px;
+    margin-left: 110px;
+    margin-right: 40px;
+
 }
 
-.cal-month-view .bg-pink,
-.cal-week-view .cal-day-columns .bg-pink,
-.cal-day-view .bg-pink {
-  background-color: hotpink !important;
+
+.pointer {
+  size: 40px;
+  margin-top: 10px;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 10px;
+
+  cursor: pointer;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  grid-gap: 10px;
+}
+
+.grid-container > div {
+  text-align: center;
+  padding: 10px 0;
+  font-size: 30px;
 }

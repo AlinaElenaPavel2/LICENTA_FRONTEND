@@ -1,1 +1,69 @@
-<p>add-new-event works!</p>
+<h2>Adaugare eveniment</h2>
+<hr />
+
+<br />
+
+<mat-form-field class="example-full-width">
+  <mat-label>Titlu</mat-label>
+  <input
+    matInput
+    [(ngModel)]="title"
+    #input
+    (change)="onKeyTitle(input.value)"
+  /> </mat-form-field
+><br />
+
+<mat-form-field class="example-full-width">
+  <mat-label>Descriere</mat-label>
+  <textarea
+    matInput
+    [(ngModel)]="descriere"
+    (change)="onKeyDesc(input.value)"
+  ></textarea></mat-form-field
+><br />
+<h5>Perioada:</h5>
+<br />
+<input
+  class="form-control"
+  type="text"
+  mwlFlatpickr
+  [(ngModel)]="start_date"
+  [altInput]="true"
+  [convertModelValue]="true"
+  [enableTime]="true"
+  dateFormat="Y-m-dTH:i"
+  altFormat="F j, Y H:i"
+  placeholder="Not set"
+/>
+<br />
+<input
+  class="form-control"
+  type="text"
+  mwlFlatpickr
+  [(ngModel)]="end_date"
+  [altInput]="true"
+  [convertModelValue]="true"
+  [enableTime]="true"
+  dateFormat="Y-m-dH:i"
+  altFormat="F j, Y H:i"
+  placeholder="Not set"
+/>
+<br />
+<br />
+
+<button
+  class="btn btn-info float-right"
+  style="margin-right: 270px"
+  (click)="addEvent()"
+>
+  Adaugare
+</button>
+
+<button
+  class="btn btn-info float-right"
+  style="margin-right: 120px"
+  (click)="cancel()"
+>
+  Anulare
+</button>
+<notifier-container></notifier-container>

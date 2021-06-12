@@ -42,9 +42,8 @@ import {
   DetailsDialogModel
 } from './details-dialog/details-dialog.component'
 
-import {
-  AddNewEventComponent,
-} from './add-new-event/add-new-event.component'
+import { AddNewEventComponent } from './add-new-event/add-new-event.component'
+import * as moment from 'moment'
 
 const colors: any = {
   red: {
@@ -59,15 +58,6 @@ const colors: any = {
     primary: '#e3bc08',
     secondary: '#FDF1BA'
   }
-}
-
-interface Eveniment {
-  start: string
-  end: string
-  title: string
-  color: string
-  descriere: string
-  resizable
 }
 
 @Component({
@@ -86,8 +76,10 @@ export class CalendarComponent {
   discipline: Disciplina[] = []
   editEvents: boolean = false
   descrieri: string[] = []
+  indexi: number[] = []
 
   view: CalendarView = CalendarView.Month
+  private notifier: NotifierService
 
   CalendarView = CalendarView
 
@@ -98,24 +90,6 @@ export class CalendarComponent {
     titlu: string
     event: CalendarEvent
   }
-
-  actions: CalendarEventAction[] = [
-    {
-      label: '<i class="fas fa-fw fa-pencil-alt"></i>',
-      a11yLabel: 'Edit',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
-        // this.handleEvent('Edited', event)
-      }
-    },
-    {
-      label: '<i class="fas fa-fw fa-trash-alt"></i>',
-      a11yLabel: 'Delete',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.events = this.events.filter(iEvent => iEvent !== event)
-        // this.handleEvent('Deleted', event)
-      }
-    }
-  ]
 
   refresh: Subject<any> = new Subject()
 
@@ -137,6 +111,7 @@ export class CalendarComponent {
     var discip = await this.programaScolaraService.getDisciplineTitular(
       this.profesor.nume
     )
+    this.discipline.push(discip)
     var evenimente = await this.evenimentService.getEvenimenteForDiscipline(
       discip[0].nume
     )
@@ -145,7 +120,6 @@ export class CalendarComponent {
         start: new Date(evenimente[i].start_date),
         end: new Date(evenimente[i].end_date),
         title: evenimente[i].titlu,
-        // descriere: evenimente[i].descriere,
         color: colors.red,
         allDay: true,
         resizable: {
@@ -156,6 +130,7 @@ export class CalendarComponent {
       }
       this.events.push(ev)
       this.descrieri.push(evenimente[i].descriere)
+      this.indexi.push(evenimente[i].id)
     }
     console.log(this.events)
     console.log(this.descrieri)
@@ -163,12 +138,14 @@ export class CalendarComponent {
   }
 
   constructor (
-    private modal: NgbModal,
     private profesorService: ProfesorService,
     private programaScolaraService: ProgramaScolaraService,
     private evenimentService: EvenimentService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    notifier: NotifierService
   ) {
+    this.notifier = notifier
+
     setTimeout(async () => {
       this.name = sessionStorage.getItem('name')
       this.userRole = sessionStorage.getItem('role')
@@ -210,13 +187,7 @@ export class CalendarComponent {
       }
       return iEvent
     })
-    // this.handleEvent('Dropped or resized', event)
   }
-
-  // handleEvent (action: string, event: CalendarEvent): void {
-  //   this.modalData = { event, action }
-  //   this.modal.open(this.modalContent, { size: 'lg' })
-  // }
 
   openDialog (event: CalendarEvent) {
     var index = this.events.indexOf(event)
@@ -228,44 +199,49 @@ export class CalendarComponent {
       data: dialogData
     })
   }
-  openAddEventDialog()
-  {
-   
+  openAddEventDialog () {
     const dialogRef = this.dialog.open(AddNewEventComponent, {
-      width: '600px',
-      height: '400px',
+      width: '900px',
+      height: '600px',
       data: ''
     })
   }
-  addEvent (): void {
-    this.events = [
-      ...this.events,
-      {
-        title: 'New event',
-        start: startOfDay(new Date()),
-        end: endOfDay(new Date()),
-        color: colors.red,
-        draggable: true,
-        resizable: {
-          beforeStart: true,
-          afterEnd: true
-        }
-      }
-    ]
-  }
 
-  deleteEvent (eventToDelete: CalendarEvent) {
+  async deleteEvent (eventToDelete: CalendarEvent) {
+    var prof = await this.profesorService.sendProfesorDetails(
+      parseInt(sessionStorage.getItem('ID'))
+    )
+    this.profesor.setComponents(
+      prof.id_profesor,
+      prof.nume,
+      prof.email,
+      prof.telefon,
+      prof.functia
+    )
+    var discip = await this.programaScolaraService.getDisciplineTitular(
+      this.profesor.nume
+    )
+
     var index = this.events.indexOf(eventToDelete)
+    const format1 = 'YYYY-MM-DD HH:mm:ss'
 
     this.events = this.events.filter(event => event !== eventToDelete)
     console.log(index)
     var ev = {
-      start: eventToDelete.start,
+      start_date: eventToDelete.start,
       titlu: eventToDelete.title,
       descriere: this.descrieri[index]
     }
-    console.log(ev)
-    //apel api to delete having ev body
+
+    // console.log(ev)
+    // console.log(moment(eventToDelete.start).format(format1))
+    // console.log(discip[0].nume)
+    await this.evenimentService.deleteEveniment(
+      discip[0].nume,
+      eventToDelete.title,
+      moment(eventToDelete.start).format(format1)
+    )
+    this.notifier.notify('success', 'Evenimentul a fost sters cu succes!')
   }
 
   setView (view: CalendarView) {
@@ -278,20 +254,35 @@ export class CalendarComponent {
 
   editEvent () {
     this.editEvents = true
+    window.scrollTo(0, 900)
   }
 
-  editare (eventToEdit: CalendarEvent) {
+  async editare (eventToEdit: CalendarEvent) {
+    const format1 = 'YYYY-MM-DD HH:mm:ss'
+
     var index = this.events.indexOf(eventToEdit)
 
-    console.log(index)
+    var start = moment(eventToEdit.start)
+    var end = moment(eventToEdit.end)
+    var days = moment.duration(end.diff(start)).asDays()
+    if (days < 0) {
+      this.notifier.notify(
+        'warning',
+        'Ati ales o zi pentru terminarea evenimentului mai inainte de ziua terminarii!'
+      )
+    }
+
     var ev = {
-      start_date: eventToEdit.start,
-      end_date: eventToEdit.end,
+      start_date: moment(eventToEdit.start).format(format1),
+      end_date: moment(eventToEdit.start).format(format1),
       titlu: eventToEdit.title,
       descriere: this.descrieri[index]
     }
+    console.log(index)
+    console.log(this.indexi[index])
     console.log(ev)
-    //apel api to delete having ev body
+
+    await this.evenimentService.updateEveniment(this.indexi[index],ev)
   }
   onKey (descriere, i) {
     this.descrieri[i] = descriere

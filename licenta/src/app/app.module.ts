@@ -56,6 +56,8 @@ import { NotifierModule, NotifierOptions } from 'angular-notifier';
 import { MatNativeDateModule } from '@angular/material/core';
 import { DetailsDialogComponent } from './facultate/calendar/details-dialog/details-dialog.component';
 import { AddNewEventComponent } from './facultate/calendar/add-new-event/add-new-event.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 const customNotifierOptions: NotifierOptions = {
   position: {
 		horizontal: {
@@ -134,6 +136,7 @@ const customNotifierOptions: NotifierOptions = {
     MatFormFieldModule,
     MatInputModule,
     FormsModule, 
+    MatTooltipModule,
     MatIconModule,
     MatSelectModule,
     MatButtonModule,
