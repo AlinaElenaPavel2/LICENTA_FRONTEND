@@ -4,64 +4,55 @@
 <mat-tab-group mat-align-tabs="center" class="first" animationDuration="1000ms">
   <mat-tab label="Cursuri">
     <div class="curs">
-      <h3>Cursuri</h3>
+      <h3 style="margin-top: 30px">Cursuri</h3>
       <br />
-      <img src="assets/images/pdf.png" alt="Pdf icon" width="30" height="30" />
-      <a
-        href="http://localhost:8080/api/licenta/fileStorage/Arbori%20binari%20-%20operatii.pdf"
-        target="_blank"
-        >Curs 1</a
-      >
-      <br />
-      <img src="assets/images/pdf.png" alt="Pdf icon" width="30" height="30" />
-
-      <a
-        href="http://localhost:8080/api/licenta/fileStorage/Arbori%20binari%20-%20operatii.pdf"
-        target="_blank"
-        >Curs 2</a
-      >
-      <br />
-      <img src="assets/images/pdf.png" alt="Pdf icon" width="30" height="30" />
-
-      <a
-        href="http://localhost:8080/api/licenta/fileStorage/Arbori%20binari%20-%20operatii.pdf"
-        target="_blank"
-        >Curs 3</a
-      >
+      <div class="linksContainer">
+        <div *ngFor="let element of fisiereCurs">
+          <img
+            src="assets/images/pdf.png"
+            alt="Pdf icon"
+            width="30"
+            height="30"
+            style="margin-right: 20px; margin-bottom: 10px"
+          />
+          <a href="{{ element.path }}" target="_blank">{{
+            getFileName(element.path)
+          }}</a>
+          <br />
+          <p>{{ element.descriere }}</p>
+        </div>
+      </div>
       <hr />
     </div>
     <div class="curs">
       <h3>Laboratoare</h3>
       <hr />
       <br />
-      <img src="assets/images/pdf.png" alt="Pdf icon" width="30" height="30" />
-      <a
-        href="http://localhost:8080/api/licenta/fileStorage/Arbori%20binari%20-%20operatii.pdf"
-        target="_blank"
-        >Labortor 1</a
-      >
-      <br />
-      <img src="assets/images/pdf.png" alt="Pdf icon" width="30" height="30" />
-
-      <a
-        href="http://localhost:8080/api/licenta/fileStorage/Arbori%20binari%20-%20operatii.pdf"
-        target="_blank"
-        >Labortor 2</a
-      >
-      <br />
-      <img src="assets/images/pdf.png" alt="Pdf icon" width="30" height="30" />
-
-      <a
-        href="http://localhost:8080/api/licenta/fileStorage/Arbori%20binari%20-%20operatii.pdf"
-        target="_blank"
-        >Labortor 3</a
-      >
+      <div class="linksContainer">
+        <div *ngFor="let element of fisiereLaborator">
+          <img
+            src="assets/images/pdf.png"
+            alt="Pdf icon"
+            width="30"
+            height="30"
+            style="margin-right: 20px; margin-bottom: 10px"
+          />
+          <a href="{{ element.path }}" target="_blank">{{
+            getFileName(element.path)
+          }}</a>
+          <br />
+          <p>{{ element.descriere }}</p>
+        </div>
+      </div>
     </div>
   </mat-tab>
   <mat-tab label="Prezente">
-    <button mat-button id="recuperare" (click)="recuperare()">
-      Recuperare
-    </button>
+    <div class="example-button-container">
+      <button mat-button style="background-color: red;color:white" (click)="recuperare()">
+        Recuperare<mat-icon style="margin-left: 10px">email icon</mat-icon>
+      </button>
+    </div>
+
     <app-student-table [childToMaster]="disciplinaName"></app-student-table>
   </mat-tab>
   <mat-tab label="Detalii disciplina si anunturi">

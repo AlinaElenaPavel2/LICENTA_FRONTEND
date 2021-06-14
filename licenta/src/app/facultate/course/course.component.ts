@@ -13,6 +13,7 @@ import { StudentService } from '../Services/StudentService/student.service'
 import { LaboratorService } from '../Services/LaboratorService/laborator.service'
 import { EvaluareService } from '../Services/EvaluareService/evaluare.service'
 import { PrezentaService } from '../Services/PrezentaService/prezenta.service'
+import { FileStorageService } from '../Services/FileStorageService/file-storage.service'
 
 import { MatDialog } from '@angular/material/dialog'
 import {
@@ -20,6 +21,10 @@ import {
   EmailRecuperareModel
 } from './email-recuperare/email-recuperare.component'
 
+interface Book {
+  path: string
+  descriere: string
+}
 @Component({
   selector: 'app-course',
   templateUrl: './course.component.html',
@@ -41,6 +46,9 @@ export class CourseComponent implements OnInit {
   disciplinaName: string
   studentId: number
 
+  fisiereCurs:Book[]=[]
+  fisiereLaborator:Book[]=[]
+
   constructor (
     private _Activatedroute: ActivatedRoute,
     private _router: Router,
@@ -51,9 +59,11 @@ export class CourseComponent implements OnInit {
     private evaluareService: EvaluareService,
     public dialog: MatDialog,
     private prezentaService: PrezentaService,
+    private fileStorage: FileStorageService
 
   ) {
     this.studentId = parseInt(sessionStorage.getItem('ID'))
+
   }
 
   async getData (name) {
@@ -84,7 +94,7 @@ export class CourseComponent implements OnInit {
     )
     console.log('*************')
     console.log(this.profesorCurs)
-
+    console.log(name)
     var stud = await this.studentService.sendStudentDetails(name)
 
     this.student.add(
@@ -159,8 +169,54 @@ export class CourseComponent implements OnInit {
     )
     console.log('*************')
     console.log(prezent)
+
+
   }
 
+  async getFisiere(disciplina)
+  {
+
+    var fisiereCurs = await this.fileStorage.getFilesForDisciplineComponent(
+      disciplina,
+      'Curs'
+    )
+   
+    var descrieriCurs = await this.fileStorage.getDescriptionForComponent(
+      disciplina,
+      'Curs'
+    )
+  
+    for (let i = 0; i < fisiereCurs.length; i++) {
+      var book = { path: fisiereCurs[i], descriere: descrieriCurs[i] }
+      this.fisiereCurs.push(book)
+    }
+    console.log('----------------------------')
+    console.log(this.fisiereCurs)
+
+    var fisiereLaborator = await this.fileStorage.getFilesForDisciplineComponent(
+      disciplina,
+      'Laborator'
+    )
+
+
+    var descrieriLab = await this.fileStorage.getDescriptionForComponent(
+      disciplina,
+      'Laborator'
+    )
+    for (let i = 0; i < fisiereLaborator.length; i++) {
+      console.log(this.getFileName(fisiereLaborator[i]))
+      var book = { path: fisiereLaborator[i], descriere: descrieriLab[i] }
+      this.fisiereLaborator.push(book)
+    }
+    console.log('----------------------------')
+    console.log(this.fisiereLaborator)
+  }
+
+  getFileName (path) {
+    var array = path.split('/')
+    var fileName = array[8]
+    return fileName
+  }
   sub;
   async ngOnInit (): Promise<void> {
     this.sub = this._Activatedroute.paramMap.subscribe(params => {
@@ -168,10 +224,11 @@ export class CourseComponent implements OnInit {
       this.disciplinaName = params.get('name')
       console.log(this.disciplinaName)
     })
-    setTimeout(() => {
+    setTimeout(async () => {
       this.name = sessionStorage.getItem('name')
+      await this.getData(this.name)
     }, 1000)
-    await this.getData(this.name)
+    await this.getFisiere(this.disciplinaName);
   }
 
   ngOnDestroy () {

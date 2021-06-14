@@ -125,7 +125,7 @@
               <br />
 
               <div *ngFor="let file of fileLab">
-                <div  style="margin-bottom: 20px">
+                <div style="margin-bottom: 20px">
                   <img
                     src="assets/images/pdf.png"
                     alt="Pdf icon"
@@ -145,7 +145,9 @@
 
         <mat-tab label="Prezente">
           <div class="grid-container">
-          <h3>Trimitere email pentru validarea prezentei: </h3>
+            <h3 style="margin-right: 50px">
+              Trimitere email pentru validarea prezentei:
+            </h3>
             <form [formGroup]="email">
               <mat-form-field class="grid-item">
                 <mat-label>Selecteaza o grupa</mat-label>
@@ -153,16 +155,6 @@
                   <mat-option>None</mat-option>
                   <mat-option *ngFor="let grup of grupe" [value]="grup">{{
                     grup
-                  }}</mat-option>
-                </mat-select>
-              </mat-form-field>
-
-              <mat-form-field class="grid-item" >
-                <mat-label>Selecteaza un laborator</mat-label>
-                <mat-select formControlName="laborator">
-                  <mat-option>None</mat-option>
-                  <mat-option *ngFor="let lab of laboratoare" [value]="lab">{{
-                    lab
                   }}</mat-option>
                 </mat-select>
               </mat-form-field>
@@ -179,7 +171,54 @@
           </div>
           <app-prezente-table></app-prezente-table>
         </mat-tab>
-        <mat-tab label="Detalii si anunturi"> Content 3 </mat-tab>
+        <mat-tab label="Detalii si anunturi">
+          <form
+            class="example-form"
+            style="margin-left: 100px; margin-top: 50px"
+          >
+            <mat-form-field class="example-full-width">
+              <mat-label>Tilt</mat-label>
+              <input
+                matInput
+                [(ngModel)]="titlu"
+                [ngModelOptions]="{ standalone: true }"
+                (change)="getDescriere(input.value)"
+                [value]="titlu"
+              />
+            </mat-form-field>
+            <br />
+            <mat-form-field class="example-full-width">
+              <mat-label>Anunt</mat-label>
+              <textarea
+                matInput
+                [(ngModel)]="anunt"
+                [ngModelOptions]="{ standalone: true }"
+                (change)="getAnunt(input.value)"
+                [value]="anunt"
+              ></textarea>
+            </mat-form-field>
+
+            <mat-form-field class="grid-item">
+              <mat-label>Selecteaza o grupa</mat-label>
+              <mat-select [(value)]="grupa">
+                <mat-option>None</mat-option>
+                <mat-option *ngFor="let grup of grupe" [value]="grup">{{
+                  grup
+                }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <br />
+            <br />
+            <button
+              class="grid-item"
+              mat-fab
+              color="warn"
+              aria-label="Example icon button with a delete icon"
+            >
+              <mat-icon (click)="addAnunt()">mail</mat-icon>
+            </button>
+          </form>
+        </mat-tab>
       </mat-tab-group>
     </div>
   </ng-template>

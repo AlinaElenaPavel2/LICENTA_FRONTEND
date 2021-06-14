@@ -12,6 +12,7 @@ import { Student } from '../Models/student'
 import { Disciplina } from '../Models/disciplina2'
 import { Profesor } from '../Models/profesor'
 import { Prezenta } from '../Models/prezenta'
+import * as moment from 'moment'
 
 import {
   UploadFileDocumentModel,
@@ -42,7 +43,9 @@ export class DashboardComponent implements OnInit {
   laboratoare: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
   email: FormGroup
   private notifier: NotifierService
-
+  anunt:string=""
+  titlu:string=""
+  grupa
   async getDataForStudent (name) {
     var discip
     var stud
@@ -272,11 +275,16 @@ export class DashboardComponent implements OnInit {
 
   sendEmail () {
     console.log('sending email to ')
+    var given = moment('2021-03-15', 'YYYY-MM-DD')
+    const currentdate = moment().format('YYYY-MM-DD')
+    var week =Math.floor(Math.abs( moment.duration(given.diff(currentdate)).asWeeks()))
+    console.log(week)
     var sendEmails = {
       materie: this.discipline[0].nume,
       grupa: this.email.value.grupa,
-      laborator: this.email.value.laborator
+      laborator: week
     }
+ 
     // this.emailService.sendEmailtoStudents(
     //   this.discipline[0].nume,
     //   this.email.value.grupa,
@@ -285,4 +293,15 @@ export class DashboardComponent implements OnInit {
     console.log(sendEmails)
     this.notifier.notify('success', 'Email-urile pentru validarea prezentei au fost trimise cu succes!');
   }
+  addAnunt()
+  {
+    console.log("HELLLOOOOOOO")
+    console.log(this.titlu)
+    console.log(this.anunt)
+    console.log(this.grupa)
+    console.log(this.discipline[0].nume)
+
+
+  }
+ 
 }

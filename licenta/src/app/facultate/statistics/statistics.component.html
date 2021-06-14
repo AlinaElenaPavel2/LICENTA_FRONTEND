@@ -7,7 +7,7 @@
 <div class="grid-progress">
   <div class="grid-item-progress">
    <h4>Timp ramas pana la examene:</h4>
-    <div *ngFor="let ev of evenimente"style="
+    <div *ngFor="let ev of evenimente; let i = index"style="
           margin-left: 250px ;
         " >
       <p>{{ ev.examen }}</p>

@@ -10,7 +10,8 @@ import { StudentService } from '../Services/StudentService/student.service'
 import { Profesor } from '../Models/profesor'
 import { Disciplina } from '../Models/disciplina2'
 import { Student } from '../Models/student'
-import { NotifierService } from 'angular-notifier';
+import { NotifierService } from 'angular-notifier'
+import { Router, ActivatedRoute } from '@angular/router'
 
 const URL = 'http://localhost:8080/api/licenta/fileStorage/uploadMultipleFiles'
 
@@ -23,13 +24,13 @@ interface Link {
 
 interface StudentBooks {
   disciplina: string
-  book: string,
-  descriere:string
+  book: string
+  descriere: string
 }
 
 interface Book {
-  titlu: string,
-  descriere:string
+  titlu: string
+  descriere: string
 }
 @Component({
   selector: 'app-library',
@@ -54,7 +55,7 @@ export class LibraryComponent implements OnInit {
     descriere: new FormControl(''),
     titlu: new FormControl('')
   })
-	private notifier: NotifierService;
+  private notifier: NotifierService
   async getDataForProfesor () {
     var prof = await this.profesorService.sendProfesorDetails(
       parseInt(sessionStorage.getItem('ID'))
@@ -80,12 +81,15 @@ export class LibraryComponent implements OnInit {
       discip[0].nume
     )
 
-    var descrieri=await this.fileStorage.getDescriptionForComponent( discip[0].nume, 'Auxiliare')
-        console.log("----------------------------")
-        console.log(descrieri)
+    var descrieri = await this.fileStorage.getDescriptionForComponent(
+      discip[0].nume,
+      'Auxiliare'
+    )
+    console.log('----------------------------')
+    console.log(descrieri)
 
     for (let i = 0; i < fisiere.length; i++) {
-      var book={titlu:fisiere[i],descriere:descrieri[i]}
+      var book = { titlu: fisiere[i], descriere: descrieri[i] }
       this.books.push(book)
     }
 
@@ -128,12 +132,19 @@ export class LibraryComponent implements OnInit {
       )
       var disciplina = discip[i].nume
       if (fisiere.length > 0) {
-        var descrieri=await this.fileStorage.getDescriptionForComponent( discip[i].nume, 'Auxiliare')
-        console.log("----------------------------")
+        var descrieri = await this.fileStorage.getDescriptionForComponent(
+          discip[i].nume,
+          'Auxiliare'
+        )
+        console.log('----------------------------')
         console.log(descrieri)
 
         for (let j = 0; j < fisiere.length; j++) {
-          var book = { disciplina: disciplina, book: fisiere[j],descriere: descrieri[j]}
+          var book = {
+            disciplina: disciplina,
+            book: fisiere[j],
+            descriere: descrieri[j]
+          }
           this.studentBooks.push(book)
         }
       }
@@ -154,7 +165,6 @@ export class LibraryComponent implements OnInit {
       }
     }
 
-
     console.log(this.links)
     console.log(this.studentBooks)
   }
@@ -163,9 +173,10 @@ export class LibraryComponent implements OnInit {
     private programaScolaraService: ProgramaScolaraService,
     private fileStorage: FileStorageService,
     private studentService: StudentService,
-    notifier: NotifierService
+    notifier: NotifierService,
+    private router: Router
   ) {
-    this.notifier = notifier;
+    this.notifier = notifier
 
     setTimeout(async () => {
       this.name = sessionStorage.getItem('name')
@@ -176,11 +187,9 @@ export class LibraryComponent implements OnInit {
       } else {
         this.getDataForStudent(this.name)
       }
-    }, 300)
-
+    }, 1000)
   }
-  ngOnInit (): void {
-  }
+  ngOnInit (): void {}
 
   getFileName (path) {
     var array = path.split('/')
@@ -210,8 +219,9 @@ export class LibraryComponent implements OnInit {
       descriere: this.postLinks.value.descriere
     }
     console.log(JSON.stringify(postLink))
-
-    // await this.fileStorage.postareLink(postLink, discip[0].nume)
+   
+    await this.fileStorage.postareLink(postLink, discip[0].nume)
+    this.reloadCurrentRoute()
   }
 
   applyFilter (filterValue: string) {
@@ -233,17 +243,22 @@ export class LibraryComponent implements OnInit {
   }
 
   async getData (event) {
-
     setTimeout(async () => {
       console.log('helooooo')
-
     }, 200)
 
     this.getDataForProfesor()
   }
 
-  public showNotification( type: string, message: string ): void {
-    console.log("message")
-		this.notifier.notify( type, message );
-	}
+  public showNotification (type: string, message: string): void {
+    console.log('message')
+    this.notifier.notify(type, message)
+  }
+
+  reloadCurrentRoute () {
+    let currentUrl = this.router.url
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([currentUrl])
+    })
+  }
 }

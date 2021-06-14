@@ -31,9 +31,8 @@ export type ChartOptions = {
 
 interface Eveniment {
   examen: string
-  procent: string
+  procent: number
 }
-
 
 @Component({
   selector: 'app-statistics',
@@ -56,7 +55,7 @@ export class StatisticsComponent implements OnInit {
   private ctxLine: CanvasRenderingContext2D
   private ctxBar: CanvasRenderingContext2D
   private ctxPie: CanvasRenderingContext2D
-  butDisabled: boolean = false;
+  butDisabled: boolean = false
 
   name: string
   student: Student = new Student()
@@ -280,9 +279,8 @@ export class StatisticsComponent implements OnInit {
       this.years.push(i + 1)
     }
     this.years.reverse()
-    if(this.years.length==1)
-    {
-      this.butDisabled=true
+    if (this.years.length == 1) {
+      this.butDisabled = true
     }
     this.selected = this.years[0]
     this.label = 'Grafic note obtinute in anul ' + this.selected
@@ -291,13 +289,12 @@ export class StatisticsComponent implements OnInit {
 
     this.labels = note.discipline
     this.data = note.medii
-    console.log(this.labels)
+    // console.log(this.labels)
 
     this.selectedLabels.push(this.labels[this.labels.length - 4])
     this.selectedLabels.push(this.labels[this.labels.length - 3])
     this.selectedLabels.push(this.labels[this.labels.length - 2])
     this.selectedLabels.push(this.labels[this.labels.length - 1])
-
 
     this.selectedData.push(this.data[this.data.length - 4])
     this.selectedData.push(this.data[this.data.length - 3])
@@ -334,7 +331,7 @@ export class StatisticsComponent implements OnInit {
     this.examinari = await this.situatieScolaraService.getReexaminariStudent(
       name
     )
- 
+
     this.displayPieChart2(this.examinari)
 
     var evenimente = await this.evenimentService.getExameneEvenimentStudent(
@@ -346,21 +343,21 @@ export class StatisticsComponent implements OnInit {
       this.student.an,
       2
     )
-
+console.log(evenimente)
     for (var i = 0; i < evenimente.length; i++) {
       var eveniment = {
         examen: discip[i].nume,
-        procent:this.getProcents(evenimente[i].data.substring(0, 10))
+        procent: this.getProcents(evenimente[i].start_date.substring(0, 10))
       }
 
       this.evenimente.push(eveniment)
-  
+
       // this.evenimente.push(
       //   this.getProcents(evenimente[i].data.substring(0, 10))
       // )
     }
 
-  console.log(this.evenimente)
+    console.log(this.evenimente)
 
     // for(let i=0;i<discip.length;i++)
     // {
@@ -440,7 +437,7 @@ export class StatisticsComponent implements OnInit {
     var given = moment('2021-03-15', 'YYYY-MM-DD')
     const currentdate = moment().format('YYYY-MM-DD')
     var weeks = moment.duration(given.diff(currentdate)).asWeeks()
-    console.log(currentdate)
+    // console.log(currentdate)
     var procents = Math.round((Math.abs(Math.round(weeks)) / 14) * 100)
 
     return procents.toPrecision(2)
@@ -456,11 +453,9 @@ export class StatisticsComponent implements OnInit {
 
     var procents = Math.round(
       (Math.abs(Math.round(weeks)) / Math.abs(weeksFromStrating)) * 100
-    )
-    return procents.toPrecision(2)
+    ).toPrecision(2)
+    return 100 - parseInt(procents)
   }
-
-
 
   yearChangedNote (value) {
     var label = 'Grafic note obtinute in anul ' + value

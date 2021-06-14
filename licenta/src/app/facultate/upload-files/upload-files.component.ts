@@ -3,6 +3,7 @@ import { FileUploader } from 'ng2-file-upload'
 import { FileUploadService } from 'src/app/facultate/Services/UploadFilesService/file-upload.service'
 import { NotifierService } from 'angular-notifier'
 import { FileStorageService } from '../Services/FileStorageService/file-storage.service'
+import { Router, ActivatedRoute } from '@angular/router'
 
 @Component({
   selector: 'app-upload-files',
@@ -76,10 +77,14 @@ export class UploadFilesComponent implements OnInit {
         }
         console.log(JSON.stringify(book))
 
-        this.fileStorage.postareBook(this.materie, this.componenta,book)
+        this.fileStorage.postareBook(this.materie, this.componenta, book)
 
         i += 1
         this.showNotification('success', 'Fisierul s-a incarcat cu succes!')
+        // setTimeout(async () => {
+        //   window.location.reload()
+        // }, 200)
+        this.reloadCurrentRoute()
       } else {
         this.showNotification('error', 'Fisierele nu s-au putut incarca!')
       }
@@ -93,7 +98,8 @@ export class UploadFilesComponent implements OnInit {
   constructor (
     private fileUploadService: FileUploadService,
     private fileStorage: FileStorageService,
-    notifier: NotifierService
+    notifier: NotifierService,
+    private router: Router,
   ) {
     this.notifier = notifier
     setTimeout(async () => {
@@ -138,5 +144,12 @@ export class UploadFilesComponent implements OnInit {
 
   public showNotification (type: string, message: string): void {
     this.notifier.notify(type, message)
+  }
+
+  reloadCurrentRoute() {
+    let currentUrl = this.router.url;
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+        this.router.navigate([currentUrl]);
+    });
   }
 }

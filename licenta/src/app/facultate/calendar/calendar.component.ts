@@ -77,6 +77,7 @@ export class CalendarComponent {
   editEvents: boolean = false
   descrieri: string[] = []
   indexi: number[] = []
+  format1 = 'YYYY-MM-DD HH:mm:ss'
 
   view: CalendarView = CalendarView.Month
   private notifier: NotifierService
@@ -136,7 +137,30 @@ export class CalendarComponent {
     console.log(this.descrieri)
     this.refresh.next()
   }
-
+  async getEvenimenteForStudent()
+  {
+    console.log(this.name)
+    var evenimente=await this.evenimentService.getEvenimenteForStudent(this.name)
+    for (let i = 0; i < evenimente.length; i++) {
+      var ev = {
+        start: new Date(evenimente[i].start_date),
+        end: new Date(evenimente[i].end_date),
+        title: evenimente[i].titlu,
+        color: colors.red,
+        allDay: true,
+        resizable: {
+          beforeStart: true,
+          afterEnd: true
+        },
+        draggable: true
+      }
+      this.events.push(ev)
+      this.descrieri.push(evenimente[i].descriere)
+    }
+    console.log(this.events)
+    console.log(this.descrieri)
+    this.refresh.next()
+  }
   constructor (
     private profesorService: ProfesorService,
     private programaScolaraService: ProgramaScolaraService,
@@ -144,8 +168,8 @@ export class CalendarComponent {
     public dialog: MatDialog,
     notifier: NotifierService
   ) {
+    this.refresh.next()
     this.notifier = notifier
-
     setTimeout(async () => {
       this.name = sessionStorage.getItem('name')
       this.userRole = sessionStorage.getItem('role')
@@ -153,6 +177,7 @@ export class CalendarComponent {
       if (this.userRole == 'profesor') {
         this.geEvenimenteProfesor()
       } else {
+        this.getEvenimenteForStudent();
       }
     }, 300)
   }
@@ -170,6 +195,11 @@ export class CalendarComponent {
       }
       this.viewDate = date
     }
+  }
+
+  formatDate(date)
+  {
+    return  moment(date).format(this.format1)
   }
 
   eventTimesChanged ({
@@ -255,6 +285,7 @@ export class CalendarComponent {
   editEvent () {
     this.editEvents = true
     window.scrollTo(0, 900)
+
   }
 
   async editare (eventToEdit: CalendarEvent) {
@@ -278,11 +309,13 @@ export class CalendarComponent {
       titlu: eventToEdit.title,
       descriere: this.descrieri[index]
     }
-    console.log(index)
-    console.log(this.indexi[index])
-    console.log(ev)
 
     await this.evenimentService.updateEveniment(this.indexi[index],ev)
+    this.notifier.notify(
+      'success',
+      'Modificarea evenimentului a fost realizata cu succes!'
+    )
+    this.refresh.next()
   }
   onKey (descriere, i) {
     this.descrieri[i] = descriere

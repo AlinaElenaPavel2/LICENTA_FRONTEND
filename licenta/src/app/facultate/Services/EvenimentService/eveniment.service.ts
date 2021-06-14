@@ -27,6 +27,12 @@ export class EvenimentService {
     })
   }
 
+  
+  public getEvenimenteForStudentRequest (studentName: String): Observable<any> {
+    return this.http.get<any>(`${baseUrl}/student=` + studentName+"/all")
+  }
+
+
   private deleteEvenimentRequest (
     disciplina,
     titlu,
@@ -38,7 +44,7 @@ export class EvenimentService {
   }
 
   private updateEvenimentRequest (id, eveniment): Observable<any> {
-    return this.http.post(`${baseUrl}/${id}`, eveniment, {
+    return this.http.put(`${baseUrl}/${id}`, eveniment, {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
       responseType: 'text'
     })
@@ -94,6 +100,16 @@ export class EvenimentService {
   async getEvenimenteForDiscipline (disciplina) {
     await new Promise(resolve => {
       this.getEvenimenteByDisciplineRequest(disciplina).subscribe(data => {
+        this.data = data
+        resolve(this.data)
+      })
+    })
+    return this.data
+  }
+
+  async getEvenimenteForStudent (studentName) {
+    await new Promise(resolve => {
+      this.getEvenimenteForStudentRequest(studentName).subscribe(data => {
         this.data = data
         resolve(this.data)
       })
