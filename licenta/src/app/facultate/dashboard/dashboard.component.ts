@@ -4,9 +4,12 @@ import { StudentService } from '../Services/StudentService/student.service'
 import { ProfesorService } from '../Services/ProfesorService/profesor.service'
 import { PrezentaService } from '../Services/PrezentaService/prezenta.service'
 import { EmailService } from '../Services/EmailService/email.service'
+import { AnuntService } from '../Services/AnuntService/anunt-service.service'
+
 import { FileStorageService } from '../Services/FileStorageService/file-storage.service'
 import { NotifierService } from 'angular-notifier'
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
+import { Router, ActivatedRoute } from '@angular/router'
 
 import { Student } from '../Models/student'
 import { Disciplina } from '../Models/disciplina2'
@@ -29,7 +32,8 @@ export class DashboardComponent implements OnInit {
   discipline: Disciplina[] = []
   profesor: Profesor = new Profesor()
   years: number[] = []
-  name
+  anunturi = []
+  name: string
   semestru: number = 0
   an: number = 0
   userRole: string
@@ -43,9 +47,14 @@ export class DashboardComponent implements OnInit {
   laboratoare: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
   email: FormGroup
   private notifier: NotifierService
-  anunt:string=""
-  titlu:string=""
+  anunt: string = ''
+  titlu: string = ''
   grupa
+
+  async getAnunturi (disciplina) {
+    var anunturi = await this.anunturiService.getAnunturi(disciplina, '1307')
+    return anunturi
+  }
   async getDataForStudent (name) {
     var discip
     var stud
@@ -99,8 +108,13 @@ export class DashboardComponent implements OnInit {
       discip[0].nume,
       'Laborator'
     )
+    var anunturi = await this.getAnunturi(discip[0].nume)
+    console.log(anunturi)
+    for (let i = 0; i < anunturi.length; i++) {
+      this.anunturi.push(anunturi[i])
+    }
 
-    console.log(files)
+    // console.log(files)
     for (let i = 0; i < files.length; i++) {
       this.fileLab.push(files[i])
     }
@@ -110,7 +124,7 @@ export class DashboardComponent implements OnInit {
       'Curs'
     )
 
-    console.log(f)
+    // console.log(f)
     for (let i = 0; i < f.length; i++) {
       this.fileCurs.push(f[i])
     }
@@ -119,7 +133,7 @@ export class DashboardComponent implements OnInit {
       this.discipline.push(discip[i])
     }
 
-    console.log(this.discipline)
+    // console.log(this.discipline)
 
     for (let i = 0; i < this.discipline.length; i++) {
       this.studenti = await this.studentService.getStudentiDetails(
@@ -129,7 +143,7 @@ export class DashboardComponent implements OnInit {
     }
 
     for (let i = 0; i < this.studenti.length; i++) {
-      console.log(this.studenti[i])
+      // console.log(this.studenti[i])
       var nbOfPrezente = await this.studentService.getPrezente(
         this.discipline[0].nume,
         this.studenti[i].nume
@@ -170,7 +184,9 @@ export class DashboardComponent implements OnInit {
     private prezentaService: PrezentaService,
     private emailService: EmailService,
     private fileStorage: FileStorageService,
-    notifier: NotifierService
+    private anunturiService: AnuntService,
+    notifier: NotifierService,
+    private router: Router
   ) {
     this.notifier = notifier
     setTimeout(async () => {
@@ -184,7 +200,7 @@ export class DashboardComponent implements OnInit {
       }
     }, 100)
 
-    console.log(this.student)
+    // console.log(this.student)
   }
 
   ngOnInit (): void {
@@ -196,7 +212,7 @@ export class DashboardComponent implements OnInit {
 
   getYearDiscipline (event) {
     const tab = event.tab.textLabel
-    console.log(tab)
+    // console.log(tab)
     this.an = parseInt(tab.split(' ')[1])
     this.discipline.length = 0
   }
@@ -205,14 +221,14 @@ export class DashboardComponent implements OnInit {
     var discip
     this.discipline.length = 0
     const tab = event.tab.textLabel
-    console.log(tab)
+    // console.log(tab)
     this.semestru = parseInt(tab.split(' ')[1])
-    console.log(this.semestru)
-    console.log('******************')
-    console.log(this.an)
-    console.log(this.semestru)
-    console.log(this.student.specializare)
-    console.log(this.student.program_studiu)
+    // console.log(this.semestru)
+    // console.log('******************')
+    // console.log(this.an)
+    // console.log(this.semestru)
+    // console.log(this.student.specializare)
+    // console.log(this.student.program_studiu)
 
     discip = await this.programaScolaraService.sendDisciplineDetails(
       this.student.program_studiu,
@@ -224,15 +240,15 @@ export class DashboardComponent implements OnInit {
     for (var i = 0; i < discip.length; i++) {
       this.discipline.push(discip[i])
     }
-    console.log('********discipline**********')
-    console.log(this.discipline)
+    // console.log('********discipline**********')
+    // console.log(this.discipline)
   }
 
   getSelectedDiscipline () {}
 
   upload (event) {
     const tab = event.tab.textLabel
-    console.log(tab)
+    // console.log(tab)
   }
 
   addLaborator () {
@@ -242,7 +258,7 @@ export class DashboardComponent implements OnInit {
       this.discipline[0].nume
     )
 
-    console.log(this.discipline[0].nume)
+    // console.log(this.discipline[0].nume)
 
     localStorage.setItem('Materie', this.discipline[0].nume)
     localStorage.setItem('Componenta', component)
@@ -260,8 +276,8 @@ export class DashboardComponent implements OnInit {
       component,
       this.discipline[0].nume
     )
-    console.log(component)
-    console.log(this.discipline[0].nume)
+    // console.log(component)
+    // console.log(this.discipline[0].nume)
 
     localStorage.setItem('Materie', this.discipline[0].nume)
     localStorage.setItem('Componenta', component)
@@ -277,31 +293,46 @@ export class DashboardComponent implements OnInit {
     console.log('sending email to ')
     var given = moment('2021-03-15', 'YYYY-MM-DD')
     const currentdate = moment().format('YYYY-MM-DD')
-    var week =Math.floor(Math.abs( moment.duration(given.diff(currentdate)).asWeeks()))
+    var week = Math.floor(
+      Math.abs(moment.duration(given.diff(currentdate)).asWeeks())
+    )
     console.log(week)
     var sendEmails = {
       materie: this.discipline[0].nume,
       grupa: this.email.value.grupa,
       laborator: week
     }
- 
+
     // this.emailService.sendEmailtoStudents(
     //   this.discipline[0].nume,
     //   this.email.value.grupa,
     //   this.email.value.laborator
     // )
     console.log(sendEmails)
-    this.notifier.notify('success', 'Email-urile pentru validarea prezentei au fost trimise cu succes!');
+    this.notifier.notify(
+      'success',
+      'Email-urile pentru validarea prezentei au fost trimise cu succes!'
+    )
   }
-  addAnunt()
-  {
-    console.log("HELLLOOOOOOO")
+
+  reloadCurrentRoute () {
+    let currentUrl = this.router.url
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([currentUrl])
+    })
+  }
+  async addAnunt () {
+    console.log('HELLLOOOOOOO')
     console.log(this.titlu)
     console.log(this.anunt)
     console.log(this.grupa)
     console.log(this.discipline[0].nume)
-
-
+    var anunt = {
+      titlu: this.titlu,
+      descriere: this.anunt,
+    }
+    await this.anunturiService.addAnunt(this.discipline[0].nume,this.grupa,anunt)
+    this.notifier.notify('success', 'Anuntul a fost postat cu succes!')
+    this.reloadCurrentRoute();
   }
- 
 }

@@ -48,7 +48,11 @@
   </mat-tab>
   <mat-tab label="Prezente">
     <div class="example-button-container">
-      <button mat-button style="background-color: red;color:white" (click)="recuperare()">
+      <button
+        mat-button
+        style="background-color: red; color: white"
+        (click)="recuperare()"
+      >
         Recuperare<mat-icon style="margin-left: 10px">email icon</mat-icon>
       </button>
     </div>
@@ -56,18 +60,31 @@
     <app-student-table [childToMaster]="disciplinaName"></app-student-table>
   </mat-tab>
   <mat-tab label="Detalii disciplina si anunturi">
-    <mat-grid-list cols="3" rowHeight="450px">
+    <mat-grid-list cols="3" rowHeight="600px">
       <mat-grid-tile>
         <div
           class="card text-dark teal lighten-3 mb-3"
-          style="max-width: 25rem"
+          style="max-width: 25rem; margin-top: 20rem"
         >
-          <h4 class="card-header">Anunturi</h4>
+          <h4 class="card-header">
+            <img
+              src="assets/images/pin1.png"
+              alt="Girl in a jacket"
+              width="30"
+              height="25"
+              style="margin-right: 25px"
+            />Anunturi
+          </h4>
           <div class="card-body">
-            <h5 class="card-title">Something</h5>
-            <p class="card-text">Something Something</p>
-            <h5 class="card-title">Something</h5>
-            <p class="card-text">Something Something</p>
+            <div *ngFor="let anunt of anunturi">
+              <h5 class="card-title">{{ anunt.titlu }}</h5>
+              <p
+                class="card-text"
+                style="margin-bottom: 20px; margin-left: 20px"
+              >
+                {{ anunt.descriere }}
+              </p>
+            </div>
           </div>
         </div>
       </mat-grid-tile>

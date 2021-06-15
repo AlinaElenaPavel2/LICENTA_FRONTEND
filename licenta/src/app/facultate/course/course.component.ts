@@ -14,6 +14,7 @@ import { LaboratorService } from '../Services/LaboratorService/laborator.service
 import { EvaluareService } from '../Services/EvaluareService/evaluare.service'
 import { PrezentaService } from '../Services/PrezentaService/prezenta.service'
 import { FileStorageService } from '../Services/FileStorageService/file-storage.service'
+import { AnuntService } from '../Services/AnuntService/anunt-service.service'
 
 import { MatDialog } from '@angular/material/dialog'
 import {
@@ -40,14 +41,19 @@ export class CourseComponent implements OnInit {
   procents: Evaluare = new Evaluare()
 
   prezente: Prezenta[] = []
-  name
-
+  name:string
+  anunturi = []
   note: String[] = ['', '', '', '']
   disciplinaName: string
   studentId: number
 
   fisiereCurs:Book[]=[]
   fisiereLaborator:Book[]=[]
+
+  async getAnunturi (disciplina) {
+    var anunturi = await this.anunturiService.getAnunturi(disciplina, '1307')
+    return anunturi
+  }
 
   constructor (
     private _Activatedroute: ActivatedRoute,
@@ -59,7 +65,8 @@ export class CourseComponent implements OnInit {
     private evaluareService: EvaluareService,
     public dialog: MatDialog,
     private prezentaService: PrezentaService,
-    private fileStorage: FileStorageService
+    private fileStorage: FileStorageService,
+    private anunturiService: AnuntService,
 
   ) {
     this.studentId = parseInt(sessionStorage.getItem('ID'))
@@ -170,7 +177,8 @@ export class CourseComponent implements OnInit {
     console.log('*************')
     console.log(prezent)
 
-
+     this.anunturi=await this.anunturiService.getAnunturi(this.disciplinaName,this.student.grupa)
+    console.log(this.anunturi)
   }
 
   async getFisiere(disciplina)
