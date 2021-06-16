@@ -253,7 +253,7 @@ export class CourseComponent implements OnInit {
     const dialogData = new EmailRecuperareModel(email)
     const dialogRef = this.dialog.open(EmailRecuperareComponent, {
       width: '600px',
-      height: '400px',
+      height: '500px',
       data: dialogData
     })
   }

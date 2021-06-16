@@ -23,6 +23,14 @@ export class LaboratorService {
     )
   }
 
+  public getGrupeRequest (
+    disciplina: String,
+    profesor: String
+  ): Observable<Laborator> {
+    return this.http.get<any>(
+      `${baseUrl}/disciplina=` + disciplina + '/profesor=' + profesor
+    )
+  }
   public getProfLaboratorDetails (disciplina: String, grupa: String) {
     return new Promise(resolve => {
       this.getProfLaborator(disciplina, grupa).subscribe(data => {
@@ -33,6 +41,17 @@ export class LaboratorService {
   }
   async setProfLaboratorDetails (disciplina: String, grupa: String) {
     await this.getProfLaboratorDetails(disciplina, grupa)
+    return this.data
+  }
+
+  async getGrupe (   disciplina: string,
+    profesor: string) {
+    await new Promise(resolve => {
+      this.getGrupeRequest(disciplina,profesor).subscribe(data => {
+        this.data = data
+        resolve(this.data)
+      })
+    })
     return this.data
   }
 }

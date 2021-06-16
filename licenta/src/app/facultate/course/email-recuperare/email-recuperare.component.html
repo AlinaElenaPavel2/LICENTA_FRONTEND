@@ -2,21 +2,41 @@
 <hr />
 
 <form [formGroup]="sendEmail" (ngSubmit)="onSubmit()">
-  <label>
-    Titlu:
-    <input type="text" formControlName="titlu" />
-  </label>
-
-  <label>
-    Continut:
-    <input type="text" formControlName="mesaj" />
-  </label>
-  <mat-form-field>
+  <mat-form-field  style="width: 300px">
+    <mat-label> Titlu:</mat-label>
+    <input matInput formControlName="titlu" />
+  </mat-form-field>
+  <br />
+  <mat-form-field  style="width: 300px">
+    <mat-label>Mesaj</mat-label>
+    <textarea matInput formControlName="mesaj"></textarea>
+  </mat-form-field>
+  <br />
+  <mat-form-field class="grid-item" style="width: 300px">
+    <mat-label>Selecteaza un laborator</mat-label>
+    <mat-select formControlName="laborator">
+      <mat-option>None</mat-option>
+      <mat-option *ngFor="let lab of laboratoare" [value]="lab">{{
+        lab
+      }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <br />
+  <mat-form-field style="width: 300px">
     <mat-label>Choose a date</mat-label>
     <input matInput [matDatepicker]="picker" formControlName="dataRecuperare" />
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
-
-  <button type="submit">Trimite email</button>
+  <br />
+  <button
+    type="submit"
+    class="grid-item"
+    style="margin-left: 100px"
+    mat-fab
+    color="warn"
+    aria-label="Example icon button with a delete icon"
+  >
+    <mat-icon >send icon</mat-icon>
+  </button>
 </form>

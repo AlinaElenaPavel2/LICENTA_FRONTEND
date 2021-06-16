@@ -1,5 +1,27 @@
+
+<button
+  mat-raised-button
+  id="export"
+  (click)="exporter.exportTable('csv', { fileName: 'situatie_prezente' })"
+>
+  <mat-icon
+    aria-hidden="false"
+    aria-label="Example home icon"
+    class="imagineExport"
+    >save_alt</mat-icon
+  >EXPORT
+</button>
+
 <div class="mat-elevation-z8 wrapper">
-  <table mat-table class="full-width-table" matSort aria-label="Elements">
+  <table
+    mat-table
+    matTableExporter
+    class="full-width-table"
+    #exporter="matTableExporter"
+    matSort
+    hiddenColumns="[5]"
+    aria-label="Elements"
+  >
     <!-- Id Column -->
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>

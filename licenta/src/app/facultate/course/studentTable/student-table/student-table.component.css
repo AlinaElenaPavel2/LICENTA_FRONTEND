@@ -6,3 +6,8 @@
 .wrapper {
   margin-top: 3rem;
 }
+
+.mat-form-field {
+  font-size: 14px;
+  width: 50%;
+}

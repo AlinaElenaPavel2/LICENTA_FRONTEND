@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { MDBBootstrapModule } from 'angular-bootstrap-md'
 import { IconsModule } from 'angular-bootstrap-md'
+import { MatTableExporterModule } from 'mat-table-exporter';
 
 import { NavbarModule, WavesModule, ButtonsModule } from 'angular-bootstrap-md'
 
@@ -143,6 +144,7 @@ const customNotifierOptions: NotifierOptions = {
     MatDatepickerModule,
     MatNativeDateModule, 
     NgApexchartsModule,
+    MatTableExporterModule,
     NgbModule,
     NotifierModule.withConfig(customNotifierOptions),
     FlatpickrModule.forRoot(),

@@ -5,6 +5,7 @@ import { ProfesorService } from '../Services/ProfesorService/profesor.service'
 import { PrezentaService } from '../Services/PrezentaService/prezenta.service'
 import { EmailService } from '../Services/EmailService/email.service'
 import { AnuntService } from '../Services/AnuntService/anunt-service.service'
+import { LaboratorService } from '../Services/LaboratorService/laborator.service'
 
 import { FileStorageService } from '../Services/FileStorageService/file-storage.service'
 import { NotifierService } from 'angular-notifier'
@@ -43,7 +44,7 @@ export class DashboardComponent implements OnInit {
   nbOfPrezente = [] as any
   fileLab: string[] = []
   fileCurs: string[] = []
-  grupe: string[] = ['1307', '1308']
+  grupe: string[] = []
   laboratoare: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
   email: FormGroup
   private notifier: NotifierService
@@ -51,8 +52,8 @@ export class DashboardComponent implements OnInit {
   titlu: string = ''
   grupa
 
-  async getAnunturi (disciplina) {
-    var anunturi = await this.anunturiService.getAnunturi(disciplina, '1307')
+  async getAnunturi (disciplina,grupa) {
+    var anunturi = await this.anunturiService.getAnunturi(disciplina, grupa)
     return anunturi
   }
   async getDataForStudent (name) {
@@ -104,16 +105,29 @@ export class DashboardComponent implements OnInit {
     var discip = await this.programaScolaraService.getDisciplineTitular(
       this.profesor.nume
     )
+ 
+    this.grupe=await this.laboratorService.getGrupe(discip[0].nume,prof.nume)
+    console.log("GRUPE")
+    console.log(this.grupe)
+
+
     var files = await this.fileStorage.getFilesForDisciplineComponent(
       discip[0].nume,
       'Laborator'
     )
-    var anunturi = await this.getAnunturi(discip[0].nume)
-    console.log(anunturi)
-    for (let i = 0; i < anunturi.length; i++) {
-      this.anunturi.push(anunturi[i])
+    for(let i=0;i<this.grupe.length;i++)
+    {
+      var anunturi = await this.getAnunturi(discip[0].nume,this.grupe[i])
+      if(anunturi!=null)
+      {
+  
+        for (let j = 0; j < anunturi.length; j++) {
+          this.anunturi.push(anunturi[j])
+        }
+      }
     }
-
+   
+    console.log( this.anunturi)
     // console.log(files)
     for (let i = 0; i < files.length; i++) {
       this.fileLab.push(files[i])
@@ -185,6 +199,7 @@ export class DashboardComponent implements OnInit {
     private emailService: EmailService,
     private fileStorage: FileStorageService,
     private anunturiService: AnuntService,
+    private laboratorService:LaboratorService,
     notifier: NotifierService,
     private router: Router
   ) {
