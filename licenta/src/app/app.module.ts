@@ -58,6 +58,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { DetailsDialogComponent } from './facultate/calendar/details-dialog/details-dialog.component';
 import { AddNewEventComponent } from './facultate/calendar/add-new-event/add-new-event.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { NotareComponent } from './facultate/dashboard/notare/notare.component';
+import { PrezenteStudentComponent } from './facultate/dashboard/prezente-student/prezente-student.component';
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -118,7 +120,9 @@ const customNotifierOptions: NotifierOptions = {
     PrezenteTableComponent,
     QrScanComponent,
     DetailsDialogComponent,
-    AddNewEventComponent
+    AddNewEventComponent,
+    NotareComponent,
+    PrezenteStudentComponent
   ],
   imports: [
     MDBBootstrapModule.forRoot(),

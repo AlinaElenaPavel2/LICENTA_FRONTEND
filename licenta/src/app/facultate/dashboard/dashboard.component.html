@@ -169,7 +169,8 @@
               <mat-icon (click)="sendEmail()">mail</mat-icon>
             </button>
           </div>
-          <app-prezente-table></app-prezente-table>
+          <div *ngIf="loadingData"><app-prezente-table [studenti]="studenti" [disciplina]="discipline" [prezente]="nbOfPrezente"></app-prezente-table></div>
+          
         </mat-tab>
         <mat-tab label="Detalii si anunturi">
           <div

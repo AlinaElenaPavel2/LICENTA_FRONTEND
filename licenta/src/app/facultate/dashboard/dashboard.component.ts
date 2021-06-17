@@ -51,6 +51,7 @@ export class DashboardComponent implements OnInit {
   anunt: string = ''
   titlu: string = ''
   grupa
+  loadingData=false;
 
   async getAnunturi (disciplina,grupa) {
     var anunturi = await this.anunturiService.getAnunturi(disciplina, grupa)
@@ -76,8 +77,8 @@ export class DashboardComponent implements OnInit {
       this.years.push(i + 1)
     }
     this.years.reverse()
-    console.log('getYear')
-    console.log(this.years)
+    // console.log('getYear')
+    // console.log(this.years)
 
     discip = await this.programaScolaraService.sendDisciplineDetails(
       this.student.program_studiu,
@@ -127,7 +128,7 @@ export class DashboardComponent implements OnInit {
       }
     }
    
-    console.log( this.anunturi)
+    // console.log( this.anunturi)
     // console.log(files)
     for (let i = 0; i < files.length; i++) {
       this.fileLab.push(files[i])
@@ -147,7 +148,7 @@ export class DashboardComponent implements OnInit {
       this.discipline.push(discip[i])
     }
 
-    // console.log(this.discipline)
+    console.log(this.discipline[0])
 
     for (let i = 0; i < this.discipline.length; i++) {
       this.studenti = await this.studentService.getStudentiDetails(
@@ -155,6 +156,8 @@ export class DashboardComponent implements OnInit {
         this.profesor.nume
       )
     }
+    console.log(this.studenti)
+    localStorage.setItem('Studenti', this.studenti.toString());
 
     for (let i = 0; i < this.studenti.length; i++) {
       // console.log(this.studenti[i])
@@ -165,14 +168,16 @@ export class DashboardComponent implements OnInit {
       this.nbOfPrezente.push(nbOfPrezente)
     }
     console.log(this.nbOfPrezente)
+    this.loadingData=true;
+    localStorage.setItem('Prezente', this.nbOfPrezente.toString());
 
-    for (let i = 0; i < this.studenti.length; i++) {
-      var nbOfPrezente = await this.prezentaService.getPrezente(
-        this.discipline[0].nume,
-        this.studenti[i].nume
-      )
-      console.log(nbOfPrezente)
-    }
+    // for (let i = 0; i < this.studenti.length; i++) {
+    //   var nbOfPrezente = await this.prezentaService.getPrezente(
+    //     this.discipline[0].nume,
+    //     this.studenti[i].nume
+    //   )
+    //   console.log(nbOfPrezente)
+    // }
   }
 
   getFileName (path) {
@@ -204,6 +209,21 @@ export class DashboardComponent implements OnInit {
     private router: Router
   ) {
     this.notifier = notifier
+    // setTimeout(async () => {
+    //   this.name = sessionStorage.getItem('name')
+    //   this.userRole = sessionStorage.getItem('role')
+
+    //   if (this.userRole == 'student') {
+    //     this.getDataForStudent(this.name)
+    //   } else {
+    //     this.getDataForProfesor()
+    //   }
+    // }, 100)
+
+    // console.log(this.student)
+  }
+
+  ngOnInit (): void {
     setTimeout(async () => {
       this.name = sessionStorage.getItem('name')
       this.userRole = sessionStorage.getItem('role')
@@ -214,11 +234,8 @@ export class DashboardComponent implements OnInit {
         this.getDataForProfesor()
       }
     }, 100)
+ 
 
-    // console.log(this.student)
-  }
-
-  ngOnInit (): void {
     this.email = new FormGroup({
       grupa: new FormControl(this.grupe),
       laborator: new FormControl(this.laboratoare)

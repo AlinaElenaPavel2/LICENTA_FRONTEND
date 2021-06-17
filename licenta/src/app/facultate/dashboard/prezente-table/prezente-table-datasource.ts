@@ -3,6 +3,12 @@ import { MatPaginator } from '@angular/material/paginator'
 import { MatSort } from '@angular/material/sort'
 import { map } from 'rxjs/operators'
 import { Observable, of as observableOf, merge } from 'rxjs'
+import { Student } from 'src/app/facultate/Models/student'
+import { __core_private_testing_placeholder__ } from '@angular/core/testing'
+import { Disciplina } from 'src/app/facultate/Models/disciplina2'
+import { StudentService } from 'src/app/facultate/Services/StudentService/student.service'
+import { PrezentaService } from 'src/app/facultate/Services/PrezentaService/prezenta.service'
+import { PrezentaRez } from 'src/app/facultate/Models/PrezentaRez'
 
 // TODO: Replace this with your own data model type
 export interface PrezenteTableItem {
@@ -14,13 +20,13 @@ export interface PrezenteTableItem {
 }
 
 // TODO: replace this with real data from your application
-const EXAMPLE_DATA: PrezenteTableItem[] = [
-  { name: 'Hydrogen', grupa: '1206', prezente: 3, absente: 1, recuperari: 1 },
-  { name: 'Helium', grupa: '1206', prezente: 3, absente: 1, recuperari: 1 },
-  { name: 'Lithium', grupa: '1206', prezente: 3, absente: 1, recuperari: 1 },
-  { name: 'Beryllium', grupa: '1206', prezente: 3, absente: 1, recuperari: 1 },
-  { name: 'Boron', grupa: '1206', prezente: 3, absente: 1, recuperari: 1 }
-]
+// const EXAMPLE_DATA: PrezenteTableItem[] = [
+//   { name: 'Hydrogen', grupa: '1206', prezente: 3, absente: 1, recuperari: 1 },
+//   { name: 'Helium', grupa: '1206', prezente: 3, absente: 1, recuperari: 1 },
+//   { name: 'Lithium', grupa: '1206', prezente: 3, absente: 1, recuperari: 1 },
+//   { name: 'Beryllium', grupa: '1206', prezente: 3, absente: 1, recuperari: 1 },
+//   { name: 'Boron', grupa: '1206', prezente: 3, absente: 1, recuperari: 1 }
+// ]
 
 /**
  * Data source for the PrezenteTable view. This class should
@@ -28,49 +34,94 @@ const EXAMPLE_DATA: PrezenteTableItem[] = [
  * (including sorting, pagination, and filtering).
  */
 export class PrezenteTableDataSource extends DataSource<PrezenteTableItem> {
-  data: PrezenteTableItem[] = EXAMPLE_DATA
+  data: PrezenteTableItem[] = []
   paginator: MatPaginator | undefined
   sort: MatSort | undefined
+  prezente = [] as any
+  studenti: Student[] = []
+  disciplina: Disciplina[] = []
 
-  constructor () {
+  constructor (
+    private prezentaService: PrezentaService,
+    private studentService: StudentService,
+    studenti: Student[],
+    disciplina: Disciplina[],
+    prezente: PrezentaRez[]
+  ) {
     super()
+    this.studenti = studenti
+    this.disciplina.push(disciplina[0])
+    console.log('___________________')
+    // console.log(this.studenti)
+    // console.log(this.disciplina[0])
+    // console.log(prezente)
+    this.data = this.transformData(this.studenti, prezente)
+    console.log(this.data)
+    this.getPrezente()
+    // console.log(this.prezente)
   }
+  transformData (studenti: Student[], prezente: PrezentaRez[]) {
+    var returnArray: PrezenteTableItem[] = []
 
-  /**
-   * Connect this data source to the table. The table will only update when
-   * the returned stream emits new items.
-   * @returns A stream of the items to be rendered.
-   */
-  connect (): Observable<PrezenteTableItem[]> {
-    if (this.paginator && this.sort) {
-      // Combine everything that affects the rendered data into one update
-      // stream for the data-table to consume.
-      return merge(
-        observableOf(this.data),
-        this.paginator.page,
-        this.sort.sortChange
-      ).pipe(
-        map(() => {
-          return this.getPagedData(this.getSortedData([...this.data]))
-        })
-      )
-    } else {
-      throw Error(
-        'Please set the paginator and sort on the data source before connecting.'
-      )
+    for (let i = 0; i < studenti.length; i++) {
+      var row = {
+        name: studenti[i].nume,
+        grupa: studenti[i].grupa,
+        prezente: prezente[i].prezent,
+        absente: prezente[i].absent,
+        recuperari: prezente[i].recuperat
+      }
+      returnArray.push(row)
     }
+    this.data = returnArray
+
+    return returnArray
   }
 
-  /**
-   *  Called when the table is being destroyed. Use this function, to clean up
-   * any open connections or free any held resources that were set up during connect.
-   */
+  async getPrezente () {
+    for (let i = 0; i < this.studenti.length; i++) {
+      var prezent = await this.prezentaService.getPrezente(
+        this.disciplina[0].nume,
+        this.studenti[i].nume
+      )
+      this.prezente.push(prezent)
+    }
+    this.prezente.flat(1)
+  }
+
+  connect (): Observable<PrezenteTableItem[]> {
+    const dataMutations = [
+      observableOf(this.data),
+      this.paginator.page,
+      this.sort.sortChange
+    ]
+
+    return merge(...dataMutations).pipe(
+      map(() => {
+        return this.getPagedData(this.getSortedData([...this.data]))
+      })
+    )
+    // if (this.paginator && this.sort) {
+    //   // Combine everything that affects the rendered data into one update
+    //   // stream for the data-table to consume.
+    //   return merge(
+    //     observableOf(this.data),
+    //     this.paginator.page,
+    //     this.sort.sortChange
+    //   ).pipe(
+    //     map(() => {
+    //       return this.getPagedData(this.getSortedData([...this.data]))
+    //     })
+    //   )
+    // } else {
+    //   throw Error(
+    //     'Please set the paginator and sort on the data source before connecting.'
+    //   )
+    // }
+  }
+
   disconnect (): void {}
 
-  /**
-   * Paginate the data (client-side). If you're using server-side pagination,
-   * this would be replaced by requesting the appropriate data from the server.
-   */
   private getPagedData (data: PrezenteTableItem[]): PrezenteTableItem[] {
     if (this.paginator) {
       const startIndex = this.paginator.pageIndex * this.paginator.pageSize
@@ -80,10 +131,6 @@ export class PrezenteTableDataSource extends DataSource<PrezenteTableItem> {
     }
   }
 
-  /**
-   * Sort the data (client-side). If you're using server-side sorting,
-   * this would be replaced by requesting the appropriate data from the server.
-   */
   private getSortedData (data: PrezenteTableItem[]): PrezenteTableItem[] {
     if (!this.sort || !this.sort.active || this.sort.direction === '') {
       return data
@@ -109,7 +156,6 @@ export class PrezenteTableDataSource extends DataSource<PrezenteTableItem> {
   }
 }
 
-/** Simple sort comparator for example ID/Name columns (for client-side sorting). */
 function compare (
   a: string | number,
   b: string | number,
