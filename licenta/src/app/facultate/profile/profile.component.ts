@@ -8,7 +8,6 @@ import { Disciplina } from '../Models/disciplina2'
 import { Student } from '../Models/student'
 import { Profesor } from '../Models/profesor'
 
-
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -25,7 +24,7 @@ export class ProfileComponent implements OnInit {
   semestru: number = 2
   userName: string = ''
   userRole: string = ''
-
+  loadingData: boolean = false
   async getData (userName, userRole) {
     if (userRole == 'student') {
       var stud = await this.studentService.sendStudentDetails(userName)
@@ -50,6 +49,7 @@ export class ProfileComponent implements OnInit {
       for (var i = 0; i < discip.length; i++) {
         this.disciplina.push(discip[i])
       }
+      this.loadingData = true
     } else {
       // pentru profesor de completat profilul
       var prof = await this.profesorService.sendProfesorDetails(
@@ -84,6 +84,7 @@ export class ProfileComponent implements OnInit {
       }
 
       console.log(this.disciplina)
+      this.loadingData = true
     }
     var item
     if (this.userRole === 'student') {
@@ -115,14 +116,10 @@ export class ProfileComponent implements OnInit {
       this.userRole = sessionStorage.getItem('role')
 
       this.getData(this.userName, this.userRole)
-    }, 1000)
-
-  
+    }, 500)
   }
 
-  ngOnInit (): void {
-    
-  }
+  ngOnInit (): void {}
 
   onFileChanged (event) {
     this.base64textString.length = 0

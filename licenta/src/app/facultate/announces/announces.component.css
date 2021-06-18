@@ -1,14 +1,14 @@
 
 .wrapper  {
  margin-left: 90px;
- background-color:#f2f1f0;
+ /* background-color:#f2f1f0; */
 }
 
 .aboutMong h1
 {
     font-size: 50px;
     font-weight: bold;
-    color: white;
+    color: rgb(122, 16, 16);
     font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -25,12 +25,12 @@
 .aboutMongContent p
 {
   text-align: left;
-  color: white;
+  color: rgb(214, 214, 214);
   font-family: Arial, Helvetica, sans-serif;
 }
 
 .aboutMongContent h2{
-  color: white;
+  color: rgb(122, 20, 20);
   font-family: Arial, Helvetica, sans-serif;
 }
 

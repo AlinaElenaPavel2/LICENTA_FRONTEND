@@ -22,6 +22,10 @@ import {
   NotareDialogModel
 } from 'src/app/facultate/dashboard/notare/notare.component'
 
+import {
+  PrezenteStudentComponent,
+  PrezenteStudentDialogModel
+} from 'src/app/facultate/dashboard/prezente-student/prezente-student.component'
 @Component({
   selector: 'app-prezente-table',
   templateUrl: './prezente-table.component.html',
@@ -69,10 +73,15 @@ export class PrezenteTableComponent implements AfterViewInit {
 
   }
 
-  OpenDialog (row) {
+  OpenDialog (row,disciplina) {
     console.log(row)
     console.log('detalii Studenti')
- 
+    const dialogData = new PrezenteStudentDialogModel(row.name,row.grupa,disciplina)
+    const dialogRef = this.dialog.open(PrezenteStudentComponent, {
+      width: '900px',
+      height: '600px',
+      data: dialogData
+    })
   }
 
   OpenDialogNotare (row) {

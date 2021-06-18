@@ -65,3 +65,8 @@ a {
   html{
       height:100%;
   }
+
+  .spinner{
+    margin-top:400px;
+      margin-left:40%;
+  }

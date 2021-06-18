@@ -44,6 +44,7 @@ import {
 
 import { AddNewEventComponent } from './add-new-event/add-new-event.component'
 import * as moment from 'moment'
+import { TransitiveCompileNgModuleMetadata } from '@angular/compiler'
 
 const colors: any = {
   red: {
@@ -98,6 +99,8 @@ export class CalendarComponent {
 
   activeDayIsOpen: boolean = false
 
+  loadingData:boolean=true
+
   async geEvenimenteProfesor () {
     var prof = await this.profesorService.sendProfesorDetails(
       parseInt(sessionStorage.getItem('ID'))
@@ -135,7 +138,9 @@ export class CalendarComponent {
     }
     console.log(this.events)
     console.log(this.descrieri)
+    // this.loadingData=true
     this.refresh.next()
+
   }
   async getEvenimenteForStudent()
   {
@@ -176,6 +181,7 @@ export class CalendarComponent {
 
       if (this.userRole == 'profesor') {
         this.geEvenimenteProfesor()
+        
       } else {
         this.getEvenimenteForStudent();
       }

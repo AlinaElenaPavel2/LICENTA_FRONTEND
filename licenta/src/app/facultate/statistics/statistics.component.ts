@@ -71,6 +71,7 @@ export class StatisticsComponent implements OnInit {
   examinari: number[] = []
 
   evenimente: Eveniment[] = []
+  loadingData = false
 
   backgroundColor: string[] = [
     'rgba(54, 162, 235, 0.2)',
@@ -343,7 +344,7 @@ export class StatisticsComponent implements OnInit {
       this.student.an,
       2
     )
-console.log(evenimente)
+    console.log(evenimente)
     for (var i = 0; i < evenimente.length; i++) {
       var eveniment = {
         examen: discip[i].nume,
@@ -358,7 +359,7 @@ console.log(evenimente)
     }
 
     console.log(this.evenimente)
-
+    this.loadingData = true
     // for(let i=0;i<discip.length;i++)
     // {
     //   this.examene.push(discip[i].nume)

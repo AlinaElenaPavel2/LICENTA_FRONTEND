@@ -49,6 +49,7 @@ export class LibraryComponent implements OnInit {
 
   books: Book[] = []
   links: Link[] = []
+  loadingData: boolean = false
 
   postLinks = new FormGroup({
     link: new FormControl(''),
@@ -97,7 +98,7 @@ export class LibraryComponent implements OnInit {
       this.links.push(linkuri[i])
     }
     console.log(this.links)
-
+    this.loadingData = true
     localStorage.setItem('Materie', discip[0].nume)
     localStorage.setItem('Componenta', 'Auxiliare')
   }
@@ -164,6 +165,7 @@ export class LibraryComponent implements OnInit {
         }
       }
     }
+    this.loadingData = true
 
     console.log(this.links)
     console.log(this.studentBooks)
@@ -219,7 +221,7 @@ export class LibraryComponent implements OnInit {
       descriere: this.postLinks.value.descriere
     }
     console.log(JSON.stringify(postLink))
-   
+
     await this.fileStorage.postareLink(postLink, discip[0].nume)
     this.reloadCurrentRoute()
   }

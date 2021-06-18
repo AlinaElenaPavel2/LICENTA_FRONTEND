@@ -51,9 +51,9 @@ export class DashboardComponent implements OnInit {
   anunt: string = ''
   titlu: string = ''
   grupa
-  loadingData=false;
+  loadingData = false
 
-  async getAnunturi (disciplina,grupa) {
+  async getAnunturi (disciplina, grupa) {
     var anunturi = await this.anunturiService.getAnunturi(disciplina, grupa)
     return anunturi
   }
@@ -89,6 +89,7 @@ export class DashboardComponent implements OnInit {
     for (var i = 0; i < discip.length; i++) {
       this.discipline.push(discip[i])
     }
+    this.loadingData = true
   }
 
   async getDataForProfesor () {
@@ -106,28 +107,24 @@ export class DashboardComponent implements OnInit {
     var discip = await this.programaScolaraService.getDisciplineTitular(
       this.profesor.nume
     )
- 
-    this.grupe=await this.laboratorService.getGrupe(discip[0].nume,prof.nume)
-    console.log("GRUPE")
-    console.log(this.grupe)
 
+    this.grupe = await this.laboratorService.getGrupe(discip[0].nume, prof.nume)
+    console.log('GRUPE')
+    console.log(this.grupe)
 
     var files = await this.fileStorage.getFilesForDisciplineComponent(
       discip[0].nume,
       'Laborator'
     )
-    for(let i=0;i<this.grupe.length;i++)
-    {
-      var anunturi = await this.getAnunturi(discip[0].nume,this.grupe[i])
-      if(anunturi!=null)
-      {
-  
+    for (let i = 0; i < this.grupe.length; i++) {
+      var anunturi = await this.getAnunturi(discip[0].nume, this.grupe[i])
+      if (anunturi != null) {
         for (let j = 0; j < anunturi.length; j++) {
           this.anunturi.push(anunturi[j])
         }
       }
     }
-   
+
     // console.log( this.anunturi)
     // console.log(files)
     for (let i = 0; i < files.length; i++) {
@@ -157,7 +154,7 @@ export class DashboardComponent implements OnInit {
       )
     }
     console.log(this.studenti)
-    localStorage.setItem('Studenti', this.studenti.toString());
+    localStorage.setItem('Studenti', this.studenti.toString())
 
     for (let i = 0; i < this.studenti.length; i++) {
       // console.log(this.studenti[i])
@@ -168,8 +165,8 @@ export class DashboardComponent implements OnInit {
       this.nbOfPrezente.push(nbOfPrezente)
     }
     console.log(this.nbOfPrezente)
-    this.loadingData=true;
-    localStorage.setItem('Prezente', this.nbOfPrezente.toString());
+    this.loadingData = true
+    localStorage.setItem('Prezente', this.nbOfPrezente.toString())
 
     // for (let i = 0; i < this.studenti.length; i++) {
     //   var nbOfPrezente = await this.prezentaService.getPrezente(
@@ -204,7 +201,7 @@ export class DashboardComponent implements OnInit {
     private emailService: EmailService,
     private fileStorage: FileStorageService,
     private anunturiService: AnuntService,
-    private laboratorService:LaboratorService,
+    private laboratorService: LaboratorService,
     notifier: NotifierService,
     private router: Router
   ) {
@@ -234,7 +231,6 @@ export class DashboardComponent implements OnInit {
         this.getDataForProfesor()
       }
     }, 100)
- 
 
     this.email = new FormGroup({
       grupa: new FormControl(this.grupe),
@@ -242,11 +238,22 @@ export class DashboardComponent implements OnInit {
     })
   }
 
-  getYearDiscipline (event) {
+  async getYearDiscipline (event) {
+    var discip
     const tab = event.tab.textLabel
     // console.log(tab)
     this.an = parseInt(tab.split(' ')[1])
     this.discipline.length = 0
+    discip = await this.programaScolaraService.sendDisciplineDetails(
+      this.student.program_studiu,
+      this.student.specializare,
+      this.an,
+      2
+    )
+
+    for (var i = 0; i < discip.length; i++) {
+      this.discipline.push(discip[i])
+    }
   }
 
   async getDisciplinesForSemester (event) {
@@ -361,10 +368,14 @@ export class DashboardComponent implements OnInit {
     console.log(this.discipline[0].nume)
     var anunt = {
       titlu: this.titlu,
-      descriere: this.anunt,
+      descriere: this.anunt
     }
-    await this.anunturiService.addAnunt(this.discipline[0].nume,this.grupa,anunt)
+    await this.anunturiService.addAnunt(
+      this.discipline[0].nume,
+      this.grupa,
+      anunt
+    )
     this.notifier.notify('success', 'Anuntul a fost postat cu succes!')
-    this.reloadCurrentRoute();
+    this.reloadCurrentRoute()
   }
 }

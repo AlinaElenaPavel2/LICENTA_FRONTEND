@@ -1,7 +1,7 @@
 export class Prezenta {
   id_disciplina: number
   id_student: number
-  laboraor: number
+  laborator: number
   data: string
   prezenta: string
 
@@ -14,7 +14,7 @@ export class Prezenta {
   ) {
     this.id_disciplina = id_disciplina
     this.id_student = id_student
-    this.laboraor = laboraor
+    this.laborator = laboraor
     this.data = data
     this.prezenta = prezenta
   }

@@ -7,14 +7,15 @@
 
   <links>
     <ul class="navbar-nav ml-auto nav-flex-icons">
-      <li class="nav-item">
-        <div class="profilePicture">
-          <a class="nav-link">1 <mdb-icon fas icon="envelope"></mdb-icon></a>
+      <li class="nav-item" >
+        <div class="notification">
+           <mat-icon matBadge="15" matBadgeColor="warn">home</mat-icon>
         </div>
+      
       </li>
 
       <li class="nav-item">
-        <div class="profilePicture">
+        <div class="profilePicture" >
           <img
             *ngFor="let item of base64textString"
             src="{{ item }}"
@@ -27,10 +28,10 @@
       </li>
       <li class="nav-item">
         <div class="studentName">
-          <p>{{ userName }}</p>
+          <h5 style="size:30px;">{{ userName }}</h5>
         </div>
       </li>
-      <li class="nav-item avatar dropdown" dropdown>
+      <li class="nav-item avatar dropdown" dropdown style="color:white;">
         <div class="profilePicture">
           <a
             dropdownToggle
@@ -95,15 +96,14 @@
         /></a>
       </div>
     </li>
-<div *ngIf="userRole == 'student'">
-
-    <li>
-      <div class="sideNavIcons">
-        <a href="/university/statistics">
-          <img src="assets/pictures/statistics.png" width="60" height="60"
-        /></a>
-      </div>
-    </li>
-</div>
+    <div *ngIf="userRole == 'student'">
+      <li>
+        <div class="sideNavIcons">
+          <a href="/university/statistics">
+            <img src="assets/pictures/statistics.png" width="60" height="60"
+          /></a>
+        </div>
+      </li>
+    </div>
   </ul>
 </div>

@@ -1,6 +1,7 @@
 <app-navigation-bar></app-navigation-bar>
 
 <div class="container wrapper">
+    <div *ngIf="loadingData; else elseBlockLoading">
   <div class="row">
     <div class="col-12">
       <div class="card">
@@ -74,10 +75,10 @@
             <mat-tab label="Informatii generale">
               <div class="row">
                 <div class="col-sm-3 col-md-2 col-5">
-                  <label style="font-weight: bold">Nume</label>
+                  <label style="font-weight: bold;margin-top:10px;">Nume</label>
                 </div>
                 <div class="col-md-8 col-6">
-                  <div *ngIf="userRole == 'student'; else userName">
+                  <div *ngIf="userRole == 'student'; else userName" >
                     {{ student.nume }}
                   </div>
 
@@ -173,37 +174,21 @@
               </div>
             </mat-tab>
 
-            <mat-tab label="Edit profile">
-              <div class="row">
-                <div class="col-sm-3 col-md-2 col-5">
-                  <label style="font-weight: bold">Telefon</label>
-                </div>
-                <div class="col-md-8 col-6">something</div>
-              </div>
-
-              <hr />
-
-              <div class="row">
-                <div class="col-sm-3 col-md-2 col-5">
-                  <label style="font-weight: bold">Descriere</label>
-                </div>
-                <div class="col-md-8 col-6">something</div>
-              </div>
-
-              <hr />
-
-              <div class="row">
-                <div class="col-sm-3 col-md-2 col-5">
-                  <label style="font-weight: bold">Interese</label>
-                </div>
-                <div class="col-md-8 col-6">something</div>
-              </div>
-
-              <hr />
-            </mat-tab>
+         
           </mat-tab-group>
         </div>
       </div>
     </div>
   </div>
 </div>
+</div>
+
+<ng-template #elseBlockLoading>
+  <div class="spinner">
+    <sa-spinner-circular
+      size="200"
+      thickness="60"
+      speed="300"
+    ></sa-spinner-circular>
+  </div>
+</ng-template>

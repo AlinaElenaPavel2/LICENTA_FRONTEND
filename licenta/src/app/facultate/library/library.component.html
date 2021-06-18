@@ -1,155 +1,178 @@
 <app-navigation-bar></app-navigation-bar>
 <div *ngIf="userRole == 'profesor'; else elseBlock">
-  <div class="wrapper">
-    <mat-tab-group mat-align-tabs="center">
-      <mat-tab label="Adaugare materiale auxiliare"
-        ><div class="incarcareFisier">
-          <h1 style="margin-bottom: 40px">Incarcare carti suplimentare:</h1>
-          <app-upload-files></app-upload-files>
-        </div>
-        <div>
-          <h1 style="margin-bottom: 40px">Postare linkuri utile:</h1>
-          <div class="formular">
-            <form [formGroup]="postLinks" (ngSubmit)="onSubmit()">
-              <label> Link: </label>
-              <input
-                type="text"
-                formControlName="link"
-                placeholder="https://start.spring.io/"
-              />
-              <label> Titlu: </label>
-              <input
-                type="text"
-                formControlName="titlu"
-                placeholder="Spring Initializr"
-              />
-              <label> Descriere: </label>
-              <input
-                type="text"
-                formControlName="descriere"
-                placeholder="Set up proiect utilizan Spring framework"
-              />
-              <button class="button button--primary" type="submit" (click)="showNotification( 'success', 'S-a postat cu succes linkul!' )">Posteaza</button>
-            </form>
+  <div *ngIf="loadingData; else elseBlockLoading">
+    <div class="wrapper">
+      <mat-tab-group mat-align-tabs="center">
+        <mat-tab label="Adaugare materiale auxiliare"
+          ><div class="incarcareFisier">
+            <h1 style="margin-bottom: 40px">Incarcare carti suplimentare:</h1>
+            <app-upload-files></app-upload-files>
           </div>
-        </div>
-      </mat-tab>
-      <mat-tab
-        label="Vizualizare materiale auxiliare"
-        (selectedTabIndex)="getData($event)"
-      >
-        <hr />
-        <h3>Link-uri</h3>
-        <div class="linksContainer">
-          <div *ngFor="let element of links">
-            <img
-              src="assets/images/link.png"
-              alt="Pdf icon"
-              width="30"
-              height="30"
-              style="margin-right: 20px; margin-bottom: 10px"
-            />
-            <a href="{{ element.path }}" target="_blank">{{ element.titlu }}</a>
-            <br />
-            <p>{{ element.descriere }}</p>
+          <div>
+            <h1 style="margin-bottom: 40px">Postare linkuri utile:</h1>
+            <div class="formular">
+              <form [formGroup]="postLinks" (ngSubmit)="onSubmit()">
+                <label> Link: </label>
+                <input
+                  type="text"
+                  formControlName="link"
+                  placeholder="https://start.spring.io/"
+                />
+                <label> Titlu: </label>
+                <input
+                  type="text"
+                  formControlName="titlu"
+                  placeholder="Spring Initializr"
+                />
+                <label> Descriere: </label>
+                <input
+                  type="text"
+                  formControlName="descriere"
+                  placeholder="Set up proiect utilizan Spring framework"
+                />
+                <button
+                  class="button button--primary"
+                  type="submit"
+                  (click)="
+                    showNotification('success', 'S-a postat cu succes linkul!')
+                  "
+                >
+                  Posteaza
+                </button>
+              </form>
+            </div>
           </div>
-        </div>
-        <hr />
-        <h3>Carti</h3>
-        <div class="bookMargine">
-          <div class="grid-books">
-            <div *ngFor="let book of books">
-              <div class="grid-item-book">
-                <div class="card">
-                  <div class="grid-container">
-                    <img
-                      src="assets/images/book.png"
-                      alt="Avatar"
-                      style="width: 80%"
-                      class="grid-item"
-                    />
+        </mat-tab>
+        <mat-tab
+          label="Vizualizare materiale auxiliare"
+          (selectedTabIndex)="getData($event)"
+        >
+          <hr />
+          <h3>Link-uri</h3>
+          <div class="linksContainer">
+            <div *ngFor="let element of links">
+              <img
+                src="assets/images/link.png"
+                alt="Pdf icon"
+                width="30"
+                height="30"
+                style="margin-right: 20px; margin-bottom: 10px"
+              />
+              <a href="{{ element.path }}" target="_blank">{{
+                element.titlu
+              }}</a>
+              <br />
+              <p>{{ element.descriere }}</p>
+            </div>
+          </div>
+          <hr />
+          <h3>Carti</h3>
+          <div class="bookMargine">
+            <div class="grid-books">
+              <div *ngFor="let book of books">
+                <div class="grid-item-book">
+                  <div class="card">
+                    <div class="grid-container">
+                      <img
+                        src="assets/images/book.png"
+                        alt="Avatar"
+                        style="width: 80%"
+                        class="grid-item"
+                      />
 
-                    <h5 class="grid-item">
-                      <b
-                        ><a href="{{ book.titlu }}" target="_blank">{{
-                          getFileName(book.titlu)
-                        }}</a></b
-                      >
-                      <p style="margin-top: 25px">{{ book.descriere }}</p>
-                    </h5>
+                      <h5 class="grid-item">
+                        <b
+                          ><a href="{{ book.titlu }}" target="_blank">{{
+                            getFileName(book.titlu)
+                          }}</a></b
+                        >
+                        <p style="margin-top: 25px">{{ book.descriere }}</p>
+                      </h5>
+                    </div>
+                    <br />
                   </div>
-                  <br />
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </mat-tab>
-    </mat-tab-group>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
   </div>
 </div>
-
 <ng-template #elseBlock>
-  <div class="first">
-    <mat-form-field color="warn">
-      <mat-label>Filter by course</mat-label>
-      <input
-        id="filtrare"
-        matInput
-        (keyup)="applyFilter($event.target.value)"
-        placeholder="Ex. Marketing"
-        #input
-      />
-    </mat-form-field>
-    <hr />
-    <h3>Linkuri</h3>
-    <hr />
-    <div class="linksContainer">
-      <div *ngFor="let element of links">
-        <img
-          src="assets/images/link.png"
-          alt="Pdf icon"
-          width="30"
-          height="30"
-          style="margin-right: 20px; margin-bottom: 10px"
+  <div *ngIf="loadingData; else elseBlockLoading">
+    <div class="first">
+      <mat-form-field color="warn">
+        <mat-label>Filter by course</mat-label>
+        <input
+          id="filtrare"
+          matInput
+          (keyup)="applyFilter($event.target.value)"
+          placeholder="Ex. Marketing"
+          #input
         />
-        <a href="{{ element.link }}" target="_blank">{{ element.titlu }}</a>
-        <br />
-        <p>{{ element.descriere }}</p>
+      </mat-form-field>
+      <hr />
+      <h3>Linkuri</h3>
+      <hr />
+      <div class="linksContainer">
+        <div *ngFor="let element of links">
+          <img
+            src="assets/images/link.png"
+            alt="Pdf icon"
+            width="30"
+            height="30"
+            style="margin-right: 20px; margin-bottom: 10px"
+          />
+          <a href="{{ element.link }}" target="_blank">{{ element.titlu }}</a>
+          <br />
+          <p>{{ element.descriere }}</p>
+        </div>
       </div>
-    </div>
-    <hr />
-    <h3>Carti</h3>
-    <hr />
+      <hr />
+      <h3>Carti</h3>
+      <hr />
 
-    <div class="bookMargine">
-      <div class="grid-books">
-        <div *ngFor="let book of studentBooks">
-          <div class="grid-item-book">
-            <div class="card">
-              <div class="grid-container">
-                <img
-                  src="assets/images/book.png"
-                  alt="Avatar"
-                  style="width: 80%"
-                  class="grid-item"
-                />
+      <div class="bookMargine">
+        <div class="grid-books">
+          <div *ngFor="let book of studentBooks">
+            <div class="grid-item-book">
+              <div class="card">
+                <div class="grid-container">
+                  <img
+                    src="assets/images/book.png"
+                    alt="Avatar"
+                    style="width: 80%"
+                    class="grid-item"
+                  />
 
-                <h5 class="grid-item">
-                  <b
-                    ><a href="{{ book.book }}" target="_blank">{{
-                      getFileName(book.book)
-                    }}</a></b
-                  >
-                  <p style="margin-top: 25px">{{ book.descriere }}</p>
-                </h5>
+                  <h5 class="grid-item">
+                    <b
+                      ><a href="{{ book.book }}" target="_blank">{{
+                        getFileName(book.book)
+                      }}</a></b
+                    >
+                    <p style="margin-top: 25px">{{ book.descriere }}</p>
+                  </h5>
+                </div>
+                <br />
               </div>
-              <br />
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
+</ng-template>
+
+<ng-template #elseBlockLoading>
+  <div class="spinner">
+    <sa-spinner-circular
+      size="200"
+      thickness="60"
+      speed="300"
+    ></sa-spinner-circular>
   </div>
 </ng-template>
 

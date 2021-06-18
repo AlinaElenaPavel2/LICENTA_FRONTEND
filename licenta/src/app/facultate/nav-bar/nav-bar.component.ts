@@ -17,7 +17,7 @@ export class NavBarComponent implements OnInit {
   base64textString = []
   student: Student = new Student()
   profesor: Profesor = new Profesor()
-
+  loadingData: boolean = false
   async getProfilePicture (userName, userRole) {
     if (userRole == 'student') {
       var stud = await this.studentService.sendStudentDetails(userName)
@@ -74,6 +74,9 @@ export class NavBarComponent implements OnInit {
       this.userName = sessionStorage.getItem('name')
       this.userRole = sessionStorage.getItem('role')
       this.getProfilePicture(this.userName, this.userRole)
+      if (this.base64textString.length > 0) {
+        this.loadingData = true
+      }
     }, 1000)
   }
 

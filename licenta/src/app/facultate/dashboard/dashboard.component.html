@@ -1,253 +1,274 @@
 <app-navigation-bar></app-navigation-bar>
 <div class="wrapper-glob">
   <div *ngIf="userRole == 'student'; else elseBlock">
-    <div class="contaier">
-      <mat-tab-group
-        mat-align-tabs="center"
-        (selectedTabChange)="getYearDiscipline($event)"
-      >
-        <div *ngFor="let year of years">
-          <mat-tab label="An {{ year }}">
-            <mat-tab-group
-              mat-align-tabs="center"
-              (selectedTabChange)="getDisciplinesForSemester($event)"
-            >
-              <mat-tab
-                label="Semestrul 2"
-                (click)="getDisciplinesForSemester($event)"
-                ><link
-                  rel="stylesheet"
-                  href="https://www.w3schools.com/w3css/4/w3.css"
-                />
-                <div class="wrapper">
-                  <div *ngFor="let dis of discipline">
-                    <div class="w3-third" style="width: 30%">
-                      <div
-                        class="w3-card"
-                        style="
-                          width: 80%;
-                          margin: 30px;
-                          padding: 0px;
-                          align-items: center;
-                        "
-                      >
-                        <a [routerLink]="['/university/course/', dis.nume]"
-                          ><img
-                            src="assets/images/online-learning2.png"
-                            style="width: 60%; margin: 30px; padding: 0px"
-                        /></a>
-                        <div class="w3-container">
-                          <h5>{{ dis.nume }}</h5>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div></mat-tab
-              >
-              <mat-tab
-                label="Semestrul 1"
+    <div *ngIf="loadingData; else elseBlockLoading">
+      <div class="contaier">
+        <mat-tab-group
+          mat-align-tabs="center"
+          (selectedTabChange)="getYearDiscipline($event)"
+        >
+          <div *ngFor="let year of years">
+            <mat-tab label="An {{ year }}">
+              <mat-tab-group
+                mat-align-tabs="center"
                 (selectedTabChange)="getDisciplinesForSemester($event)"
               >
-                <link
-                  rel="stylesheet"
-                  href="https://www.w3schools.com/w3css/4/w3.css"
-                />
-                <div class="wrapper">
-                  <div *ngFor="let dis of discipline">
-                    <div
-                      class="w3-third"
-                      style="width: 30%"
-                      routerLink="/university/course"
-                    >
+                <mat-tab
+                  label="Semestrul 2"
+                  (click)="getDisciplinesForSemester($event)"
+                  ><link
+                    rel="stylesheet"
+                    href="https://www.w3schools.com/w3css/4/w3.css"
+                  />
+                  <div class="wrapper">
+                    <div *ngFor="let dis of discipline">
+                      <div class="w3-third" style="width: 30%">
+                        <div
+                          class="w3-card"
+                          style="
+                            width: 80%;
+                            margin: 30px;
+                            padding: 0px;
+                            align-items: center;
+                          "
+                        >
+                          <a [routerLink]="['/university/course/', dis.nume]"
+                            ><img
+                              src="assets/images/online-learning2.png"
+                              style="width: 60%; margin: 30px; padding: 0px"
+                          /></a>
+                          <div class="w3-container">
+                            <h5>{{ dis.nume }}</h5>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div></mat-tab
+                >
+                <mat-tab
+                  label="Semestrul 1"
+                  (selectedTabChange)="getDisciplinesForSemester($event)"
+                >
+                  <link
+                    rel="stylesheet"
+                    href="https://www.w3schools.com/w3css/4/w3.css"
+                  />
+                  <div class="wrapper">
+                    <div *ngFor="let dis of discipline">
                       <div
-                        class="w3-card"
-                        style="width: 80%; margin: 20px; padding: 0px"
+                        class="w3-third"
+                        style="width: 30%"
+                        routerLink="/university/course"
                       >
-                        <a [routerLink]="['/university/course/', dis.nume]"
-                          ><img
-                            src="assets/images/online-learning2.png"
-                            style="width: 60%; margin: 30px; padding: 0px"
-                        /></a>
-                        <div class="w3-container">
-                          <h5>{{ dis.nume }}</h5>
+                        <div
+                          class="w3-card"
+                          style="width: 80%; margin: 20px; padding: 0px"
+                        >
+                          <a [routerLink]="['/university/course/', dis.nume]"
+                            ><img
+                              src="assets/images/online-learning2.png"
+                              style="width: 60%; margin: 30px; padding: 0px"
+                          /></a>
+                          <div class="w3-container">
+                            <h5>{{ dis.nume }}</h5>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </mat-tab>
-            </mat-tab-group>
-          </mat-tab>
-        </div>
-      </mat-tab-group>
+                </mat-tab>
+              </mat-tab-group>
+            </mat-tab>
+          </div>
+        </mat-tab-group>
+      </div>
     </div>
   </div>
 
   <ng-template #elseBlock>
-    <div class="contaier">
-      <mat-tab-group mat-align-tabs="center">
-        <mat-tab label="Disciplina">
-          <div *ngFor="let dis of discipline">
-            <div class="curs">
-              <h3>{{ dis.nume }} - {{ dis.abreviere }}</h3>
-              <hr />
-              <h3>Cursuri</h3>
-              <button mat-button class="uploadButon" (click)="addCurs()">
-                ADAUGARE CURS
-              </button>
-              <hr />
+    <div *ngIf="loadingData; else elseBlockLoading">
+      <div class="contaier">
+        <mat-tab-group mat-align-tabs="center">
+          <mat-tab label="Disciplina">
+            <div *ngFor="let dis of discipline">
+              <div class="curs">
+                <h3>{{ dis.nume }} - {{ dis.abreviere }}</h3>
+                <hr />
+                <h3>Cursuri</h3>
+                <button mat-button class="uploadButon" (click)="addCurs()">
+                  ADAUGARE CURS
+                </button>
+                <hr />
 
-              <br />
-              <div *ngFor="let file of fileCurs">
-                <div>
-                  <img
-                    src="assets/images/pdf.png"
-                    alt="Pdf icon"
-                    width="30"
-                    height="30"
-                    style="margin-right: 20px"
-                  />
-                  <a href="{{ file }}" target="_blank">{{
-                    getFileName(file)
-                  }}</a>
-                </div>
                 <br />
-              </div>
-            </div>
-            <hr />
-            <div class="curs">
-              <h3>Laboratoare</h3>
-              <button mat-button class="uploadButon" (click)="addLaborator()">
-                ADAUGARE LABORATOR
-              </button>
-              <hr />
-
-              <br />
-
-              <div *ngFor="let file of fileLab">
-                <div style="margin-bottom: 20px">
-                  <img
-                    src="assets/images/pdf.png"
-                    alt="Pdf icon"
-                    width="30"
-                    height="30"
-                    style="margin-right: 20px"
-                  />
-                  <a href="{{ file }}" target="_blank">{{
-                    getFileName(file)
-                  }}</a>
+                <div *ngFor="let file of fileCurs">
+                  <div>
+                    <img
+                      src="assets/images/pdf.png"
+                      alt="Pdf icon"
+                      width="30"
+                      height="30"
+                      style="margin-right: 20px"
+                    />
+                    <a href="{{ file }}" target="_blank">{{
+                      getFileName(file)
+                    }}</a>
+                  </div>
                   <br />
                 </div>
               </div>
-            </div>
-          </div>
-        </mat-tab>
+              <hr />
+              <div class="curs">
+                <h3>Laboratoare</h3>
+                <button mat-button class="uploadButon" (click)="addLaborator()">
+                  ADAUGARE LABORATOR
+                </button>
+                <hr />
 
-        <mat-tab label="Prezente">
-          <div class="grid-container">
-            <h3 style="margin-right: 50px">
-              Trimitere email pentru validarea prezentei:
-            </h3>
-            <form [formGroup]="email">
-              <mat-form-field class="grid-item">
+                <br />
+
+                <div *ngFor="let file of fileLab">
+                  <div style="margin-bottom: 20px">
+                    <img
+                      src="assets/images/pdf.png"
+                      alt="Pdf icon"
+                      width="30"
+                      height="30"
+                      style="margin-right: 20px"
+                    />
+                    <a href="{{ file }}" target="_blank">{{
+                      getFileName(file)
+                    }}</a>
+                    <br />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+
+          <mat-tab label="Prezente">
+            <div class="grid-container">
+              <h3 style="margin-right: 50px">
+                Trimitere email pentru validarea prezentei:
+              </h3>
+              <form [formGroup]="email">
+                <mat-form-field class="grid-item">
+                  <mat-label>Selecteaza o grupa</mat-label>
+                  <mat-select formControlName="grupa">
+                    <mat-option>None</mat-option>
+                    <mat-option *ngFor="let grup of grupe" [value]="grup">{{
+                      grup
+                    }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </form>
+
+              <button
+                class="grid-item"
+                mat-fab
+                color="warn"
+                aria-label="Example icon button with a delete icon"
+              >
+                <mat-icon (click)="sendEmail()">mail</mat-icon>
+              </button>
+            </div>
+            <div *ngIf="loadingData">
+              <app-prezente-table
+                [studenti]="studenti"
+                [disciplina]="discipline"
+                [prezente]="nbOfPrezente"
+              ></app-prezente-table>
+            </div>
+          </mat-tab>
+          <mat-tab label="Detalii si anunturi">
+            <div
+              class="card mb-3"
+              style="max-width: 60rem; margin: 20px 20px 20px 120px"
+            >
+              <div class="card-header">
+                <img
+                  src="assets/images/pin1.png"
+                  alt="Girl in a jacket"
+                  width="30"
+                  height="25"
+                  style="margin-right: 25px"
+                />Anunturi
+              </div>
+              <div class="card-body">
+                <div *ngFor="let anunt of anunturi">
+                  <h5 class="card-title">{{ anunt.titlu }}</h5>
+                  <p
+                    class="card-text"
+                    style="margin-bottom: 20px; margin-left: 20px"
+                  >
+                    {{ anunt.descriere }}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <hr />
+            <h3 style="margin-left: 30px">Postare anunt</h3>
+            <form
+              class="example-form"
+              style="margin-left: 200px; margin-top: 50px"
+            >
+              <mat-form-field style="width: 300px">
+                <mat-label>Tilt</mat-label>
+                <input
+                  matInput
+                  [(ngModel)]="titlu"
+                  [ngModelOptions]="{ standalone: true }"
+                  (change)="getDescriere(input.value)"
+                  [value]="titlu"
+                />
+              </mat-form-field>
+              <br />
+              <mat-form-field style="width: 300px">
+                <mat-label>Anunt</mat-label>
+                <textarea
+                  matInput
+                  [(ngModel)]="anunt"
+                  [ngModelOptions]="{ standalone: true }"
+                  (change)="getAnunt(input.value)"
+                  [value]="anunt"
+                ></textarea>
+              </mat-form-field>
+              <br />
+              <mat-form-field class="grid-item" style="width: 300px">
                 <mat-label>Selecteaza o grupa</mat-label>
-                <mat-select formControlName="grupa">
+                <mat-select [(value)]="grupa">
                   <mat-option>None</mat-option>
                   <mat-option *ngFor="let grup of grupe" [value]="grup">{{
                     grup
                   }}</mat-option>
                 </mat-select>
               </mat-form-field>
+              <br />
+              <br />
+              <button
+                class="grid-item"
+                style="margin-left: 100px"
+                mat-fab
+                color="warn"
+                aria-label="Example icon button with a delete icon"
+              >
+                <mat-icon (click)="addAnunt()">send icon</mat-icon>
+              </button>
             </form>
-
-            <button
-              class="grid-item"
-              mat-fab
-              color="warn"
-              aria-label="Example icon button with a delete icon"
-            >
-              <mat-icon (click)="sendEmail()">mail</mat-icon>
-            </button>
-          </div>
-          <div *ngIf="loadingData"><app-prezente-table [studenti]="studenti" [disciplina]="discipline" [prezente]="nbOfPrezente"></app-prezente-table></div>
-          
-        </mat-tab>
-        <mat-tab label="Detalii si anunturi">
-          <div
-            class="card mb-3"
-            style="max-width: 60rem; margin: 20px 20px 20px 120px"
-          >
-            <div class="card-header">
-              <img
-                src="assets/images/pin1.png"
-                alt="Girl in a jacket"
-                width="30"
-                height="25"
-                style="margin-right: 25px"
-              />Anunturi
-            </div>
-            <div class="card-body">
-              <div *ngFor="let anunt of anunturi">
-                <h5 class="card-title">{{ anunt.titlu }}</h5>
-                <p class="card-text" style="margin-bottom: 20px;margin-left:20px;">
-                  {{ anunt.descriere }}
-                </p>
-              </div>
-            </div>
-          </div>
-          <hr />
-          <h3 style="margin-left:30px;">Postare anunt</h3>
-          <form
-            class="example-form"
-            style="margin-left: 200px; margin-top: 50px"
-          >
-            <mat-form-field style="width: 300px">
-              <mat-label>Tilt</mat-label>
-              <input
-                matInput
-                [(ngModel)]="titlu"
-                [ngModelOptions]="{ standalone: true }"
-                (change)="getDescriere(input.value)"
-                [value]="titlu"
-              />
-            </mat-form-field>
-            <br />
-            <mat-form-field style="width: 300px">
-              <mat-label>Anunt</mat-label>
-              <textarea
-                matInput
-                [(ngModel)]="anunt"
-                [ngModelOptions]="{ standalone: true }"
-                (change)="getAnunt(input.value)"
-                [value]="anunt"
-              ></textarea>
-            </mat-form-field>
-            <br />
-            <mat-form-field class="grid-item" style="width: 300px">
-              <mat-label>Selecteaza o grupa</mat-label>
-              <mat-select [(value)]="grupa">
-                <mat-option>None</mat-option>
-                <mat-option *ngFor="let grup of grupe" [value]="grup">{{
-                  grup
-                }}</mat-option>
-              </mat-select>
-            </mat-form-field>
-            <br />
-            <br />
-            <button
-              class="grid-item"
-              style="margin-left: 100px"
-              mat-fab
-              color="warn"
-              aria-label="Example icon button with a delete icon"
-            >
-              <mat-icon (click)="addAnunt()">send icon</mat-icon>
-            </button>
-          </form>
-        </mat-tab>
-      </mat-tab-group>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
     </div>
   </ng-template>
 </div>
+<ng-template #elseBlockLoading>
+  <div class="spinner">
+    <sa-spinner-circular
+      size="200"
+      thickness="60"
+      speed="300"
+    ></sa-spinner-circular>
+  </div>
+</ng-template>
 
 <notifier-container></notifier-container>

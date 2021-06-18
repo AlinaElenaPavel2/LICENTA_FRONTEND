@@ -1,1 +1,55 @@
-<p>prezente-student works!</p>
+<h3>{{ studentName }} - {{ grupa }}</h3>
+<hr />
+<div *ngIf="loadingData; else elseBlock">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="laborator">
+      <th mat-header-cell *matHeaderCellDef>
+        <div style="font-size: 15px; margin-top: 10px">Laborator</div>
+        <div>
+          <mat-form-field class="form-field" color="mat-teal">
+            <mat-label>Filter</mat-label>
+            <input
+              id="filtrare"
+              matInput
+              (keyup)="applyLabFilter($event.target.value)"
+              #input
+            />
+          </mat-form-field>
+        </div>
+      </th>
+      <td mat-cell *matCellDef="let element">{{ element.laborator }}</td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="data">
+      <th mat-header-cell *matHeaderCellDef>
+        <div style="font-size: 15px; margin-top: 10px">Data</div>
+        <div>
+          <mat-form-field class="form-field" color="mat-teal">
+            <mat-label>Filter</mat-label>
+            <input
+              id="filtrare"
+              matInput
+              (keyup)="applyDataFilter($event.target.value)"
+              #input
+            />
+          </mat-form-field>
+        </div>
+      </th>
+      <td mat-cell *matCellDef="let element">
+        {{ getFormatData(element.data) }}
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>
+<ng-template #elseBlock><mat-spinner></mat-spinner> </ng-template>
+<div>
+   <button mat-raised-button style="margin-top:20px;margin-left:350px;"color="primary" (click)="onClick()">Ok</button>
+</div>

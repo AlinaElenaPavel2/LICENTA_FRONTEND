@@ -1,224 +1,235 @@
 <app-navigation-bar></app-navigation-bar>
-
-<div class="wrapper">
-  <div class="row text-center">
-    <div class="col-md-4">
-      <div class="btn-group">
-        <div
-          class="btn btn-info"
-          mwlCalendarPreviousView
-          [view]="view"
-          [(viewDate)]="viewDate"
-          (viewDateChange)="closeOpenMonthViewDay()"
-        >
-          Anterioara
-        </div>
-        <div
-          class="btn btn-outline-secondary"
-          mwlCalendarToday
-          [(viewDate)]="viewDate"
-        >
-          Curenta
-        </div>
-        <div
-          class="btn btn-info"
-          mwlCalendarNextView
-          [view]="view"
-          [(viewDate)]="viewDate"
-          (viewDateChange)="closeOpenMonthViewDay()"
-        >
-          Urmatoare
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <h3>{{ viewDate | calendarDate: view + "ViewTitle":"en" }}</h3>
-    </div>
-    <div class="col-md-4">
-      <div class="btn-group">
-        <div
-          class="btn btn-info"
-          (click)="setView(CalendarView.Month)"
-          [class.active]="view === CalendarView.Month"
-        >
-          Luna
-        </div>
-        <div
-          class="btn btn-info"
-          (click)="setView(CalendarView.Week)"
-          [class.active]="view === CalendarView.Week"
-        >
-          Saptamana
-        </div>
-        <div
-          class="btn btn-info"
-          (click)="setView(CalendarView.Day)"
-          [class.active]="view === CalendarView.Day"
-        >
-          Zi
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <br />
-
-  <div [ngSwitch]="view">
-    <mwl-calendar-month-view
-      *ngSwitchCase="CalendarView.Month"
-      [viewDate]="viewDate"
-      [events]="events"
-      [refresh]="refresh"
-      [activeDayIsOpen]="activeDayIsOpen"
-      (dayClicked)="dayClicked($event.day)"
-      (eventClicked)="openDialog($event.event)"
-      (eventTimesChanged)="eventTimesChanged($event)"
-    >
-    </mwl-calendar-month-view>
-    <mwl-calendar-week-view
-      *ngSwitchCase="CalendarView.Week"
-      [viewDate]="viewDate"
-      [events]="events"
-      [refresh]="refresh"
-      (eventClicked)="openDialog($event.event)"
-      (eventTimesChanged)="eventTimesChanged($event)"
-    >
-    </mwl-calendar-week-view>
-    <mwl-calendar-day-view
-      *ngSwitchCase="CalendarView.Day"
-      [viewDate]="viewDate"
-      [events]="events"
-      [refresh]="refresh"
-      (eventClicked)="handleEvent('Clicked', $event.event)"
-      (eventTimesChanged)="eventTimesChanged($event)"
-    >
-    </mwl-calendar-day-view>
-  </div>
-
-  <div *ngIf="userRole == 'profesor'">
-    <br /><br /><br />
-    <div style="margin-right: 30px; margin-bottom: 50px">
-      <div class="example-button-container">
-        <div class="grid-container">
-          <div style="margin-left: 350px">
-            <button
-              #tooltip="matTooltip"
-              matTooltip="Adaugare eveniment"
-              mat-fab
-              style="background-color: #c40c0c"
-              aria-label="Example icon button with a delete icon"
-              (click)="openAddEventDialog()"
-            >
-              <mat-icon>add</mat-icon>
-            </button>
+<div *ngIf="loadingData; else elseBlockLoading">
+  <div class="wrapper">
+    <div class="row text-center">
+      <div class="col-md-4">
+        <div class="btn-group">
+          <div
+            class="btn btn-info"
+            mwlCalendarPreviousView
+            [view]="view"
+            [(viewDate)]="viewDate"
+            (viewDateChange)="closeOpenMonthViewDay()"
+          >
+            Anterioara
           </div>
-
-          <div class="example-button-container">
-            <button
-              #tooltip="matTooltip"
-              matTooltip="Editare eveniment"
-              mat-fab
-              style="background-color: #c40c0c"
-              aria-label="Example icon button with a delete icon"
-              (click)="editEvent()"
-            >
-              <mat-icon>edit</mat-icon>
-            </button>
+          <div
+            class="btn btn-outline-secondary"
+            mwlCalendarToday
+            [(viewDate)]="viewDate"
+          >
+            Curenta
+          </div>
+          <div
+            class="btn btn-info"
+            mwlCalendarNextView
+            [view]="view"
+            [(viewDate)]="viewDate"
+            (viewDateChange)="closeOpenMonthViewDay()"
+          >
+            Urmatoare
           </div>
         </div>
       </div>
-      <div *ngIf="editEvents" style="margin-top: 40px">
-        <div class="table-responsive">
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th>Titlu</th>
-                <th>Descriere</th>
-                <th>Incepe la</th>
-                <th>Se termina</th>
-                <th style="width: 70px">Actiuni</th>
-              </tr>
-            </thead>
+      <div class="col-md-4">
+        <h3>{{ viewDate | calendarDate: view + "ViewTitle":"en" }}</h3>
+      </div>
+      <div class="col-md-4">
+        <div class="btn-group">
+          <div
+            class="btn btn-info"
+            (click)="setView(CalendarView.Month)"
+            [class.active]="view === CalendarView.Month"
+          >
+            Luna
+          </div>
+          <div
+            class="btn btn-info"
+            (click)="setView(CalendarView.Week)"
+            [class.active]="view === CalendarView.Week"
+          >
+            Saptamana
+          </div>
+          <div
+            class="btn btn-info"
+            (click)="setView(CalendarView.Day)"
+            [class.active]="view === CalendarView.Day"
+          >
+            Zi
+          </div>
+        </div>
+      </div>
+    </div>
 
-            <tbody>
-              <tr *ngFor="let event of events; let i = index">
-                <td>
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="event.title"
-                    (keyup)="refresh.next()"
-                  />
-                </td>
-                <td>
-                  <input
-                    type="text"
-                    class="form-control"
-                    [(ngModel)]="descrieri[i]"
-                    #input
-                    (change)="onKey(input.value, i)"
-                    (keyup)="refresh.next()"
-                  />
-                </td>
-                <td>
-                  <input
-                    class="form-control"
-                    type="text"
-                    mwlFlatpickr
-                    [(ngModel)]="event.start"
-                    (ngModelChange)="refresh.next()"
-                    [altInput]="true"
-                    [convertModelValue]="true"
-                    [enableTime]="true"
-                    dateFormat="Y-m-dTH:i"
-                    altFormat="F j, Y H:i"
-                    placeholder="Not set"
-                  />
-                </td>
-                <td>
-                  <input
-                    class="form-control"
-                    type="text"
-                    mwlFlatpickr
-                    [(ngModel)]="event.end"
-                    (ngModelChange)="refresh.next()"
-                    [altInput]="true"
-                    [convertModelValue]="true"
-                    [enableTime]="true"
-                    dateFormat="Y-m-dH:i"
-                    altFormat="F j, Y H:i"
-                    placeholder="Not set"
-                  />
-                  <p>{{formatDate(event.end)}}</p>
-                </td>
-                <td>
-                  <mat-icon
-                    #tooltip="matTooltip"
-                    aria-hidden="false"
-                    aria-label="Example home icon"
-                    class="pointer"
-                    matTooltip="Update eveniment"
-                    id="create"
-                    (click)="editare(event)"
-                    >update icon</mat-icon
-                  >
+    <br />
 
-                  <mat-icon
-                    #tooltip="matTooltip"
-                    matTooltip="Stergere eveniment"
-                    aria-hidden="false"
-                    aria-label="Example home icon"
-                    class="pointer"
-                    (click)="deleteEvent(event)"
-                    >delete_outline</mat-icon
-                  >
-                </td>
-              </tr>
-            </tbody>
-          </table>
+    <div [ngSwitch]="view">
+      <mwl-calendar-month-view
+        *ngSwitchCase="CalendarView.Month"
+        [viewDate]="viewDate"
+        [events]="events"
+        [refresh]="refresh"
+        [activeDayIsOpen]="activeDayIsOpen"
+        (dayClicked)="dayClicked($event.day)"
+        (eventClicked)="openDialog($event.event)"
+        (eventTimesChanged)="eventTimesChanged($event)"
+      >
+      </mwl-calendar-month-view>
+      <mwl-calendar-week-view
+        *ngSwitchCase="CalendarView.Week"
+        [viewDate]="viewDate"
+        [events]="events"
+        [refresh]="refresh"
+        (eventClicked)="openDialog($event.event)"
+        (eventTimesChanged)="eventTimesChanged($event)"
+      >
+      </mwl-calendar-week-view>
+      <mwl-calendar-day-view
+        *ngSwitchCase="CalendarView.Day"
+        [viewDate]="viewDate"
+        [events]="events"
+        [refresh]="refresh"
+        (eventClicked)="handleEvent('Clicked', $event.event)"
+        (eventTimesChanged)="eventTimesChanged($event)"
+      >
+      </mwl-calendar-day-view>
+    </div>
+
+    <div *ngIf="userRole == 'profesor'">
+      <br /><br /><br />
+      <div style="margin-right: 30px; margin-bottom: 50px">
+        <div class="example-button-container">
+          <div class="grid-container">
+            <div style="margin-left: 500px">
+              <button
+                #tooltip="matTooltip"
+                matTooltip="Adaugare eveniment"
+                mat-fab
+                style="background-color: #c40c0c"
+                aria-label="Example icon button with a delete icon"
+                (click)="openAddEventDialog()"
+              >
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+
+            <div class="example-button-container">
+              <button
+                #tooltip="matTooltip"
+                matTooltip="Editare eveniment"
+                mat-fab
+                style="background-color: #c40c0c"
+                aria-label="Example icon button with a delete icon"
+                (click)="editEvent()"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="editEvents" style="margin-top: 40px">
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Titlu</th>
+                  <th>Descriere</th>
+                  <th>Incepe la</th>
+                  <th>Se termina</th>
+                  <th style="width: 70px">Actiuni</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngFor="let event of events; let i = index">
+                  <td>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="event.title"
+                      (keyup)="refresh.next()"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="text"
+                      class="form-control"
+                      [(ngModel)]="descrieri[i]"
+                      #input
+                      (change)="onKey(input.value, i)"
+                      (keyup)="refresh.next()"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      class="form-control"
+                      type="text"
+                      mwlFlatpickr
+                      [(ngModel)]="event.start"
+                      (ngModelChange)="refresh.next()"
+                      [altInput]="true"
+                      [convertModelValue]="true"
+                      [enableTime]="true"
+                      dateFormat="Y-m-dTH:i"
+                      altFormat="F j, Y H:i"
+                      placeholder="Not set"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      class="form-control"
+                      type="text"
+                      mwlFlatpickr
+                      [(ngModel)]="event.end"
+                      (ngModelChange)="refresh.next()"
+                      [altInput]="true"
+                      [convertModelValue]="true"
+                      [enableTime]="true"
+                      dateFormat="Y-m-dH:i"
+                      altFormat="F j, Y H:i"
+                      placeholder="Not set"
+                    />
+                    <p>{{ formatDate(event.end) }}</p>
+                  </td>
+                  <td>
+                    <mat-icon
+                      #tooltip="matTooltip"
+                      aria-hidden="false"
+                      aria-label="Example home icon"
+                      class="pointer"
+                      matTooltip="Update eveniment"
+                      id="create"
+                      (click)="editare(event)"
+                      >update icon</mat-icon
+                    >
+
+                    <mat-icon
+                      #tooltip="matTooltip"
+                      matTooltip="Stergere eveniment"
+                      aria-hidden="false"
+                      aria-label="Example home icon"
+                      class="pointer"
+                      (click)="deleteEvent(event)"
+                      >delete_outline</mat-icon
+                    >
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+<ng-template #elseBlockLoading>
+  <div class="spinner">
+    <sa-spinner-circular
+      size="200"
+      сolor="#00838f"
+      speed="300"
+    ></sa-spinner-circular>
+  </div>
+</ng-template>
+
 <notifier-container></notifier-container>
