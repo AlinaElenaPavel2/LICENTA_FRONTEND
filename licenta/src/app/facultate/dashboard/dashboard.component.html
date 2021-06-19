@@ -180,6 +180,110 @@
               ></app-prezente-table>
             </div>
           </mat-tab>
+          <mat-tab label="Notare">
+            <div
+              class="table-responsive containerNotare"
+              style="margin-top: 40px"
+              id="notare"
+            >
+              <div *ngIf="loadingDataNotare; else elseBlockLoading">
+                <table>
+                  <thead>
+                    <tr>
+                      <th *ngFor="let column of displayedColumns">
+                        {{ column }}
+                        <div *ngIf="column !== 'Actiuni'">
+                          <mat-form-field class="form-field" color="mat-teal">
+                            <mat-label>Filter</mat-label>
+                            <input
+                              id="filtrare"
+                              matInput
+                              (keyup)="applyFilter($event.target.value, column)"
+                              #input
+                            />
+                          </mat-form-field>
+                        </div>
+                      </th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <tr *ngFor="let row of notareTable; let i = index">
+                      <td>
+                        {{ row.student }}
+                      </td>
+                      <td class="edit">
+                        {{ row.grupa }}
+                        <mat-icon
+                          #tooltip="matTooltip"
+                          aria-hidden="false"
+                          aria-label="Example home icon"
+                          class="editIcon"
+                          style="margin-left: 10px"
+                          matTooltip="Edit"
+                          id="create"
+                          (click)="editValue(event, i)"
+                          >edit</mat-icon
+                        >
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="row.laborator"
+                          #input
+                          (change)="onKey(input.value, i)"
+                          (keyup)="refresh.next()"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="row.partial"
+                          #input
+                          (change)="onKey(input.value, i)"
+                          (keyup)="refresh.next()"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="row.examen"
+                          #input
+                          (change)="onKey(input.value, i)"
+                          (keyup)="refresh.next()"
+                        />
+                      </td>
+                      <td>
+                        <input
+                          type="text"
+                          class="form-control"
+                          [(ngModel)]="notaFinala[i]"
+                          #input
+                          (change)="onKey(input.value, i)"
+                          (keyup)="refresh.next()"
+                        />
+                      </td>
+                      <td>
+                        <mat-icon
+                          #tooltip="matTooltip"
+                          aria-hidden="false"
+                          aria-label="Example home icon"
+                          class="pointer"
+                          matTooltip="Update eveniment"
+                          id="create"
+                          (click)="editare(event)"
+                          >update icon</mat-icon
+                        >
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </mat-tab>
           <mat-tab label="Detalii si anunturi">
             <div
               class="card mb-3"

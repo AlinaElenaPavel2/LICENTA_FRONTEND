@@ -6,6 +6,7 @@ import { PrezentaService } from '../Services/PrezentaService/prezenta.service'
 import { EmailService } from '../Services/EmailService/email.service'
 import { AnuntService } from '../Services/AnuntService/anunt-service.service'
 import { LaboratorService } from '../Services/LaboratorService/laborator.service'
+import { EvaluareService } from '../Services/EvaluareService/evaluare.service'
 
 import { FileStorageService } from '../Services/FileStorageService/file-storage.service'
 import { NotifierService } from 'angular-notifier'
@@ -16,6 +17,9 @@ import { Student } from '../Models/student'
 import { Disciplina } from '../Models/disciplina2'
 import { Profesor } from '../Models/profesor'
 import { Prezenta } from '../Models/prezenta'
+import { Evaluare } from '../Models/evaluare'
+import { Catalog } from '../Models/catalog'
+
 import * as moment from 'moment'
 
 import {
@@ -23,6 +27,16 @@ import {
   UploadFileComponent
 } from 'src/app/facultate/dashboard/upload-file/upload-file.component'
 import { MatDialog } from '@angular/material/dialog'
+import { NotareComponent } from './notare/notare.component'
+
+interface Notare {
+  student: string
+  grupa: string
+  examen: number
+  laborator: number
+  partial: number
+  proiect: number
+}
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -52,7 +66,12 @@ export class DashboardComponent implements OnInit {
   titlu: string = ''
   grupa
   loadingData = false
-
+  procents: Evaluare = new Evaluare()
+  displayedColumns = ['Student', 'Grupa']
+  loadingDataNotare = false
+  notareTable: Notare[] = []
+  notaFinala:number[]=[]
+  edit:boolean=false
   async getAnunturi (disciplina, grupa) {
     var anunturi = await this.anunturiService.getAnunturi(disciplina, grupa)
     return anunturi
@@ -77,6 +96,7 @@ export class DashboardComponent implements OnInit {
       this.years.push(i + 1)
     }
     this.years.reverse()
+    this.an = this.years.length
     // console.log('getYear')
     // console.log(this.years)
 
@@ -107,7 +127,7 @@ export class DashboardComponent implements OnInit {
     var discip = await this.programaScolaraService.getDisciplineTitular(
       this.profesor.nume
     )
-
+    this.getProcents(discip[0].nume)
     this.grupe = await this.laboratorService.getGrupe(discip[0].nume, prof.nume)
     console.log('GRUPE')
     console.log(this.grupe)
@@ -153,8 +173,8 @@ export class DashboardComponent implements OnInit {
         this.profesor.nume
       )
     }
+    this.getNotareTableContent(this.discipline[0].nume)
     console.log(this.studenti)
-    localStorage.setItem('Studenti', this.studenti.toString())
 
     for (let i = 0; i < this.studenti.length; i++) {
       // console.log(this.studenti[i])
@@ -202,6 +222,7 @@ export class DashboardComponent implements OnInit {
     private fileStorage: FileStorageService,
     private anunturiService: AnuntService,
     private laboratorService: LaboratorService,
+    private evaluareService: EvaluareService,
     notifier: NotifierService,
     private router: Router
   ) {
@@ -236,6 +257,78 @@ export class DashboardComponent implements OnInit {
       grupa: new FormControl(this.grupe),
       laborator: new FormControl(this.laboratoare)
     })
+  }
+
+  async getProcents (disciplina) {
+    var pond = await this.evaluareService.sendProcentsDetails(disciplina)
+
+    if (pond.pondere_lab != null) {
+      var string = 'Laborator - '
+      var string2 = ' %'
+      var procent = pond.pondere_lab
+      this.displayedColumns.push(
+        string.concat(procent.toString()).concat(string2)
+      )
+    }
+
+    if (pond.pondere_partial != null) {
+      var string = 'Partial - '
+      var string2 = ' %'
+      var procent = pond.pondere_partial
+      this.displayedColumns.push(
+        string.concat(procent.toString()).concat(string2)
+      )
+    }
+    if (pond.pondere_examen != null) {
+      var string = 'Examen - '
+      var string2 = ' %'
+      var procent = pond.pondere_examen
+      this.displayedColumns.push(
+        string.concat(procent.toString()).concat(string2)
+      )
+    }
+    if (pond.pondere_proiect != null) {
+      var string = 'Proiect - '
+      var string2 = ' %'
+      var procent = pond.pondere_proiect
+      this.displayedColumns.push(
+        string.concat(procent.toString()).concat(string2)
+      )
+    }
+    this.displayedColumns.push('Nota finala')
+    this.displayedColumns.push('Actiuni')
+
+    console.log(this.displayedColumns)
+
+    this.loadingDataNotare = true
+  }
+
+  async getNotareTableContent (disciplina) {
+    for (let i = 0; i < this.studenti.length; i++) {
+      var note=await this.evaluareService.getNote(disciplina,this.studenti[i].nume)
+      var notare = {
+        student: this.studenti[i].nume,
+        grupa: this.studenti[i].grupa,
+        examen: this.transform(note.examen),
+        laborator:  this.transform(note.laborator),
+        partial:  this.transform(note.partial),
+        proiect:  this.transform(note.proiect)
+      }
+      this.notaFinala.push(i)
+      this.notareTable.push(notare)
+    }
+    console.log('NOTARE TABLE CONTENT')
+    console.log(this.notareTable)
+  }
+
+  transform(value)
+  {
+    if(value == null)
+    {
+      return '-'
+    }else{
+      return value
+    }
   }
 
   async getYearDiscipline (event) {
@@ -377,5 +470,14 @@ export class DashboardComponent implements OnInit {
     )
     this.notifier.notify('success', 'Anuntul a fost postat cu succes!')
     this.reloadCurrentRoute()
+  }
+  applyFilter (filterValue, column) {
+    console.log(filterValue)
+    console.log(column.split(' ')[0])
+  }
+
+  editValue(event, i){
+    console.log(i+1)
+    this.edit=true
   }
 }

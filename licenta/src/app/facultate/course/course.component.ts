@@ -15,6 +15,7 @@ import { EvaluareService } from '../Services/EvaluareService/evaluare.service'
 import { PrezentaService } from '../Services/PrezentaService/prezenta.service'
 import { FileStorageService } from '../Services/FileStorageService/file-storage.service'
 import { AnuntService } from '../Services/AnuntService/anunt-service.service'
+import { MatTableDataSource } from '@angular/material/table'
 
 import { MatDialog } from '@angular/material/dialog'
 import {
@@ -41,15 +42,18 @@ export class CourseComponent implements OnInit {
   procents: Evaluare = new Evaluare()
 
   prezente: Prezenta[] = []
-  name:string
+  name: string
   anunturi = []
   note: String[] = ['', '', '', '']
   disciplinaName: string
   studentId: number
 
-  fisiereCurs:Book[]=[]
-  fisiereLaborator:Book[]=[]
-
+  fisiereCurs: Book[] = []
+  fisiereLaborator: Book[] = []
+  loadingData: boolean = false
+  dataSource: MatTableDataSource<Prezenta>
+  displayedColumns = ['laborator', 'data', 'prezenta']
+  loading: boolean = false
   async getAnunturi (disciplina) {
     var anunturi = await this.anunturiService.getAnunturi(disciplina, '1307')
     return anunturi
@@ -66,11 +70,9 @@ export class CourseComponent implements OnInit {
     public dialog: MatDialog,
     private prezentaService: PrezentaService,
     private fileStorage: FileStorageService,
-    private anunturiService: AnuntService,
-
+    private anunturiService: AnuntService
   ) {
     this.studentId = parseInt(sessionStorage.getItem('ID'))
-
   }
 
   async getData (name) {
@@ -171,29 +173,42 @@ export class CourseComponent implements OnInit {
     console.log('*************')
     console.log(this.procents)
 
-    var prezent=await this.prezentaService.getPrezente(
-      this.disciplinaName,this.student.nume
+    var prezent = await this.prezentaService.getPrezente(
+      this.disciplinaName,
+      this.student.nume
     )
-    console.log('*************')
-    console.log(prezent)
+    console.log('_____________')
+    // console.log(prezent)
+    for (let i = 0; i < prezent.length; i++) {
+      this.prezente.push(prezent[i])
+    }
+    console.log(this.prezente)
+    this.dataSource = new MatTableDataSource<Prezenta>(this.prezente)
+    if (this.prezente.length > 0) {
+      this.loadingData = true
+    }
 
-     this.anunturi=await this.anunturiService.getAnunturi(this.disciplinaName,this.student.grupa)
+
+    this.anunturi = await this.anunturiService.getAnunturi(
+      this.disciplinaName,
+      this.student.grupa
+    )
     console.log(this.anunturi)
+    this.loading= true
+
   }
 
-  async getFisiere(disciplina)
-  {
-
+  async getFisiere (disciplina) {
     var fisiereCurs = await this.fileStorage.getFilesForDisciplineComponent(
       disciplina,
       'Curs'
     )
-   
+
     var descrieriCurs = await this.fileStorage.getDescriptionForComponent(
       disciplina,
       'Curs'
     )
-  
+
     for (let i = 0; i < fisiereCurs.length; i++) {
       var book = { path: fisiereCurs[i], descriere: descrieriCurs[i] }
       this.fisiereCurs.push(book)
@@ -205,7 +220,6 @@ export class CourseComponent implements OnInit {
       disciplina,
       'Laborator'
     )
-
 
     var descrieriLab = await this.fileStorage.getDescriptionForComponent(
       disciplina,
@@ -225,7 +239,7 @@ export class CourseComponent implements OnInit {
     var fileName = array[8]
     return fileName
   }
-  sub;
+  sub
   async ngOnInit (): Promise<void> {
     this.sub = this._Activatedroute.paramMap.subscribe(params => {
       console.log(params)
@@ -236,7 +250,7 @@ export class CourseComponent implements OnInit {
       this.name = sessionStorage.getItem('name')
       await this.getData(this.name)
     }, 1000)
-    await this.getFisiere(this.disciplinaName);
+    await this.getFisiere(this.disciplinaName)
   }
 
   ngOnDestroy () {
@@ -256,5 +270,47 @@ export class CourseComponent implements OnInit {
       height: '500px',
       data: dialogData
     })
+  }
+  getFormatData(data)
+  {
+    return data.substring(0,10)
+  }
+
+  applyLabFilter (filterValue: string) {
+    var filterdata = this.dataSource.data.filter(function (val) {
+      console.log(val.laborator)
+      return val.laborator
+        .toString()
+        .toLowerCase()
+        .includes(filterValue.toLowerCase())
+    })
+    this.dataSource.data = filterdata
+    if (filterValue == '') {
+      this.dataSource.data = this.prezente
+    }
+  }
+  applyDataFilter (filterValue: string) {
+    var filterdata = this.dataSource.data.filter(function (val) {
+      return val.data
+        .toString()
+        .toLowerCase()
+        .includes(filterValue.toLowerCase())
+    })
+    this.dataSource.data = filterdata
+    if (filterValue == '') {
+      this.dataSource.data = this.prezente
+    }
+  }
+  applyPrezentaFilter(filterValue: string)
+  {
+    var filterdata = this.dataSource.data.filter(function (val) {
+      return val.prezenta
+        .toLowerCase()
+        .includes(filterValue.toLowerCase())
+    })
+    this.dataSource.data = filterdata
+    if (filterValue == '') {
+      this.dataSource.data = this.prezente
+    }
   }
 }

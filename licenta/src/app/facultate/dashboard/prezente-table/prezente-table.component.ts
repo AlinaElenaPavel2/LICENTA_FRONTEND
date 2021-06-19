@@ -51,14 +51,6 @@ export class PrezenteTableComponent implements AfterViewInit {
   ]
 
   constructor (public dialog: MatDialog,private studentService: StudentService,private prezentaService: PrezentaService) {
-    // console.log('***********************')
-
-    // setTimeout(async () => {
-    //   console.log(this.studenti)
-    //   console.log(this.prezente)
-    // }, 500)
-    // console.log('***********************')
-
   }
 
   ngAfterViewInit (): void {
@@ -69,8 +61,6 @@ export class PrezenteTableComponent implements AfterViewInit {
 
   ngOnInit () {
     this.dataSource = new PrezenteTableDataSource(this.prezentaService,this.studentService,this.studenti,this.disciplina,this.prezente)
-    // this.table.renderRows();
-
   }
 
   OpenDialog (row,disciplina) {

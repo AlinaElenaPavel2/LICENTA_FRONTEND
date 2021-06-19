@@ -10,7 +10,7 @@ import { StudentService } from 'src/app/facultate/Services/StudentService/studen
 import { PrezentaService } from 'src/app/facultate/Services/PrezentaService/prezenta.service'
 import { PrezentaRez } from 'src/app/facultate/Models/PrezentaRez'
 
-// TODO: Replace this with your own data model type
+
 export interface PrezenteTableItem {
   name: string
   grupa: string
@@ -19,20 +19,6 @@ export interface PrezenteTableItem {
   recuperari: number
 }
 
-// TODO: replace this with real data from your application
-// const EXAMPLE_DATA: PrezenteTableItem[] = [
-//   { name: 'Hydrogen', grupa: '1206', prezente: 3, absente: 1, recuperari: 1 },
-//   { name: 'Helium', grupa: '1206', prezente: 3, absente: 1, recuperari: 1 },
-//   { name: 'Lithium', grupa: '1206', prezente: 3, absente: 1, recuperari: 1 },
-//   { name: 'Beryllium', grupa: '1206', prezente: 3, absente: 1, recuperari: 1 },
-//   { name: 'Boron', grupa: '1206', prezente: 3, absente: 1, recuperari: 1 }
-// ]
-
-/**
- * Data source for the PrezenteTable view. This class should
- * encapsulate all logic for fetching and manipulating the displayed data
- * (including sorting, pagination, and filtering).
- */
 export class PrezenteTableDataSource extends DataSource<PrezenteTableItem> {
   data: PrezenteTableItem[] = []
   paginator: MatPaginator | undefined
@@ -58,7 +44,7 @@ export class PrezenteTableDataSource extends DataSource<PrezenteTableItem> {
     this.data = this.transformData(this.studenti, prezente)
     console.log(this.data)
     this.getPrezente()
-    // console.log(this.prezente)
+  
   }
   transformData (studenti: Student[], prezente: PrezentaRez[]) {
     var returnArray: PrezenteTableItem[] = []

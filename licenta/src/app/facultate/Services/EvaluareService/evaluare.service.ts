@@ -2,8 +2,11 @@ import { Injectable } from '@angular/core'
 import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { Observable } from 'rxjs'
 import { Evaluare } from '../../Models/evaluare'
+import { Catalog } from '../../Models/catalog'
 
 const baseUrl = 'http://localhost:8080/api/licenta/evaluare'
+const catalogUrl = 'http://localhost:8080/api/licenta/catalog'
+
 @Injectable({
   providedIn: 'root'
 })
@@ -26,6 +29,19 @@ export class EvaluareService {
   }
   async sendProcentsDetails (disciplina: String) {
     await this.getProcentsDetails(disciplina)
+    return this.data
+  }
+  public getNoteRequest (disciplina: string,student:string): Observable<Catalog> {
+    return this.http.get<Catalog>(`${catalogUrl}/disciplina=` + disciplina+"/student="+student+"/note")
+  }
+
+  async getNote (disciplina: string,student:string) {
+    await new Promise(resolve => {
+      this.getNoteRequest(disciplina,student).subscribe(data => {
+        this.data = data
+        resolve(this.data)
+      })
+    })
     return this.data
   }
 }

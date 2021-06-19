@@ -1,132 +1,211 @@
 <app-navigation-bar></app-navigation-bar>
-
-<h1 class="first">{{ disciplinaName }} {{ disciplina.abreviere }}</h1>
-<mat-tab-group mat-align-tabs="center" class="first" animationDuration="1000ms">
-  <mat-tab label="Cursuri">
-    <div class="curs">
-      <h3 style="margin-top: 30px">Cursuri</h3>
-      <br />
-      <div class="linksContainer">
-        <div *ngFor="let element of fisiereCurs">
-          <img
-            src="assets/images/pdf.png"
-            alt="Pdf icon"
-            width="30"
-            height="30"
-            style="margin-right: 20px; margin-bottom: 10px"
-          />
-          <a href="{{ element.path }}" target="_blank">{{
-            getFileName(element.path)
-          }}</a>
-          <br />
-          <p>{{ element.descriere }}</p>
-        </div>
-      </div>
-      <hr />
-    </div>
-    <div class="curs">
-      <h3>Laboratoare</h3>
-      <hr />
-      <br />
-      <div class="linksContainer">
-        <div *ngFor="let element of fisiereLaborator">
-          <img
-            src="assets/images/pdf.png"
-            alt="Pdf icon"
-            width="30"
-            height="30"
-            style="margin-right: 20px; margin-bottom: 10px"
-          />
-          <a href="{{ element.path }}" target="_blank">{{
-            getFileName(element.path)
-          }}</a>
-          <br />
-          <p>{{ element.descriere }}</p>
-        </div>
-      </div>
-    </div>
-  </mat-tab>
-  <mat-tab label="Prezente">
-    <div class="example-button-container">
-      <button
-        mat-button
-        style="background-color: red; color: white"
-        (click)="recuperare()"
-      >
-        Recuperare<mat-icon style="margin-left: 10px">email icon</mat-icon>
-      </button>
-    </div>
-
-    <app-student-table [childToMaster]="disciplinaName"></app-student-table>
-  </mat-tab>
-  <mat-tab label="Detalii disciplina si anunturi">
-    <mat-grid-list cols="3" rowHeight="600px">
-      <mat-grid-tile>
-        <div
-          class="card text-dark teal lighten-3 mb-3"
-          style="max-width: 25rem; margin-top: 20rem"
-        >
-          <h4 class="card-header">
+<div *ngIf="loading; else elseBlockLoading">
+  <h1 class="first">{{ disciplinaName }} {{ disciplina.abreviere }}</h1>
+  <mat-tab-group
+    mat-align-tabs="center"
+    class="first"
+    animationDuration="1000ms"
+  >
+    <mat-tab label="Cursuri">
+      <div class="curs">
+        <h3 style="margin-top: 30px">Cursuri</h3>
+        <br />
+        <div class="linksContainer">
+          <div *ngFor="let element of fisiereCurs">
             <img
-              src="assets/images/pin1.png"
-              alt="Girl in a jacket"
+              src="assets/images/pdf.png"
+              alt="Pdf icon"
               width="30"
-              height="25"
-              style="margin-right: 25px"
-            />Anunturi
-          </h4>
-          <div class="card-body">
-            <div *ngFor="let anunt of anunturi">
-              <h5 class="card-title">{{ anunt.titlu }}</h5>
-              <p
-                class="card-text"
-                style="margin-bottom: 20px; margin-left: 20px"
-              >
-                {{ anunt.descriere }}
-              </p>
+              height="30"
+              style="margin-right: 20px; margin-bottom: 10px"
+            />
+            <a href="{{ element.path }}" target="_blank">{{
+              getFileName(element.path)
+            }}</a>
+            <br />
+            <p>{{ element.descriere }}</p>
+          </div>
+        </div>
+        <hr />
+      </div>
+      <div class="curs">
+        <h3>Laboratoare</h3>
+        <hr />
+        <br />
+        <div class="linksContainer">
+          <div *ngFor="let element of fisiereLaborator">
+            <img
+              src="assets/images/pdf.png"
+              alt="Pdf icon"
+              width="30"
+              height="30"
+              style="margin-right: 20px; margin-bottom: 10px"
+            />
+            <a href="{{ element.path }}" target="_blank">{{
+              getFileName(element.path)
+            }}</a>
+            <br />
+            <p>{{ element.descriere }}</p>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="Prezente">
+      <div class="example-button-container">
+        <button
+          mat-button
+          style="background-color: red; color: white"
+          (click)="recuperare()"
+        >
+          Recuperare<mat-icon style="margin-left: 10px">email icon</mat-icon>
+        </button>
+      </div>
+      <div *ngIf="loadingData; else elseBlockLoading">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+          <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+
+          <!-- Position Column -->
+          <ng-container matColumnDef="laborator">
+            <th mat-header-cell *matHeaderCellDef>
+              <div style="font-size: 15px; margin-top: 10px">Laborator</div>
+              <div>
+                <mat-form-field class="form-field" color="mat-teal">
+                  <mat-label>Filter</mat-label>
+                  <input
+                    id="filtrare"
+                    matInput
+                    (keyup)="applyLabFilter($event.target.value)"
+                    #input
+                  />
+                </mat-form-field>
+              </div>
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.laborator }}</td>
+          </ng-container>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="data">
+            <th mat-header-cell *matHeaderCellDef>
+              <div style="font-size: 15px; margin-top: 10px">Data</div>
+              <div>
+                <mat-form-field class="form-field" color="mat-teal">
+                  <mat-label>Filter</mat-label>
+                  <input
+                    id="filtrare"
+                    matInput
+                    (keyup)="applyDataFilter($event.target.value)"
+                    #input
+                  />
+                </mat-form-field>
+              </div>
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ getFormatData(element.data) }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="prezenta">
+            <th mat-header-cell *matHeaderCellDef>
+              <div style="font-size: 15px; margin-top: 10px">Prezenta</div>
+              <div>
+                <mat-form-field class="form-field" color="mat-teal">
+                  <mat-label>Filter</mat-label>
+                  <input
+                    id="filtrare"
+                    matInput
+                    (keyup)="applyPrezentaFilter($event.target.value)"
+                    #input
+                  />
+                </mat-form-field>
+              </div>
+            </th>
+            <td mat-cell *matCellDef="let element">{{ element.prezenta }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </div>
+    </mat-tab>
+    <mat-tab label="Detalii disciplina si anunturi">
+      <mat-grid-list cols="3" rowHeight="600px">
+        <mat-grid-tile>
+          <div
+            class="card text-dark teal lighten-3 mb-3"
+            style="max-width: 25rem; margin-top: 20rem"
+          >
+            <h4 class="card-header">
+              <img
+                src="assets/images/pin1.png"
+                alt="Girl in a jacket"
+                width="30"
+                height="25"
+                style="margin-right: 25px"
+              />Anunturi
+            </h4>
+            <div class="card-body">
+              <div *ngFor="let anunt of anunturi">
+                <h5 class="card-title">{{ anunt.titlu }}</h5>
+                <p
+                  class="card-text"
+                  style="margin-bottom: 20px; margin-left: 20px"
+                >
+                  {{ anunt.descriere }}
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-      </mat-grid-tile>
-      <mat-grid-tile>
-        <div class="card text-dark bg-light mb-3" style="max-width: 25rem">
-          <h4 class="card-header">Profesori</h4>
-          <div class="card-body">
-            <h5 class="card-title">Profesor curs: {{ profesorCurs.nume }}</h5>
-            <p class="card-text">Email: {{ profesorCurs.email }}</p>
-            <h5 class="card-title">
-              Profesor laborator: {{ profesorLab.nume }}
-            </h5>
-            <p class="card-text">Email: {{ profesorLab.email }}</p>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div class="card text-dark bg-light mb-3" style="max-width: 25rem">
+            <h4 class="card-header">Profesori</h4>
+            <div class="card-body">
+              <h5 class="card-title">Profesor curs: {{ profesorCurs.nume }}</h5>
+              <p class="card-text">Email: {{ profesorCurs.email }}</p>
+              <h5 class="card-title">
+                Profesor laborator: {{ profesorLab.nume }}
+              </h5>
+              <p class="card-text">Email: {{ profesorLab.email }}</p>
+            </div>
           </div>
-        </div>
-      </mat-grid-tile>
-      <mat-grid-tile>
-        <div
-          class="card text-dark bg-light mb-3"
-          style="max-width: 25rem;margin left:20rem"
-        >
-          <h4 class="card-header">Evaluare</h4>
-          <div class="card-body">
-            <h5 class="card-title">
-              Pondere examen: {{ procents.pondere_examen }}%
-            </h5>
-            <p class="card-text">Nota obtinuta:</p>
-            <h5 class="card-title">
-              Pondere laborator: {{ procents.pondere_lab }}%
-            </h5>
-            <p class="card-text">Nota obtinuta:</p>
-            <h5 class="card-title">
-              Pondere partial: {{ procents.pondere_partial }}%
-            </h5>
-            <p class="card-text">Nota obtinuta:</p>
-            <h5 class="card-title">
-              Pondere proiect: {{ procents.pondere_proiect }}%
-            </h5>
-            <p class="card-text">Nota obtinuta: -</p>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <div
+            class="card text-dark bg-light mb-3"
+            style="max-width: 25rem;margin left:20rem"
+          >
+            <h4 class="card-header">Evaluare</h4>
+            <div class="card-body">
+              <h5 class="card-title">
+                Pondere examen: {{ procents.pondere_examen }}%
+              </h5>
+              <p class="card-text">Nota obtinuta:</p>
+              <h5 class="card-title">
+                Pondere laborator: {{ procents.pondere_lab }}%
+              </h5>
+              <p class="card-text">Nota obtinuta:</p>
+              <h5 class="card-title">
+                Pondere partial: {{ procents.pondere_partial }}%
+              </h5>
+              <p class="card-text">Nota obtinuta:</p>
+              <h5 class="card-title">
+                Pondere proiect: {{ procents.pondere_proiect }}%
+              </h5>
+              <p class="card-text">Nota obtinuta: -</p>
+            </div>
           </div>
-        </div>
-      </mat-grid-tile>
-    </mat-grid-list>
-  </mat-tab>
-</mat-tab-group>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+<ng-template #elseBlockLoading>
+  <div class="spinner">
+    <sa-spinner-circular
+      size="200"
+      thickness="60"
+      speed="300"
+    ></sa-spinner-circular>
+  </div>
+</ng-template>

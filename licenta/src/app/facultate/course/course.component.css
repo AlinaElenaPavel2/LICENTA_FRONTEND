@@ -27,3 +27,26 @@ html
 .linksContainer{
   margin-left: 150px;
 }
+
+.spinner{
+  margin-top:400px;
+    margin-left:40%;
+}
+
+  
+table {
+  width: 100%;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 50%;
+}
+
+.mat-column-position {
+  max-width: 100px;
+}
+
+.mat-column-name {
+  max-width: 100px;
+}

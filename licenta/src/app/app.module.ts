@@ -26,7 +26,6 @@ import { HttpClientModule } from '@angular/common/http'
 import { MatTabsModule } from '@angular/material/tabs'
 import { MatExpansionModule } from '@angular/material/expansion'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
-import { StudentTableComponent } from './facultate/course/studentTable/student-table/student-table.component'
 import { MatTableModule } from '@angular/material/table'
 import { MatPaginatorModule } from '@angular/material/paginator'
 import { MatSortModule } from '@angular/material/sort'
@@ -112,7 +111,6 @@ const customNotifierOptions: NotifierOptions = {
     CalendarComponent,
     CourseComponent,
     ProfileComponent,
-    StudentTableComponent,
     EmailRecuperareComponent,
     UploadFilesComponent,
     UploadFileComponent,
