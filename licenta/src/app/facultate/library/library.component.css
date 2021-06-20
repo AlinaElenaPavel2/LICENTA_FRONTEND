@@ -94,6 +94,10 @@
 
   .spinner{
     margin-top:250px;
-      margin-left:40%;
+      margin-left:50%;
   
   }
+
+  
+  ::ng-deep .mat-ink-bar {
+    background-color:#00838f !important;}

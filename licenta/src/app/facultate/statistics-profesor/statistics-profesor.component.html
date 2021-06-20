@@ -1,0 +1,104 @@
+<app-navigation-bar></app-navigation-bar>
+<link
+  rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+/>
+
+<div class="grid-progress">
+  <div class="grid-item-progress">
+    <div *ngIf="loadingData; else elseBlockLoading">
+      <h4>Timp ramas pana la examene:</h4>
+      <div
+        *ngFor="let ev of evenimente; let i = index"
+        style="margin-left: 250px; margin-top: 100px"
+      >
+        <h3>{{ ev.examen }}</h3>
+        <div
+          class="progress"
+          style="
+            height: 25px;
+            margin-left: 40px;
+            margin-bottom: 20px;
+            width: 250px;
+          "
+        >
+          <div
+            class="progress-bar"
+            role="progressbar"
+            style="background-color: #f0c837; color: black"
+            [style.width]="ev.procent + '%'"
+            attr.aria-valuenow="{{ ev.procent }}"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          >
+            {{ ev.procent }} %
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-item-progress">
+    <h4>Semestru parcurs</h4>
+    <div style="margin-left: 300px">
+      <circle-progress
+        [percent]="82"
+        [radius]="100"
+        [outerStrokeWidth]="16"
+        [innerStrokeWidth]="8"
+        [outerStrokeColor]="'#e3667d'"
+        [innerStrokeColor]="'#e3a6b1'"
+        [animation]="true"
+        [animationDuration]="300"
+        [subtitleFormat]="formatSubtitle"
+        [titleFormat]="titleFormat"
+      ></circle-progress>
+    </div>
+  </div>
+</div>
+
+<div class="first">
+  <div class="grid-container">
+    <div class="grid-item">
+      <mat-form-field>
+        <mat-label>Tip de evaluare</mat-label>
+        <mat-select
+          [(value)]="evaluare"
+          (selectionChange)="evaluareChanged($event.value)"
+        >
+          <mat-option *ngFor="let disp of displayed" [value]="disp">
+            {{ disp }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="grid-item">
+      <div *ngIf="chartLoaded">
+        <div class="diamond">
+          <sa-spinner-diamond
+            [size]="200"
+            [thickness]="75"
+            [speed]="100"
+            color="rgba(57, 172, 156, 0.9)"
+            secondaryColor="rgba(24, 24, 24, 0.1)"
+          ></sa-spinner-diamond>
+          <h4 style="margin-top:40px;">Nu a fost ales niciun tip de evaluare</h4>
+        </div>
+      </div>
+      <div class="charts"><canvas #barChartProfesor></canvas></div>
+    </div>
+  </div>
+</div>
+
+<ng-template #elseBlockLoading>
+  <div class="spinner">
+    <sa-spinner-circular
+      [size]="200"
+      [thickness]="40"
+      [speed]="100"
+      color="rgba(227, 102, 125, 0.9)"
+      secondaryColor="rgba(24, 24, 24, 0.1)"
+    ></sa-spinner-circular>
+  </div>
+</ng-template>

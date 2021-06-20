@@ -50,3 +50,7 @@ table {
 .mat-column-name {
   max-width: 100px;
 }
+
+
+::ng-deep .mat-ink-bar {
+  background-color:#00838f !important;}

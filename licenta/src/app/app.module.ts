@@ -57,7 +57,8 @@ import { MatTooltipModule } from '@angular/material/tooltip'
 import { NotareComponent } from './facultate/dashboard/notare/notare.component'
 import { PrezenteStudentComponent } from './facultate/dashboard/prezente-student/prezente-student.component'
 import { SpinnersAngularModule } from 'spinners-angular'
-import { MatBadgeModule } from '@angular/material/badge'
+import { MatBadgeModule } from '@angular/material/badge';
+import { StatisticsProfesorComponent } from './facultate/statistics-profesor/statistics-profesor.component'
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -119,7 +120,8 @@ const customNotifierOptions: NotifierOptions = {
     DetailsDialogComponent,
     AddNewEventComponent,
     NotareComponent,
-    PrezenteStudentComponent
+    PrezenteStudentComponent,
+    StatisticsProfesorComponent
   ],
   imports: [
     MDBBootstrapModule.forRoot(),
@@ -175,6 +177,7 @@ const customNotifierOptions: NotifierOptions = {
       { path: 'university/login', component: LoginComponent },
       { path: 'university/dashboard', component: DashboardComponent },
       { path: 'university/statistics', component: StatisticsComponent },
+      { path: 'university/statistics/profesor', component: StatisticsProfesorComponent },
       { path: 'university/announces', component: AnnouncesComponent },
       { path: 'university/library', component: LibraryComponent },
       { path: 'university/calendar', component: CalendarComponent },

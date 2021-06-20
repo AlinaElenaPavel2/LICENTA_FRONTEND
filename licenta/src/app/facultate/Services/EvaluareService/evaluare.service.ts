@@ -19,6 +19,13 @@ export class EvaluareService {
     return this.http.get<any>(`${baseUrl}/disciplina=` + disciplina)
   }
 
+  public getdistributieNoteRequest (disciplina: string,tip:string): Observable<Evaluare> {
+    return this.http.get<any>(`${catalogUrl}/disciplina=` + disciplina+"/tip="+tip)
+  }
+  public getdistributieMedieFinalaRequest (disciplina: string): Observable<Evaluare> {
+    return this.http.get<any>(`${catalogUrl}/disciplina=` + disciplina+"/medieFinala")
+  }
+
   public getProcentsDetails (disciplina: String) {
     return new Promise(resolve => {
       this.getProcents(disciplina).subscribe(data => {
@@ -63,4 +70,25 @@ export class EvaluareService {
       }
     })
   }
+
+  async getDistributieNote (disciplina: string,tip:string) {
+    await new Promise(resolve => {
+      this.getdistributieNoteRequest(disciplina,tip).subscribe(data => {
+        this.data = data
+        resolve(this.data)
+      })
+    })
+    return this.data
+  }
+
+  async getDistributieMedieFianala (disciplina: string) {
+    await new Promise(resolve => {
+      this.getdistributieMedieFinalaRequest(disciplina).subscribe(data => {
+        this.data = data
+        resolve(this.data)
+      })
+    })
+    return this.data
+  }
+
 }

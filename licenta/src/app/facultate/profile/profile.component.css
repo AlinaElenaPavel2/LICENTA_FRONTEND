@@ -77,3 +77,11 @@ body {
   .row{
       width:90%;
   }
+
+  /* ::ng-deep .mat-tab-label-active {
+    border-bottom: 5px solid red;
+
+  } */
+
+  ::ng-deep .mat-ink-bar {
+    background-color:#00838f !important;}
