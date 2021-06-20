@@ -1,3 +1,4 @@
+<script src="https://cdn.jsdelivr.net/gh/linways/table-to-excel@v1.0.4/dist/tableToExcel.js"></script>
 <app-navigation-bar></app-navigation-bar>
 <div class="wrapper-glob">
   <div *ngIf="userRole == 'student'; else elseBlock">
@@ -181,13 +182,28 @@
             </div>
           </mat-tab>
           <mat-tab label="Notare">
+            <button
+              mat-raised-button
+              id="export"
+              style="margin-left: 80%; margin-top: 20px"
+              id="btnExport"
+              (click)="exportToExcel()"
+            >
+              <mat-icon
+                aria-hidden="false"
+                aria-label="Example home icon"
+                class="imagineExport"
+                >save_alt</mat-icon
+              >EXPORT TABLE
+            </button>
+
             <div
               class="table-responsive containerNotare"
               style="margin-top: 40px"
               id="notare"
             >
               <div *ngIf="loadingDataNotare; else elseBlockLoading">
-                <table>
+                <table #table>
                   <thead>
                     <tr>
                       <th *ngFor="let column of displayedColumns">
@@ -214,17 +230,6 @@
                       </td>
                       <td class="edit">
                         {{ row.grupa }}
-                        <mat-icon
-                          #tooltip="matTooltip"
-                          aria-hidden="false"
-                          aria-label="Example home icon"
-                          class="editIcon"
-                          style="margin-left: 10px"
-                          matTooltip="Edit"
-                          id="create"
-                          (click)="editValue(event, i)"
-                          >edit</mat-icon
-                        >
                       </td>
                       <td>
                         <input
@@ -232,8 +237,6 @@
                           class="form-control"
                           [(ngModel)]="row.laborator"
                           #input
-                          (change)="onKey(input.value, i)"
-                          (keyup)="refresh.next()"
                         />
                       </td>
                       <td>
@@ -242,8 +245,6 @@
                           class="form-control"
                           [(ngModel)]="row.partial"
                           #input
-                          (change)="onKey(input.value, i)"
-                          (keyup)="refresh.next()"
                         />
                       </td>
                       <td>
@@ -252,19 +253,10 @@
                           class="form-control"
                           [(ngModel)]="row.examen"
                           #input
-                          (change)="onKey(input.value, i)"
-                          (keyup)="refresh.next()"
                         />
                       </td>
                       <td>
-                        <input
-                          type="text"
-                          class="form-control"
-                          [(ngModel)]="notaFinala[i]"
-                          #input
-                          (change)="onKey(input.value, i)"
-                          (keyup)="refresh.next()"
-                        />
+                        {{ notaFinala[i] }}
                       </td>
                       <td>
                         <mat-icon
@@ -274,7 +266,7 @@
                           class="pointer"
                           matTooltip="Update eveniment"
                           id="create"
-                          (click)="editare(event)"
+                          (click)="editare(row, i)"
                           >update icon</mat-icon
                         >
                       </td>

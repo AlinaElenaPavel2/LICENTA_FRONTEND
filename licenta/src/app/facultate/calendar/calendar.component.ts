@@ -44,7 +44,6 @@ import {
 
 import { AddNewEventComponent } from './add-new-event/add-new-event.component'
 import * as moment from 'moment'
-import { TransitiveCompileNgModuleMetadata } from '@angular/compiler'
 
 const colors: any = {
   red: {

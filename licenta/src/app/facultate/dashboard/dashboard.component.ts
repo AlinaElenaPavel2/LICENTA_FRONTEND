@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core'
 import { ProgramaScolaraService } from '../Services/ProgramaScolaraService/programa-scolara.service'
 import { StudentService } from '../Services/StudentService/student.service'
 import { ProfesorService } from '../Services/ProfesorService/profesor.service'
@@ -19,6 +19,8 @@ import { Profesor } from '../Models/profesor'
 import { Prezenta } from '../Models/prezenta'
 import { Evaluare } from '../Models/evaluare'
 import { Catalog } from '../Models/catalog'
+import * as XLSX from 'xlsx'
+import { Subject } from 'rxjs'
 
 import * as moment from 'moment'
 
@@ -37,12 +39,21 @@ interface Notare {
   partial: number
   proiect: number
 }
+interface LooseObject {
+  [key: string]: any
+}
+interface Pondere {
+  tip: string
+  pondere: number
+}
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+  @ViewChild('table') table: ElementRef
+
   student: Student = new Student()
   discipline: Disciplina[] = []
   profesor: Profesor = new Profesor()
@@ -70,8 +81,10 @@ export class DashboardComponent implements OnInit {
   displayedColumns = ['Student', 'Grupa']
   loadingDataNotare = false
   notareTable: Notare[] = []
-  notaFinala:number[]=[]
-  edit:boolean=false
+  notaFinala: number[] = []
+  edit: boolean = false
+  ponderi: Pondere[] = []
+  refresh: Subject<any> = new Subject()
   async getAnunturi (disciplina, grupa) {
     var anunturi = await this.anunturiService.getAnunturi(disciplina, grupa)
     return anunturi
@@ -266,6 +279,8 @@ export class DashboardComponent implements OnInit {
       var string = 'Laborator - '
       var string2 = ' %'
       var procent = pond.pondere_lab
+      var pondere = { tip: 'laborator', pondere: pond.pondere_lab }
+      this.ponderi.push(pondere)
       this.displayedColumns.push(
         string.concat(procent.toString()).concat(string2)
       )
@@ -275,6 +290,8 @@ export class DashboardComponent implements OnInit {
       var string = 'Partial - '
       var string2 = ' %'
       var procent = pond.pondere_partial
+      var pondere = { tip: 'partial', pondere: pond.pondere_partial }
+      this.ponderi.push(pondere)
       this.displayedColumns.push(
         string.concat(procent.toString()).concat(string2)
       )
@@ -283,6 +300,8 @@ export class DashboardComponent implements OnInit {
       var string = 'Examen - '
       var string2 = ' %'
       var procent = pond.pondere_examen
+      var pondere = { tip: 'examen', pondere: pond.pondere_examen }
+      this.ponderi.push(pondere)
       this.displayedColumns.push(
         string.concat(procent.toString()).concat(string2)
       )
@@ -291,6 +310,8 @@ export class DashboardComponent implements OnInit {
       var string = 'Proiect - '
       var string2 = ' %'
       var procent = pond.pondere_proiect
+      var pondere = { tip: 'proiect', pondere: pond.pondere_proiect }
+      this.ponderi.push(pondere)
       this.displayedColumns.push(
         string.concat(procent.toString()).concat(string2)
       )
@@ -298,35 +319,68 @@ export class DashboardComponent implements OnInit {
     this.displayedColumns.push('Nota finala')
     this.displayedColumns.push('Actiuni')
 
-    console.log(this.displayedColumns)
+    // console.log(this.displayedColumns)
 
     this.loadingDataNotare = true
   }
 
   async getNotareTableContent (disciplina) {
     for (let i = 0; i < this.studenti.length; i++) {
-      var note=await this.evaluareService.getNote(disciplina,this.studenti[i].nume)
+      var note = await this.evaluareService.getNote(
+        disciplina,
+        this.studenti[i].nume
+      )
+      // console.log(note)
       var notare = {
         student: this.studenti[i].nume,
         grupa: this.studenti[i].grupa,
         examen: this.transform(note.examen),
-        laborator:  this.transform(note.laborator),
-        partial:  this.transform(note.partial),
-        proiect:  this.transform(note.proiect)
+        laborator: this.transform(note.laborator),
+        partial: this.transform(note.partial),
+        proiect: this.transform(note.proiect)
       }
-      this.notaFinala.push(i)
+
+      this.notaFinala.push(
+        Math.round(this.calculateFinalMark(note, this.ponderi))
+      )
       this.notareTable.push(notare)
     }
     console.log('NOTARE TABLE CONTENT')
     console.log(this.notareTable)
+    console.log(this.ponderi)
+  }
+  getProcentsByElement (procente, tip) {
+    for (let i = 0; i < procente.length; i++) {
+      if (procente[i].tip == tip) {
+        return procente[i].pondere * 0.01
+      }
+    }
+  }
+  calculateFinalMark (note, procente) {
+    var medieFinala = 0
+    if (note.examen != null) {
+      medieFinala += note.examen * this.getProcentsByElement(procente, 'examen')
+    }
+    if (note.laborator != null) {
+      medieFinala +=
+        note.laborator * this.getProcentsByElement(procente, 'laborator')
+    }
+    if (note.partial != null) {
+      medieFinala +=
+        note.partial * this.getProcentsByElement(procente, 'partial')
+    }
+    if (note.proiect != null) {
+      medieFinala +=
+        note.proiect * this.getProcentsByElement(procente, 'proiect')
+    }
+
+    return medieFinala
   }
 
-  transform(value)
-  {
-    if(value == null)
-    {
+  transform (value) {
+    if (value == null) {
       return '-'
-    }else{
+    } else {
       return value
     }
   }
@@ -476,8 +530,48 @@ export class DashboardComponent implements OnInit {
     console.log(column.split(' ')[0])
   }
 
-  editValue(event, i){
-    console.log(i+1)
-    this.edit=true
+  editValue (event, i) {
+    console.log(i + 1)
+    this.edit = true
+  }
+  async editare (eventToEdit, i) {
+    console.log('UPDATE NOTE')
+
+    var updateNote: { [k: string]: any } = {}
+    if (eventToEdit.examen != '-') {
+      updateNote.examen = eventToEdit.examen
+    }
+    if (eventToEdit.laborator != '-') {
+      updateNote.laborator = eventToEdit.laborator
+    }
+    if (eventToEdit.partial != '-') {
+      updateNote.partial = eventToEdit.partial
+    }
+    if (eventToEdit.proiect != '-') {
+      updateNote.proiect = eventToEdit.proiect
+    }
+    // console.log(eventToEdit)
+    await this.evaluareService.updateNote(
+      eventToEdit.student,
+      this.discipline[0].nume,
+      updateNote
+    )
+    this.notifier.notify('success', 'Nota s-a modificat cu succes!')
+
+    setTimeout(async () => {
+      this.reloadCurrentRoute()
+      // this.refresh.next()
+    }, 500)
+  }
+
+  exportToExcel () {
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(
+      this.table.nativeElement
+    )
+    delete ws['G']
+    const wb: XLSX.WorkBook = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(wb, ws, 'Note')
+
+    XLSX.writeFile(wb, 'Notare.xlsx')
   }
 }

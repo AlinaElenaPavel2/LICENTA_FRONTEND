@@ -44,4 +44,23 @@ export class EvaluareService {
     })
     return this.data
   }
+
+  private updateNoteRequest (student, disciplina,note): Observable<any> {
+    return this.http.put(`${catalogUrl}/student=`+student+"/disciplina="+disciplina, note, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json'),
+      responseType: 'json'
+    })
+  }
+
+  async updateNote (student, disciplina,note) {
+
+    await this.updateNoteRequest(student, disciplina,note).subscribe({
+      next: data => {
+        console.log('PUT SUCCESSFULLY! - Updated note')
+      },
+      error: error => {
+        console.log('PUT ERROR ' + error.message)
+      }
+    })
+  }
 }

@@ -86,9 +86,10 @@ a {
   #notare td, #notare th {
     border: 1px solid #ddd;
     padding: 8px;
+    align-items: center;
   }
   
-  #notare tr:nth-child(even){background-color: #f2f2f2;}
+  /* #notare tr:nth-child(even){background-color: #f2f2f2;} */
   
   #notare tr:hover {background-color: #ddd;}
   
@@ -98,6 +99,7 @@ a {
     text-align: left;
     background-color: #77bda3;
     color: white;
+    align-items: center;
   }
 
   .edit:hover>.editIcon {
@@ -107,4 +109,13 @@ a {
 
 .editIcon {
   visibility: hidden;
+}
+
+.pointer{
+   cursor:pointer;
+}
+
+input[type=text] {
+  border: none;
+  /* border-bottom: 2px solid red; */
 }

@@ -15,6 +15,10 @@ export class EvenimentService {
     return this.http.get<any>(`${baseUrl}/student=` + student)
   }
 
+  public getExamenDisciplinaRequest (disciplina: String): Observable<any> {
+    return this.http.get<any>(`${baseUrl}/disciplina=` + disciplina + '/examen')
+  }
+
   public getEvenimenteByDisciplineRequest (
     disciplina: String
   ): Observable<any> {
@@ -27,11 +31,9 @@ export class EvenimentService {
     })
   }
 
-  
   public getEvenimenteForStudentRequest (studentName: String): Observable<any> {
-    return this.http.get<any>(`${baseUrl}/student=` + studentName+"/all")
+    return this.http.get<any>(`${baseUrl}/student=` + studentName + '/all')
   }
-
 
   private deleteEvenimentRequest (
     disciplina,
@@ -129,4 +131,14 @@ export class EvenimentService {
   //     });
 
   // }
+
+  public async getExamenDisciplina (disciplina: String) {
+    await new Promise(resolve => {
+      this.getExamenDisciplinaRequest(disciplina).subscribe(data => {
+        this.data = data
+        resolve(this.data)
+      })
+    })
+    return this.data
+  }
 }
