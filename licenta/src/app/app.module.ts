@@ -189,6 +189,11 @@ const customNotifierOptions: NotifierOptions = {
         path:
           'university/course/:name/student/:student/laborator/:laborator/date/:data/ora/:ora/present',
         component: QrScanComponent
+      },
+      {
+        path:
+          'university/course/:name/student/:student/laborator/:laborator/date/:data/ora/:ora/recuperare',
+        component: QrScanComponent
       }
     ]),
 

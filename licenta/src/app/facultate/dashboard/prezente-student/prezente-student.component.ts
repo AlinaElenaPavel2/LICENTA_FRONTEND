@@ -19,7 +19,7 @@ export class PrezenteStudentComponent implements OnInit {
   disciplina
   prezente: Prezenta[] = []
   loadingData: boolean = false
-  displayedColumns: string[] = ['laborator', 'data']
+  displayedColumns: string[] = ['laborator', 'data','prezenta']
   dataSource: MatTableDataSource<Prezenta>
 
   async getStudentPrezente (disciplina, student) {
@@ -85,6 +85,19 @@ export class PrezenteStudentComponent implements OnInit {
   applyDataFilter (filterValue: string) {
     var filterdata = this.dataSource.data.filter(function (val) {
       return val.data
+        .toString()
+        .toLowerCase()
+        .includes(filterValue.toLowerCase())
+    })
+    this.dataSource.data = filterdata
+    if (filterValue == '') {
+      this.dataSource.data = this.prezente
+    }
+  }
+
+  applyPrezentaFilter (filterValue: string) {
+    var filterdata = this.dataSource.data.filter(function (val) {
+      return val.prezenta
         .toString()
         .toLowerCase()
         .includes(filterValue.toLowerCase())

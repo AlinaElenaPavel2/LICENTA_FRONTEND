@@ -11,22 +11,52 @@
         <div class="notification">
           <popover-content
             #myPopover
-            title="Recuperare laborator"
             [animation]="true"
-            [closeOnClickOutside]="false"
+            [closeOnClickOutside]="true"
             [closeOnMouseOutside]="false"
-            ><p>Studentul : x</p>
-            <p>Doreste sa recupereze</p>
-            <button type="button" style="background-color:green" (click)="accept()">Accept</button>
-            <button type="button" style="background-color:red" (click)="decline()">Decline</button>
-          </popover-content>
-          <mat-icon
-            matBadge={{notification}}
-            matBadgeColor="warn"
-            [popoverOnHover]="false"
-            [popover]="myPopover"
-            >email</mat-icon
+            style="background-color: green"
           >
+            <div *ngFor="let recuperare of recuperari">
+              <p>Studentul : {{ recuperare.student }}</p>
+              <hr />
+              <p>
+                Doreste sa recupereze laboratorul {{ recuperare.laborator }}
+              </p>
+              <p>
+                in ziua {{ recuperare.data }} la grupa {{ recuperare.grupa }}
+              </p>
+              <button
+                type="button"
+                style="
+                  background-color: green;
+                  margin-right: 20px;
+                  margin-left: 30px;
+                  border-radius: 12px;
+                  color: white;
+                "
+                (click)="accept(recuperare)"
+              >
+                Accept
+              </button>
+              <button
+                type="button"
+                style="background-color: red; border-radius: 12px; color: white"
+                (click)="decline(recuperare)"
+              >
+                Decline
+              </button>
+              <hr />
+            </div>
+          </popover-content>
+          <div *ngIf="loadingRecuperari">
+            <mat-icon
+              matBadge="{{ recuperari.length }}"
+              matBadgeColor="warn"
+              [popoverOnHover]="false"
+              [popover]="myPopover"
+              >email</mat-icon
+            >
+          </div>
         </div>
       </li>
 

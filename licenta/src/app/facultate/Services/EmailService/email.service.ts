@@ -13,15 +13,15 @@ export class EmailService {
 
   constructor(private http: HttpClient) { }
 
-  private sendEmail( email:Email,sendTo:string): Observable<any> {
+  private sendEmailRequest( email:Email,sendTo:string): Observable<any> {
     return this.http.post(`${baseUrl}/email=`+sendTo, email, {
       headers: new HttpHeaders()
         .set('Content-Type', 'application/json')
     });
   }
 
-  async emailNotification( email:Email,sendTo:string) {
-    await this.sendEmail(email,sendTo)
+  async sendEmail( email:Email,sendTo:string) {
+    await this.sendEmailRequest(email,sendTo)
       .subscribe({
         next: data => {
           console.log("POST SUCCESSFULLY! - Send email")

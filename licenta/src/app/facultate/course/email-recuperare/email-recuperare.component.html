@@ -2,16 +2,7 @@
 <hr />
 
 <form [formGroup]="sendEmail" (ngSubmit)="onSubmit()">
-  <mat-form-field  style="width: 300px">
-    <mat-label> Titlu:</mat-label>
-    <input matInput formControlName="titlu" />
-  </mat-form-field>
-  <br />
-  <mat-form-field  style="width: 300px">
-    <mat-label>Mesaj</mat-label>
-    <textarea matInput formControlName="mesaj"></textarea>
-  </mat-form-field>
-  <br />
+ 
   <mat-form-field class="grid-item" style="width: 300px">
     <mat-label>Selecteaza un laborator</mat-label>
     <mat-select formControlName="laborator">
@@ -22,7 +13,18 @@
     </mat-select>
   </mat-form-field>
   <br />
-  
+
+  <mat-form-field class="grid-item" style="width: 300px">
+    <mat-label>Selecteaza o grupa</mat-label>
+    <mat-select formControlName="grupa">
+      <mat-option>None</mat-option>
+      <mat-option *ngFor="let grupa of grupe" [value]="grupa">{{
+        grupa
+      }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <br />
+
   <mat-form-field style="width: 300px">
     <mat-label>Choose a date</mat-label>
     <input matInput [matDatepicker]="picker" formControlName="dataRecuperare" />
@@ -38,6 +40,9 @@
     color="warn"
     aria-label="Example icon button with a delete icon"
   >
-    <mat-icon >send icon</mat-icon>
+    <mat-icon>send icon</mat-icon>
   </button>
 </form>
+
+<notifier-container></notifier-container>
+

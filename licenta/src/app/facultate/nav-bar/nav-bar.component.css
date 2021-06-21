@@ -80,3 +80,7 @@ ul.no-bullets {
     margin-left: 0.1rem;
     margin-right: 1rem;
 }
+
+.popover-title{
+    background: #ffff99;
+}

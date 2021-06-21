@@ -37,8 +37,25 @@ export class PrezentaService {
     return this.http.post(`${baseUrl}/disciplina=` + disciplina+"/student="+student+"/laborator="+laborator+"/durata="+durata, "")
   }
 
+ 
   async addPrezenta (disciplina, student,laborator,durata) {
     await this.addPrezentaRequest(disciplina, student,laborator,durata).subscribe({
+      next: data => {
+        console.log('POST SUCCESSFULLY! - Added prezenta')
+      },
+      error: error => {
+        console.log('POST ERROR ' + error.message)
+      }
+    })
+  }
+
+  private addPrezentaRecuperariRequest (disciplina, student,laborator,durata): Observable<any> {
+    return this.http.post(`${baseUrl}/disciplina=` + disciplina+"/student="+student+"/laborator="+laborator+"/durata="+durata+"/recuperat", "")
+  }
+
+  
+  async addPrezentaRecuperari (disciplina, student,laborator,durata) {
+    await this.addPrezentaRecuperariRequest(disciplina, student,laborator,durata).subscribe({
       next: data => {
         console.log('POST SUCCESSFULLY! - Added prezenta')
       },

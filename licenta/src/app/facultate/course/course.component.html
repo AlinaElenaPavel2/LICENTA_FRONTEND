@@ -203,9 +203,11 @@
 <ng-template #elseBlockLoading>
   <div class="spinner">
     <sa-spinner-circular
-      size="200"
-      thickness="60"
-      speed="300"
+      [size]="200"
+      [thickness]="40"
+      [speed]="100"
+      color="rgba(227, 102, 125, 0.9)"
+      secondaryColor="rgba(24, 24, 24, 0.1)"
     ></sa-spinner-circular>
   </div>
 </ng-template>

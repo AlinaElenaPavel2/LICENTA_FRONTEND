@@ -18,7 +18,8 @@ export class QrScanComponent implements OnInit {
 
   constructor (
     private _Activatedroute: ActivatedRoute,
-    private prezenteService: PrezentaService
+    private prezenteService: PrezentaService,
+    private router: Router
   ) {}
   sub
   ngOnInit (): void {
@@ -64,10 +65,27 @@ export class QrScanComponent implements OnInit {
     console.log('----------------')
     console.log(sendingTime)
     console.log(currentdateMom)
+    if (this.router.url.split('/')[12] == 'recuperare') {
+      this.addPrezentaRecuperari(
+        this.disciplinaName,
+        this.student,
+        this.laborator,
+        Math.round(minutes)
+      )
+    }
   }
 
   async addPrezenta (disciplina, student, laborator, durata) {
     await this.prezenteService.addPrezenta(
+      disciplina,
+      student,
+      laborator,
+      durata
+    )
+  }
+
+  async addPrezentaRecuperari (disciplina, student, laborator, durata) {
+    await this.prezenteService.addPrezentaRecuperari(
       disciplina,
       student,
       laborator,

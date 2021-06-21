@@ -17,8 +17,8 @@ export class StudentService {
     return this.http.get<any>(`${baseUrl}/fullname=` + name)
   }
 
-  private getStudentById (): Observable<Student> {
-    return this.http.get<any>(`${baseUrl}/id=` + sessionStorage.getItem('ID'))
+  private getStudentById (id): Observable<Student> {
+    return this.http.get<any>(`${baseUrl}/` + id)
   }
 
   private getStudentDetails (name) {
@@ -30,9 +30,9 @@ export class StudentService {
     })
   }
 
-  private getStudentDetailsById () {
+  private getStudentDetailsById (id) {
     return new Promise(resolve => {
-      this.getStudentById().subscribe(data => {
+      this.getStudentById(id).subscribe(data => {
         this.data = data
         resolve(this.data)
       })
@@ -44,8 +44,8 @@ export class StudentService {
     return this.data
   }
 
-  async sendStudentDetailsById () {
-    await this.getStudentDetailsById()
+  async sendStudentDetailsById (id) {
+    await this.getStudentDetailsById(id)
     return this.data
   }
 

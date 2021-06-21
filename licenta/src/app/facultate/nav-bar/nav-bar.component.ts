@@ -2,10 +2,23 @@ import { Component, Input, OnInit } from '@angular/core'
 import { ProfilePictureService } from '../Services/ProfilePictureService/profile-picture.service'
 import { StudentService } from '../Services/StudentService/student.service'
 import { ProfesorService } from '../Services/ProfesorService/profesor.service'
+import { RecuperariService } from '../Services/RecuperariService/recuperari.service'
+import { ProgramaScolaraService } from '../Services/ProgramaScolaraService/programa-scolara.service'
+import { EmailService } from '../Services/EmailService/email.service'
 
 import { Student } from '../Models/student'
 import { Profesor } from '../Models/profesor'
+import { Disciplina } from '../Models/disciplina2'
+import { validateHorizontalPosition } from '@angular/cdk/overlay'
+import { Email } from '../Models/email'
 
+interface Recuperari {
+  id: number
+  student: string
+  laborator: string
+  grupa: string
+  data: string
+}
 @Component({
   selector: 'app-navigation-bar',
   templateUrl: './nav-bar.component.html',
@@ -18,7 +31,10 @@ export class NavBarComponent implements OnInit {
   student: Student = new Student()
   profesor: Profesor = new Profesor()
   loadingData: boolean = false
-  notification:number=1
+  notification: number = 1
+  discipline: Disciplina[] = []
+  recuperari: Recuperari[] = []
+  loadingRecuperari = false
   async getProfilePicture (userName, userRole) {
     if (userRole == 'student') {
       var stud = await this.studentService.sendStudentDetails(userName)
@@ -66,14 +82,61 @@ export class NavBarComponent implements OnInit {
     }
   }
 
+  async getRecupereri (name) {
+    var prof = await this.profesorService.sendProfesorDetails(
+      parseInt(sessionStorage.getItem('ID'))
+    )
+
+    this.profesor.setComponents(
+      prof.id_profesor,
+      prof.nume,
+      prof.email,
+      prof.telefon,
+      prof.functia
+    )
+    this.discipline = await this.programaScolaraService.getDisciplineTitular(
+      this.profesor.nume
+    )
+
+    var recuperari = await this.recuperariService.getRecuperari(
+      this.discipline[0].nume,
+      this.profesor.nume
+    )
+
+    for (let i = 0; i < recuperari.length; i++) {
+      if (recuperari[i].accept == null) {
+        var student = await this.studentService.sendStudentDetailsById(
+          recuperari[i].id_student
+        )
+        console.log(recuperari[i])
+        var recuperare = {
+          id: recuperari[i].id,
+          student: student.nume,
+          laborator: recuperari[i].laborator,
+          grupa: recuperari[i].grupa,
+          data: recuperari[i].data
+        }
+        console.log(recuperare)
+        this.recuperari.push(recuperare)
+
+        this.loadingRecuperari = true
+      }
+    }
+  }
   constructor (
     private studentService: StudentService,
     private profesorService: ProfesorService,
+    private recuperariService: RecuperariService,
+    private programaScolaraService: ProgramaScolaraService,
+    private emailService: EmailService,
     private profilePictureService: ProfilePictureService
   ) {
     setTimeout(() => {
       this.userName = sessionStorage.getItem('name')
       this.userRole = sessionStorage.getItem('role')
+      if (this.userRole == 'profesor') {
+        this.getRecupereri(this.userName)
+      }
       this.getProfilePicture(this.userName, this.userRole)
       if (this.base64textString.length > 0) {
         this.loadingData = true
@@ -89,14 +152,48 @@ export class NavBarComponent implements OnInit {
     sessionStorage.removeItem('name')
   }
 
-  accept()
-  {
-    console.log("Acceptare recuperare")
+  async accept (recuperare) {
+    var index = this.recuperari.indexOf(recuperare)
+    await this.recuperariService.setResponse(recuperare.id, 'da')
+    this.recuperari.splice(index, 1)
+    var email = new Email()
+    email.setSubject('Cerere recuperare laborator')
+    email.setText(
+      '   Cererea pentru a recupera laboratorul ' +
+        recuperare.laborator +
+        ' de la disciplina ' +
+        this.discipline[0].nume +
+        ' in ziua de ' +
+        recuperare.data +
+        ' la grupa ' +
+        recuperare.grupa +
+        ' a fost acceptata de catre profesorul ' +
+        this.profesor.nume
+    )
+    console.log(this.discipline[0].nume)
+    this.emailService.sendEmail(email, 'alina_pavel98@yahoo.com')
   }
 
-  decline()
-  {
-    console.log("Decline cerere recuperare")
+  async decline (recuperare) {
+    var index = this.recuperari.indexOf(recuperare)
+    await this.recuperariService.setResponse(recuperare.id, 'nu')
+    this.recuperari.splice(index, 1)
+    var email = new Email()
+    email.setSubject('Cerere recuperare laborator')
+    email.setText(
+      '   Cererea pentru a recupera laboratorul ' +
+        recuperare.laborator +
+        ' de la disciplina ' +
+        this.discipline[0].nume +
+        ' in ziua de ' +
+        recuperare.data +
+        ' la grupa ' +
+        recuperare.grupa +
+        ' a nu fost acceptata de catre profesorul ' +"."+
+        this.profesor.nume
+    )
+
+    this.emailService.sendEmail(email, 'alina_pavel98@yahoo.com')
   }
 
   readLocalImage () {

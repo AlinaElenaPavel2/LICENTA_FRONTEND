@@ -1,8 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core'
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog'
 import { FormGroup, FormControl } from '@angular/forms'
-import { Email } from 'src/app/facultate/Models/email'
-import { EmailService } from 'src/app/facultate/Services/EmailService/email.service'
+import { RecuperariService } from 'src/app/facultate/Services/RecuperariService/recuperari.service'
+import { NotifierService } from 'angular-notifier'
+
 import * as moment from 'moment'
 
 @Component({
@@ -12,52 +13,58 @@ import * as moment from 'moment'
 })
 export class EmailRecuperareComponent implements OnInit {
   profesor_email: string
-  email: Email = new Email()
+
   laboratoare: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+  grupe: string[] = ['1306', '1307', '1308']
+  studentName: string
+  disciplina: string
+  private notifier: NotifierService
 
   sendEmail = new FormGroup({
-    titlu: new FormControl(''),
-    mesaj: new FormControl(''),
     laborator: new FormControl(''),
+    grupa: new FormControl(''),
     dataRecuperare: new FormControl('')
   })
 
   constructor (
     public dialog: MatDialogRef<EmailRecuperareComponent>,
     @Inject(MAT_DIALOG_DATA) public data: EmailRecuperareModel,
-    private emailService: EmailService
+    private recuperariServici: RecuperariService,
+    notifier: NotifierService
   ) {
+    this.notifier=notifier
     this.profesor_email = data.email_profesor
+    this.disciplina = data.disciplina
   }
 
   ngOnInit (): void {}
 
   async onSubmit () {
-    // console.log(this.sendEmail.value.dataRecuperare)
-    const format1 = 'YYYY-MM-DD HH:mm:ss'
+    const format1 = 'YYYY-MM-DD'
     console.log(moment(this.sendEmail.value.dataRecuperare).format(format1))
     console.log('---------')
-    console.log(this.sendEmail.value)
+    this.studentName = sessionStorage.getItem('name')
+
     this.dialog.close()
-    this.email.setComponents(
-      this.sendEmail.value.titlu,
-      this.sendEmail.value.mesaj
-    )
 
     // console.log(this.profesor_email)
     var email = {
-      titlu: this.sendEmail.value.titlu,
-      descriere: this.sendEmail.value.mesaj,
       laborator: this.sendEmail.value.laborator,
+      grupa: this.sendEmail.value.grupa,
       data: moment(this.sendEmail.value.dataRecuperare).format(format1)
     }
+    console.log(this.disciplina)
+    console.log(this.studentName)
     console.log(email)
-
-    // console.log(this.email)
-    // await this.emailService.emailNotification(this.email,this.profesor_email);
+    await this.recuperariServici.addRecuperare(
+      this.disciplina,
+      this.studentName,
+      email
+    )
+    this.notifier.notify('success', 'Cererea a fost trimisa cu succes!')
   }
 }
 
 export class EmailRecuperareModel {
-  constructor (public email_profesor: string) {}
+  constructor (public email_profesor: string, public disciplina: string) {}
 }
