@@ -489,11 +489,12 @@ export class DashboardComponent implements OnInit {
       laborator: week
     }
 
-    // this.emailService.sendEmailtoStudents(
-    //   this.discipline[0].nume,
-    //   this.email.value.grupa,
-    //   this.email.value.laborator
-    // )
+    this.emailService.sendEmailtoStudents(
+      this.discipline[0].nume,
+      this.email.value.grupa,
+      week
+    )
+
     console.log(sendEmails)
     this.notifier.notify(
       'success',

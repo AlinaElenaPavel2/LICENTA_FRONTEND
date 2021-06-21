@@ -7,10 +7,26 @@
 
   <links>
     <ul class="navbar-nav ml-auto nav-flex-icons">
- 
       <li class="nav-item">
         <div class="notification">
-          <mat-icon matBadge="15" matBadgeColor="warn">home</mat-icon>
+          <popover-content
+            #myPopover
+            title="Recuperare laborator"
+            [animation]="true"
+            [closeOnClickOutside]="false"
+            [closeOnMouseOutside]="false"
+            ><p>Studentul : x</p>
+            <p>Doreste sa recupereze</p>
+            <button type="button" style="background-color:green" (click)="accept()">Accept</button>
+            <button type="button" style="background-color:red" (click)="decline()">Decline</button>
+          </popover-content>
+          <mat-icon
+            matBadge={{notification}}
+            matBadgeColor="warn"
+            [popoverOnHover]="false"
+            [popover]="myPopover"
+            >email</mat-icon
+          >
         </div>
       </li>
 

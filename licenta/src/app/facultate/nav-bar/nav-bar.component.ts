@@ -18,6 +18,7 @@ export class NavBarComponent implements OnInit {
   student: Student = new Student()
   profesor: Profesor = new Profesor()
   loadingData: boolean = false
+  notification:number=1
   async getProfilePicture (userName, userRole) {
     if (userRole == 'student') {
       var stud = await this.studentService.sendStudentDetails(userName)
@@ -86,6 +87,16 @@ export class NavBarComponent implements OnInit {
     sessionStorage.removeItem('role')
     sessionStorage.removeItem('ID')
     sessionStorage.removeItem('name')
+  }
+
+  accept()
+  {
+    console.log("Acceptare recuperare")
+  }
+
+  decline()
+  {
+    console.log("Decline cerere recuperare")
   }
 
   readLocalImage () {

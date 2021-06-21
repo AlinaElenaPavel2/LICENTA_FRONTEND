@@ -59,6 +59,7 @@ import { PrezenteStudentComponent } from './facultate/dashboard/prezente-student
 import { SpinnersAngularModule } from 'spinners-angular'
 import { MatBadgeModule } from '@angular/material/badge';
 import { StatisticsProfesorComponent } from './facultate/statistics-profesor/statistics-profesor.component'
+import {PopoverModule} from 'ngx-smart-popover'
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -149,6 +150,7 @@ const customNotifierOptions: NotifierOptions = {
     MatDatepickerModule,
     MatNativeDateModule,
     NgApexchartsModule,
+    PopoverModule,
     MatTableExporterModule,
     NgbModule,
     NotifierModule.withConfig(customNotifierOptions),
@@ -185,7 +187,7 @@ const customNotifierOptions: NotifierOptions = {
       { path: 'university/profile', component: ProfileComponent },
       {
         path:
-          'university/course/:name/student/:student/laborator/:laborator/present/successfully',
+          'university/course/:name/student/:student/laborator/:laborator/date/:data/ora/:ora/present',
         component: QrScanComponent
       }
     ]),

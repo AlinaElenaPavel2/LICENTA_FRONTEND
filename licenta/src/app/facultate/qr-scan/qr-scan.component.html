@@ -1,7 +1,13 @@
-<div class="img">
-<img src="assets/images/checked1.png" width="300" height="300" />
+<div *ngIf="success; else elseBlock">
+  <div class="img">
+    <img src="assets/images/checked1.png" width="300" height="300" />
+  </div>
+  <div class="txt">Prezenta a fost salvata cu succes!</div>
 </div>
 
-<div class="txt">
-Successfully saved the presence!
-</div>
+<ng-template #elseBlock>
+  <div class="img">
+    <img src="assets/images/cancel.png" width="300" height="300" />
+  </div>
+  <div class="txt">Pentru acest laborator aveti absent!</div>
+</ng-template>
