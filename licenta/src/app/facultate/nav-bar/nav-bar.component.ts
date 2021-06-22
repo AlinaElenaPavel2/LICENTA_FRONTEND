@@ -35,6 +35,8 @@ export class NavBarComponent implements OnInit {
   discipline: Disciplina[] = []
   recuperari: Recuperari[] = []
   loadingRecuperari = false
+
+
   async getProfilePicture (userName, userRole) {
     if (userRole == 'student') {
       var stud = await this.studentService.sendStudentDetails(userName)
@@ -150,6 +152,8 @@ export class NavBarComponent implements OnInit {
     sessionStorage.removeItem('role')
     sessionStorage.removeItem('ID')
     sessionStorage.removeItem('name')
+    localStorage.removeItem("Materie")
+    localStorage.removeItem("Componenta")
   }
 
   async accept (recuperare) {

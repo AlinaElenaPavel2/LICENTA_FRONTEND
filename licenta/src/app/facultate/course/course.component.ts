@@ -44,7 +44,7 @@ export class CourseComponent implements OnInit {
   prezente: Prezenta[] = []
   name: string
   anunturi = []
-  note: String[] = ['', '', '', '']
+  note
   disciplinaName: string
   studentId: number
 
@@ -54,6 +54,7 @@ export class CourseComponent implements OnInit {
   dataSource: MatTableDataSource<Prezenta>
   displayedColumns = ['laborator', 'data', 'prezenta']
   loading: boolean = false
+
   async getAnunturi (disciplina) {
     var anunturi = await this.anunturiService.getAnunturi(disciplina, '1307')
     return anunturi
@@ -157,21 +158,26 @@ export class CourseComponent implements OnInit {
     )
     if (this.procents.pondere_lab == null) {
       this.procents.setPondereLab(0)
-      this.note[1] = '-'
     }
 
     if (this.procents.pondere_partial == null) {
       this.procents.setPonderePartial(0)
-      this.note[2] = '-'
     }
 
     if (this.procents.pondere_proiect == null) {
       this.procents.setPondereLaborator(0)
-      this.note[3] = '-'
     }
 
+    // console.log('*************')
+    // console.log(this.procents)
+
+    this.note= await this.evaluareService.getNote(
+      this.disciplinaName,
+      this.student.nume
+    )
+
     console.log('*************')
-    console.log(this.procents)
+    console.log( this.note)
 
     var prezent = await this.prezentaService.getPrezente(
       this.disciplinaName,
@@ -188,14 +194,19 @@ export class CourseComponent implements OnInit {
       this.loadingData = true
     }
 
-
     this.anunturi = await this.anunturiService.getAnunturi(
       this.disciplinaName,
       this.student.grupa
     )
     console.log(this.anunturi)
-    this.loading= true
-
+    this.loading = true
+  }
+  formatNota (nota) {
+    if (nota == null) {
+      return '-'
+    } else {
+      return nota
+    }
   }
 
   async getFisiere (disciplina) {
@@ -264,16 +275,15 @@ export class CourseComponent implements OnInit {
   recuperare () {
     console.log('programeaza recuperare')
     var email = 'alina_pavel98@yahoo.com'
-    const dialogData = new EmailRecuperareModel(email,this.disciplinaName)
+    const dialogData = new EmailRecuperareModel(email, this.disciplinaName)
     const dialogRef = this.dialog.open(EmailRecuperareComponent, {
       width: '600px',
       height: '500px',
       data: dialogData
     })
   }
-  getFormatData(data)
-  {
-    return data.substring(0,10)
+  getFormatData (data) {
+    return data.substring(0, 10)
   }
 
   applyLabFilter (filterValue: string) {
@@ -301,12 +311,9 @@ export class CourseComponent implements OnInit {
       this.dataSource.data = this.prezente
     }
   }
-  applyPrezentaFilter(filterValue: string)
-  {
+  applyPrezentaFilter (filterValue: string) {
     var filterdata = this.dataSource.data.filter(function (val) {
-      return val.prezenta
-        .toLowerCase()
-        .includes(filterValue.toLowerCase())
+      return val.prezenta.toLowerCase().includes(filterValue.toLowerCase())
     })
     this.dataSource.data = filterdata
     if (filterValue == '') {

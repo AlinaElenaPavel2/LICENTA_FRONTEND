@@ -98,7 +98,7 @@ export class CalendarComponent {
 
   activeDayIsOpen: boolean = false
 
-  loadingData:boolean=true
+  loadingData: boolean = true
 
   async geEvenimenteProfesor () {
     var prof = await this.profesorService.sendProfesorDetails(
@@ -139,12 +139,12 @@ export class CalendarComponent {
     console.log(this.descrieri)
     // this.loadingData=true
     this.refresh.next()
-
   }
-  async getEvenimenteForStudent()
-  {
+  async getEvenimenteForStudent () {
     console.log(this.name)
-    var evenimente=await this.evenimentService.getEvenimenteForStudent(this.name)
+    var evenimente = await this.evenimentService.getEvenimenteForStudent(
+      this.name
+    )
     for (let i = 0; i < evenimente.length; i++) {
       var ev = {
         start: new Date(evenimente[i].start_date),
@@ -180,9 +180,8 @@ export class CalendarComponent {
 
       if (this.userRole == 'profesor') {
         this.geEvenimenteProfesor()
-        
       } else {
-        this.getEvenimenteForStudent();
+        this.getEvenimenteForStudent()
       }
     }, 300)
   }
@@ -202,9 +201,14 @@ export class CalendarComponent {
     }
   }
 
-  formatDate(date)
-  {
-    return  moment(date).format(this.format1)
+  formatDate (date) {
+    return moment(date).format(this.format1)
+  }
+
+  formatDateInput (date) {
+    return moment(date)
+      .format('LLL')
+      .slice(0, -2) // June 22, 2021 9:16 AM
   }
 
   eventTimesChanged ({
@@ -290,7 +294,6 @@ export class CalendarComponent {
   editEvent () {
     this.editEvents = true
     window.scrollTo(0, 900)
-
   }
 
   async editare (eventToEdit: CalendarEvent) {
@@ -315,7 +318,7 @@ export class CalendarComponent {
       descriere: this.descrieri[index]
     }
 
-    await this.evenimentService.updateEveniment(this.indexi[index],ev)
+    await this.evenimentService.updateEveniment(this.indexi[index], ev)
     this.notifier.notify(
       'success',
       'Modificarea evenimentului a fost realizata cu succes!'

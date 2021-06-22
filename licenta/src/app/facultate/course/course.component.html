@@ -180,19 +180,27 @@
               <h5 class="card-title">
                 Pondere examen: {{ procents.pondere_examen }}%
               </h5>
-              <p class="card-text">Nota obtinuta:</p>
+              <p class="card-text">
+                Nota obtinuta: {{ formatNota(note.examen) }}
+              </p>
               <h5 class="card-title">
                 Pondere laborator: {{ procents.pondere_lab }}%
               </h5>
-              <p class="card-text">Nota obtinuta:</p>
+              <p class="card-text">
+                Nota obtinuta: {{ formatNota(note.laborator) }}
+              </p>
               <h5 class="card-title">
                 Pondere partial: {{ procents.pondere_partial }}%
               </h5>
-              <p class="card-text">Nota obtinuta:</p>
+              <p class="card-text">
+                Nota obtinuta: {{ formatNota(note.partial) }}
+              </p>
               <h5 class="card-title">
                 Pondere proiect: {{ procents.pondere_proiect }}%
               </h5>
-              <p class="card-text">Nota obtinuta: -</p>
+              <p class="card-text">
+                Nota obtinuta: {{ formatNota(note.proiect) }}
+              </p>
             </div>
           </div>
         </mat-grid-tile>

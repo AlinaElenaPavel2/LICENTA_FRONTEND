@@ -24,6 +24,10 @@ export class SituatieScolaraService {
     return this.http.get<any>(`${reexaminariUrl}/student=` + student+"/tip")
   }
 
+  public getMedieGeneralaRequest (student: string,an:number): Observable<any> {
+    return this.http.get<any>(`${baseUrl}/student=` + student+"/an="+an+"/medii")
+  }
+
   public getNote (student: String) {
     return new Promise(resolve => {
       this.getNoteRequest(student).subscribe(data => {
@@ -65,6 +69,16 @@ export class SituatieScolaraService {
 
   async getReexaminariStudent (student: String) {
     await this.getReexCount(student)
+    return this.data
+  }
+
+  async getMedieGenerala (student: string,an:number) {
+    await new Promise(resolve => {
+      this.getMedieGeneralaRequest(student,an).subscribe(data => {
+        this.data = data
+        resolve(this.data)
+      })
+    })
     return this.data
   }
 }

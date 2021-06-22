@@ -1,7 +1,15 @@
 import { Component, OnInit, HostListener } from '@angular/core'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
-import { Router } from '@angular/router'
+import {
+  NavigationEnd,
+  NavigationStart,
+  Router,
+  RouterEvent,
+  RoutesRecognized
+} from '@angular/router'
 import { LoginService } from '../Services/LoginService/login.service'
+import { LocationStrategy } from '@angular/common'
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -12,12 +20,27 @@ export class LoginComponent implements OnInit {
   loading = false
   submitted = false
   invalidLogin = false
+  hide = true
+  previousUrl: string
 
   constructor (
     private router: Router,
     private formBuilder: FormBuilder,
-    private loginservice: LoginService
-  ) {}
+    private loginservice: LoginService,
+    private location: LocationStrategy
+  ) {
+    this.previousUrl = localStorage.getItem('previousUrl')
+    if (this.previousUrl != undefined) {
+      sessionStorage.removeItem('role')
+      sessionStorage.removeItem('ID')
+      sessionStorage.removeItem('name')
+      localStorage.removeItem('previousUrl')
+    }
+    history.pushState(null, null, window.location.href)
+    this.location.onPopState(() => {
+      history.pushState(null, null, window.location.href)
+    })
+  }
 
   ngOnInit (): void {
     this.loginForm = this.formBuilder.group({
@@ -36,30 +59,22 @@ export class LoginComponent implements OnInit {
 
   async onSubmit () {
     this.submitted = true
-    console.log('*********Credentiale*********')
-    console.log(
-      this.getCredentials.email.value,
-      this.getCredentials.password.value
-    )
 
-    // if (this.loginForm.invalid) {
-    //   return;
-    // }
     await this.loginservice.authenticate(
       this.getCredentials.email.value,
       this.getCredentials.password.value
     )
-    setTimeout(() => {
-      this.router.navigate(['/university/announces'])
-    }, 1000)
 
     setTimeout(() => {
       if (sessionStorage.getItem('role').valueOf() == 'wrongCredentials') {
-        // this.router.navigate(['/university']);
+        setTimeout(() => {
+          this.router.navigate(['/university/login'])
+        }, 300)
         this.invalidLogin = true
       } else {
-        console.log('da')
-        // this.router.navigate(['/university/dashboard']);
+        setTimeout(() => {
+          this.router.navigate(['/university/announces'])
+        }, 200)
         this.invalidLogin = false
       }
     }, 100)

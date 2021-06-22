@@ -19,6 +19,8 @@ export class EvaluareService {
     return this.http.get<any>(`${baseUrl}/disciplina=` + disciplina)
   }
 
+
+
   public getdistributieNoteRequest (disciplina: string,tip:string): Observable<Evaluare> {
     return this.http.get<any>(`${catalogUrl}/disciplina=` + disciplina+"/tip="+tip)
   }

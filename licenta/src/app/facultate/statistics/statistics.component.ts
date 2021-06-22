@@ -195,71 +195,6 @@ export class StatisticsComponent implements OnInit {
     }, 100)
   }
 
-  displayPieChart () {
-    setTimeout(() => {
-      this.ctxPie = this.pieChart.nativeElement.getContext('2d')
-    }, 100)
-
-    setTimeout(() => {
-      var myPieChart = new Chart(this.ctxPie, {
-        plugins: [ChartDataLabels],
-        type: 'pie',
-        data: {
-          labels: ['Examinari', 'Reexaminari', 'Re-Reexaminari'],
-          datasets: [
-            {
-              fill: true,
-              data: [210, 130, 120],
-              backgroundColor: ['#F7464A', '#46BFBD', '#FDB45C'],
-              hoverBackgroundColor: ['#FF5A5E', '#5AD3D1', '#FFC870'],
-              borderWidth: [2, 2]
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          legend: {
-            position: 'right',
-            labels: {
-              padding: 12,
-              boxWidth: 12,
-              fontSize: 16
-            }
-          },
-          title: {
-            display: true,
-            text: 'Numarul de examene sustinute',
-            position: 'top'
-          },
-          plugins: {
-            datalabels: {
-              display: true,
-              anchor: 'end',
-              align: 'top',
-              formatter: Math.round,
-              // formatter: (value, ctx) => {
-              //   let sum = 0
-              //   let dataArr = ctx.chart.data.datasets[0].data
-              //   dataArr.map(data => {
-              //     sum += data
-              //   })
-              //   let percentage = (value * 100 / sum).toFixed(2) + '%'
-              //   return percentage
-              // },
-              color: 'white',
-              labels: {
-                title: {
-                  font: {
-                    size: 15
-                  }
-                }
-              }
-            }
-          }
-        }
-      })
-    }, 100)
-  }
 
   async getDataForStudent (name) {
     var stud
@@ -360,6 +295,8 @@ export class StatisticsComponent implements OnInit {
 
     console.log(this.evenimente)
     this.loadingData = true
+
+    // this.getMedieGenerala(this.student.nume)
     // for(let i=0;i<discip.length;i++)
     // {
     //   this.examene.push(discip[i].nume)
@@ -380,44 +317,10 @@ export class StatisticsComponent implements OnInit {
       this.getDataForStudent(this.name)
     }, 100)
 
-    // console.log(this.selectedLabels)
-    // console.log(this.selectedData)
 
-    // this.displayLineChart(
-    //   this.label,
-    //   this.selectedLabels,
-    //   this.selectedData,
-    //   this.backgroundColor[0],
-    //   this.borderColor[0]
-    // )
-    // this.displayBarChart(
-    //   this.barLabel,
-    //   this.barLabels,
-    //   this.medieGenerala,
-    //   this.medieStudent,
-    //   [this.barBackgroundColor[0], this.barBackgroundColor[1]],
-    //   [this.barBorderColor[0], this.barBorderColor[1]]
-    // )
-    // this.displayPieChart2()
   }
 
-  ngOnInit (): void {
-    // this.displayLineChart(
-    //   this.label,
-    //   this.labels,
-    //   this.data,
-    //   this.backgroundColor[0],
-    //   this.borderColor[0]
-    // )
-    // this.displayBarChart(
-    //   this.barLabel,
-    //   this.barLabels,
-    //   this.medieGenerala,
-    //   this.medieStudent,
-    //   [this.barBackgroundColor[0], this.barBackgroundColor[1]],
-    //   [this.barBorderColor[0], this.barBorderColor[1]]
-    // )
-    // this.displayPieChart2()
+  ngOnInit (): void { 
   }
 
   formatSubtitle = (percent: number): string => {
@@ -550,4 +453,21 @@ export class StatisticsComponent implements OnInit {
       ]
     }
   }
+
+  // async getNoteGenerale(student, an)
+  // {
+  //   var medie = await this.situatieScolaraService.getMedieGenerala(student, an);
+  //   return medie;
+  // }
+
+  // async getMedieGenerala(student)
+  // {
+  //   var note_1=await this.getNoteGenerale(student,1);
+  //   var note_2=await this.getNoteGenerale(student,2);
+  //   var note_3=await this.getNoteGenerale(student,3);
+
+  //   console.log(note_1)
+  //   console.log(note_2)
+  //   console.log(note_3)
+  // }
 }
