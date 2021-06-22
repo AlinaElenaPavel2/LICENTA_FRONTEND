@@ -52,8 +52,8 @@ export class ProfileComponent implements OnInit {
       this.loadingData = true
     } else {
       // pentru profesor de completat profilul
-      var prof = await this.profesorService.sendProfesorDetails(
-        parseInt(sessionStorage.getItem('ID'))
+      var prof = await this.profesorService.getProfesor(
+        userName
       )
 
       this.profesor.setComponents(

@@ -47,7 +47,7 @@ export class StatisticsProfesorComponent implements OnInit {
   profesor: Profesor = new Profesor()
   evaluare: string
   displayed: string[] = []
-  name: string
+  userName: string
   userRole: string
   selectedLabels: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
   selectedData: number[] = []
@@ -126,8 +126,8 @@ export class StatisticsProfesorComponent implements OnInit {
   }
 
   async getDataForProfesor (name) {
-    var prof = await this.profesorService.sendProfesorDetails(
-      parseInt(sessionStorage.getItem('ID'))
+    var prof = await this.profesorService.getProfesor(
+      name
     )
     this.profesor.setComponents(
       prof.id_profesor,
@@ -208,9 +208,9 @@ export class StatisticsProfesorComponent implements OnInit {
   ) {
     setTimeout(async () => {
       this.userRole = sessionStorage.getItem('role')
-      this.name = sessionStorage.getItem('name')
+      this.userName = sessionStorage.getItem('name')
 
-      this.getDataForProfesor(this.name)
+      this.getDataForProfesor(this.userName)
     }, 100)
   }
 

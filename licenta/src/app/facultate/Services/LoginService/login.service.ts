@@ -39,13 +39,10 @@ export class LoginService {
         user_role = role
         if (user_role == 'student') {
           this.getStudentByEmail(username).subscribe(val => {
-
-            sessionStorage.setItem('ID', val.id_student)
             sessionStorage.setItem('name', val.nume)
           })
         } else {
           this.getProfesorIdByEmail(username).subscribe(val => {
-            sessionStorage.setItem('ID', val.id_profesor)
             sessionStorage.setItem('name', val.nume)
           })
         }
@@ -66,7 +63,6 @@ export class LoginService {
 
   public logOut () {
     sessionStorage.removeItem('role')
-    sessionStorage.removeItem('ID')
     sessionStorage.removeItem('name')
   }
 }

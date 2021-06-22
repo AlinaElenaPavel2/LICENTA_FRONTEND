@@ -38,7 +38,7 @@ interface Book {
   styleUrls: ['./library.component.css']
 })
 export class LibraryComponent implements OnInit {
-  name: string
+  userName: string
   userRole: string
   profesor: Profesor = new Profesor()
   student: Student = new Student()
@@ -57,9 +57,9 @@ export class LibraryComponent implements OnInit {
     titlu: new FormControl('')
   })
   private notifier: NotifierService
-  async getDataForProfesor () {
-    var prof = await this.profesorService.sendProfesorDetails(
-      parseInt(sessionStorage.getItem('ID'))
+  async getDataForProfesor (name) {
+    var prof = await this.profesorService.getProfesor(
+     name
     )
     this.profesor.setComponents(
       prof.id_profesor,
@@ -181,13 +181,13 @@ export class LibraryComponent implements OnInit {
     this.notifier = notifier
 
     setTimeout(async () => {
-      this.name = sessionStorage.getItem('name')
+      this.userName = sessionStorage.getItem('name')
       this.userRole = sessionStorage.getItem('role')
 
       if (this.userRole == 'profesor') {
-        this.getDataForProfesor()
+        this.getDataForProfesor(this.userName)
       } else {
-        this.getDataForStudent(this.name)
+        this.getDataForStudent(this.userName)
       }
     }, 1000)
   }
@@ -200,8 +200,8 @@ export class LibraryComponent implements OnInit {
   }
 
   async onSubmit () {
-    var prof = await this.profesorService.sendProfesorDetails(
-      parseInt(sessionStorage.getItem('ID'))
+    var prof = await this.profesorService.getProfesor(
+      this.userName
     )
     this.profesor.setComponents(
       prof.id_profesor,
@@ -240,7 +240,7 @@ export class LibraryComponent implements OnInit {
     } else {
       this.studentBooks = []
       this.links = []
-      this.getDataForStudent(this.name)
+      this.getDataForStudent(this.userName)
     }
   }
 
@@ -249,7 +249,7 @@ export class LibraryComponent implements OnInit {
       console.log('helooooo')
     }, 200)
 
-    this.getDataForProfesor()
+    this.getDataForProfesor(this.userName)
   }
 
   public showNotification (type: string, message: string): void {

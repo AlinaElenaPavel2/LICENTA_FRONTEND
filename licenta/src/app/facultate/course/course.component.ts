@@ -46,7 +46,7 @@ export class CourseComponent implements OnInit {
   anunturi = []
   note
   disciplinaName: string
-  studentId: number
+
 
   fisiereCurs: Book[] = []
   fisiereLaborator: Book[] = []
@@ -73,7 +73,7 @@ export class CourseComponent implements OnInit {
     private fileStorage: FileStorageService,
     private anunturiService: AnuntService
   ) {
-    this.studentId = parseInt(sessionStorage.getItem('ID'))
+   
   }
 
   async getData (name) {

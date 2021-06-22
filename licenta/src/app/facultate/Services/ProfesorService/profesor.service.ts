@@ -18,6 +18,11 @@ export class ProfesorService {
     )
   }
 
+  public getProfesorByFullname (nume:string): Observable<Profesor> {
+    return this.http.get<any>(
+      `${baseUrl}/fullname=` +nume
+    )
+  }
   public  getProfesorDetails (id:number) {
     return new Promise(resolve => {
       this.getProfesorById(id)
@@ -30,5 +35,17 @@ export class ProfesorService {
   async sendProfesorDetails(id:number) {
     await this.getProfesorDetails(id);
     return this.data;
+  }
+
+  async getProfesor (nume) {
+    await new Promise(resolve => {
+      this.getProfesorByFullname(nume).subscribe(
+        data => {
+          this.data = data
+          resolve(this.data)
+        }
+      )
+    })
+    return this.data
   }
 }

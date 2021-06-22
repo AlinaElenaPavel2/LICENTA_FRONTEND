@@ -69,7 +69,7 @@ const colors: any = {
 export class CalendarComponent {
   @ViewChild('modalContent', { static: true }) modalContent: TemplateRef<any>
 
-  name: string
+  userName: string
   userRole: string
   profesor: Profesor = new Profesor()
   student: Student = new Student()
@@ -101,8 +101,8 @@ export class CalendarComponent {
   loadingData: boolean = true
 
   async geEvenimenteProfesor () {
-    var prof = await this.profesorService.sendProfesorDetails(
-      parseInt(sessionStorage.getItem('ID'))
+    var prof = await this.profesorService.getProfesor(
+     this.userName
     )
     this.profesor.setComponents(
       prof.id_profesor,
@@ -141,9 +141,9 @@ export class CalendarComponent {
     this.refresh.next()
   }
   async getEvenimenteForStudent () {
-    console.log(this.name)
+    console.log(this.userName)
     var evenimente = await this.evenimentService.getEvenimenteForStudent(
-      this.name
+      this.userName
     )
     for (let i = 0; i < evenimente.length; i++) {
       var ev = {
@@ -175,7 +175,7 @@ export class CalendarComponent {
     this.refresh.next()
     this.notifier = notifier
     setTimeout(async () => {
-      this.name = sessionStorage.getItem('name')
+      this.userName = sessionStorage.getItem('name')
       this.userRole = sessionStorage.getItem('role')
 
       if (this.userRole == 'profesor') {

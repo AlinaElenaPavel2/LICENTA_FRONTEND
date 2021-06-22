@@ -36,7 +36,6 @@ export class NavBarComponent implements OnInit {
   recuperari: Recuperari[] = []
   loadingRecuperari = false
 
-
   async getProfilePicture (userName, userRole) {
     if (userRole == 'student') {
       var stud = await this.studentService.sendStudentDetails(userName)
@@ -52,9 +51,7 @@ export class NavBarComponent implements OnInit {
         stud.program_studiu
       )
     } else {
-      var prof = await this.profesorService.sendProfesorDetails(
-        parseInt(sessionStorage.getItem('ID'))
-      )
+      var prof = await this.profesorService.getProfesor(userName)
 
       this.profesor.setComponents(
         prof.id_profesor,
@@ -85,8 +82,8 @@ export class NavBarComponent implements OnInit {
   }
 
   async getRecupereri (name) {
-    var prof = await this.profesorService.sendProfesorDetails(
-      parseInt(sessionStorage.getItem('ID'))
+    var prof = await this.profesorService.getProfesor(
+      name
     )
 
     this.profesor.setComponents(
@@ -110,7 +107,7 @@ export class NavBarComponent implements OnInit {
         var student = await this.studentService.sendStudentDetailsById(
           recuperari[i].id_student
         )
-        console.log(recuperari[i])
+        // console.log(recuperari[i])
         var recuperare = {
           id: recuperari[i].id,
           student: student.nume,
@@ -150,10 +147,9 @@ export class NavBarComponent implements OnInit {
 
   logout () {
     sessionStorage.removeItem('role')
-    sessionStorage.removeItem('ID')
     sessionStorage.removeItem('name')
-    localStorage.removeItem("Materie")
-    localStorage.removeItem("Componenta")
+    localStorage.removeItem('Materie')
+    localStorage.removeItem('Componenta')
   }
 
   async accept (recuperare) {
@@ -193,7 +189,8 @@ export class NavBarComponent implements OnInit {
         recuperare.data +
         ' la grupa ' +
         recuperare.grupa +
-        ' a nu fost acceptata de catre profesorul ' +"."+
+        ' a nu fost acceptata de catre profesorul ' +
+        '.' +
         this.profesor.nume
     )
 

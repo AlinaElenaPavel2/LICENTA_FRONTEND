@@ -32,7 +32,6 @@ export class LoginComponent implements OnInit {
     this.previousUrl = localStorage.getItem('previousUrl')
     if (this.previousUrl != undefined) {
       sessionStorage.removeItem('role')
-      sessionStorage.removeItem('ID')
       sessionStorage.removeItem('name')
       localStorage.removeItem('previousUrl')
     }

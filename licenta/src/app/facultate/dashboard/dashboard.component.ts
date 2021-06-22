@@ -59,7 +59,7 @@ export class DashboardComponent implements OnInit {
   profesor: Profesor = new Profesor()
   years: number[] = []
   anunturi = []
-  name: string
+  userName: string
   semestru: number = 0
   an: number = 0
   userRole: string
@@ -125,9 +125,9 @@ export class DashboardComponent implements OnInit {
     this.loadingData = true
   }
 
-  async getDataForProfesor () {
-    var prof = await this.profesorService.sendProfesorDetails(
-      parseInt(sessionStorage.getItem('ID'))
+  async getDataForProfesor (name) {
+    var prof = await this.profesorService.getProfesor(
+      name
     )
     this.profesor.setComponents(
       prof.id_profesor,
@@ -199,7 +199,6 @@ export class DashboardComponent implements OnInit {
     }
     console.log(this.nbOfPrezente)
     this.loadingData = true
-    localStorage.setItem('Prezente', this.nbOfPrezente.toString())
 
     // for (let i = 0; i < this.studenti.length; i++) {
     //   var nbOfPrezente = await this.prezentaService.getPrezente(
@@ -256,13 +255,13 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit (): void {
     setTimeout(async () => {
-      this.name = sessionStorage.getItem('name')
+      this.userName = sessionStorage.getItem('name')
       this.userRole = sessionStorage.getItem('role')
 
       if (this.userRole == 'student') {
-        this.getDataForStudent(this.name)
+        this.getDataForStudent(this.userName)
       } else {
-        this.getDataForProfesor()
+        this.getDataForProfesor(this.userName)
       }
     }, 100)
 
