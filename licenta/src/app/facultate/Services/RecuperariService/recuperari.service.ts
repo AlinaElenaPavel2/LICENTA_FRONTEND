@@ -8,14 +8,21 @@ const baseUrl = 'http://localhost:8080/api/licenta/recuperare'
   providedIn: 'root'
 })
 export class RecuperariService {
-  constructor (private http: HttpClient) {}
-  data
-  public getRecuperariRequest (
+  private data
+  private token
+  private constructor (private http: HttpClient) {
+    this.token = sessionStorage.getItem('token')
+  }
+
+  private getRecuperariRequest (
     disciplina: string,
     profesor: string
   ): Observable<any> {
     return this.http.get<any>(
-      `${baseUrl}/disciplina=` + disciplina + '/profesor=' + profesor
+      `${baseUrl}/disciplina=` + disciplina + '/profesor=' + profesor,
+      {
+        headers: new HttpHeaders().set('Authorization', this.token)
+      }
     )
   }
 
@@ -30,11 +37,23 @@ export class RecuperariService {
   }
 
   private setResponseRequest (id, response): Observable<any> {
-    return this.http.post(`${baseUrl}/` + id + '/response=' + response, '')
+    return this.http.post(`${baseUrl}/` + id + '/response=' + response, '', {
+      headers: new HttpHeaders().set('Authorization', this.token)
+    })
   }
 
-  private addRecuperareRequest (disciplina, student,recuperare): Observable<any> {
-    return this.http.post(`${baseUrl}/disciplina=` + disciplina + '/student=' + student, recuperare)
+  private addRecuperareRequest (
+    disciplina,
+    student,
+    recuperare
+  ): Observable<any> {
+    return this.http.post(
+      `${baseUrl}/disciplina=` + disciplina + '/student=' + student,
+      recuperare,
+      {
+        headers: new HttpHeaders().set('Authorization', this.token)
+      }
+    )
   }
 
   async setResponse (id, response) {
@@ -48,8 +67,8 @@ export class RecuperariService {
     })
   }
 
-  async addRecuperare (disciplina, student,recuperare) {
-    await this.addRecuperareRequest(disciplina, student,recuperare).subscribe({
+  async addRecuperare (disciplina, student, recuperare) {
+    await this.addRecuperareRequest(disciplina, student, recuperare).subscribe({
       next: data => {
         console.log('POST SUCCESSFULLY! - Adaugare cerere')
       },

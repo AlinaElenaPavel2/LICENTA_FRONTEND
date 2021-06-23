@@ -151,7 +151,7 @@ export class StatisticsProfesorComponent implements OnInit {
 
     this.evenimente.push(evenimentDisplayed)
     this.loadingData = true
-    var pond = await this.evaluareService.sendProcentsDetails(
+    var pond = await this.evaluareService.getProcentsDetails(
       this.discipline[0].nume
     )
 

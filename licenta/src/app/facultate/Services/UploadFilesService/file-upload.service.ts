@@ -9,12 +9,17 @@ const baseUrl = 'http://localhost:8080/api/licenta/fileStorage'
   providedIn: 'root'
 })
 export class FileUploadService {
-  constructor (private http: HttpClient) {}
-  data
+  private data
+  private token
+  constructor (private http: HttpClient) {
+    this.token = sessionStorage.getItem('token')
+  }
 
   private getUploadFileRequest (file): Observable<any> {
     return this.http.post(`${baseUrl}/status`, file, {
-      headers: new HttpHeaders().set('Content-Type', 'multipart/form-data')
+      headers: new HttpHeaders()
+        .set('Content-Type', 'multipart/form-data')
+        .set('Authorization', this.token)
     })
   }
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core'
 import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { Observable } from 'rxjs'
 
@@ -9,23 +9,46 @@ const reexaminariUrl = 'http://localhost:8080/api/licenta/reexaminari'
   providedIn: 'root'
 })
 export class SituatieScolaraService {
-
-  constructor(private http: HttpClient) { }
-  data;
-  public getNoteRequest (student: String): Observable<any> {
-    return this.http.get<any>(`${baseUrl}/student=` + student+"/medii/discipline")
+  private data
+  private token
+  constructor (private http: HttpClient) {
+    this.token = sessionStorage.getItem('token')
   }
 
-  public getMediiRequest (student: String): Observable<any> {
-    return this.http.get<any>(`${baseUrl}/student=` + student+"/medii/semestre")
+  private getNoteRequest (student: String): Observable<any> {
+    return this.http.get<any>(
+      `${baseUrl}/student=` + student + '/medii/discipline',
+      {
+        headers: new HttpHeaders().set('Authorization', this.token)
+      }
+    )
   }
 
-  public getReexaminariRequest (student: String): Observable<any> {
-    return this.http.get<any>(`${reexaminariUrl}/student=` + student+"/tip")
+  private getMediiRequest (student: String): Observable<any> {
+    return this.http.get<any>(
+      `${baseUrl}/student=` + student + '/medii/semestre',
+      {
+        headers: new HttpHeaders().set('Authorization', this.token)
+      }
+    )
   }
 
-  public getMedieGeneralaRequest (student: string,an:number): Observable<any> {
-    return this.http.get<any>(`${baseUrl}/student=` + student+"/an="+an+"/medii")
+  private getReexaminariRequest (student: String): Observable<any> {
+    return this.http.get<any>(`${reexaminariUrl}/student=` + student + '/tip', {
+      headers: new HttpHeaders().set('Authorization', this.token)
+    })
+  }
+
+  private getMedieGeneralaRequest (
+    student: string,
+    an: number
+  ): Observable<any> {
+    return this.http.get<any>(
+      `${baseUrl}/student=` + student + '/an=' + an + '/medii',
+      {
+        headers: new HttpHeaders().set('Authorization', this.token)
+      }
+    )
   }
 
   public getNote (student: String) {
@@ -41,8 +64,6 @@ export class SituatieScolaraService {
     return this.data
   }
 
-
-  
   public getMedii (student: String) {
     return new Promise(resolve => {
       this.getMediiRequest(student).subscribe(data => {
@@ -56,7 +77,6 @@ export class SituatieScolaraService {
     await this.getMedii(student)
     return this.data
   }
-
 
   public getReexCount (student: String) {
     return new Promise(resolve => {
@@ -72,9 +92,9 @@ export class SituatieScolaraService {
     return this.data
   }
 
-  async getMedieGenerala (student: string,an:number) {
+  async getMedieGenerala (student: string, an: number) {
     await new Promise(resolve => {
-      this.getMedieGeneralaRequest(student,an).subscribe(data => {
+      this.getMedieGeneralaRequest(student, an).subscribe(data => {
         this.data = data
         resolve(this.data)
       })

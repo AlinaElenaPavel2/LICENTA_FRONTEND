@@ -10,10 +10,13 @@ const discipUrl = 'http://localhost:8080/api/licenta/discipline'
   providedIn: 'root'
 })
 export class ProgramaScolaraService {
-  data
-  constructor (private http: HttpClient) {}
+  private data
+  private token
+  constructor (private http: HttpClient) {
+    this.token = sessionStorage.getItem('token')
+  }
 
-  public getDiscipline (
+  private getDiscipline (
     programStudii: String,
     specializare: String,
     an: number,
@@ -27,17 +30,20 @@ export class ProgramaScolaraService {
         '/an=' +
         an +
         '/semestru=' +
-        semestru
+        semestru,
+      {
+        headers: new HttpHeaders().set('Authorization', this.token)
+      }
     )
   }
 
-  public getDisciplineDetails (
+  public async getDisciplineDetails (
     programStudii: String,
     specializare: String,
     an: number,
     semestru: number
   ) {
-    return new Promise(resolve => {
+    await new Promise(resolve => {
       this.getDiscipline(programStudii, specializare, an, semestru).subscribe(
         data => {
           this.data = data
@@ -45,21 +51,24 @@ export class ProgramaScolaraService {
         }
       )
     })
-  }
-  async sendDisciplineDetails (
-    programStudii: String,
-    specializare: String,
-    an: number,
-    semestru: number
-  ) {
-    await this.getDisciplineDetails(programStudii, specializare, an, semestru)
     return this.data
   }
+  // async sendDisciplineDetails (
+  //   programStudii: String,
+  //   specializare: String,
+  //   an: number,
+  //   semestru: number
+  // ) {
+  //   await this.getDisciplineDetails(programStudii, specializare, an, semestru)
+  //   return this.data
+  // }
 
-  public getDisciplineTitularRequest (
+  private getDisciplineTitularRequest (
     titular: string
   ): Observable<Disciplina[]> {
-    return this.http.get<any>(`${discipUrl}/titular/nume=` + titular)
+    return this.http.get<any>(`${discipUrl}/titular/nume=` + titular, {
+      headers: new HttpHeaders().set('Authorization', this.token)
+    })
   }
 
   public async getDisciplineTitular (titular: string) {

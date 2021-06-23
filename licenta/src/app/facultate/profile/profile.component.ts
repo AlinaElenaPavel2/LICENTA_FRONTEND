@@ -40,7 +40,7 @@ export class ProfileComponent implements OnInit {
         stud.program_studiu
       )
       console.log(this.student)
-      var discip = await this.programaScolaraService.sendDisciplineDetails(
+      var discip = await this.programaScolaraService.getDisciplineDetails(
         this.student.program_studiu,
         this.student.specializare,
         this.student.an,

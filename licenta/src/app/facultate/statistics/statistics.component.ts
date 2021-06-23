@@ -270,16 +270,17 @@ export class StatisticsComponent implements OnInit {
 
     this.displayPieChart2(this.examinari)
 
-    var evenimente = await this.evenimentService.getExameneEvenimentStudent(
+    var evenimente = await this.evenimentService.getExameneStudent (
       name
     )
-    var discip = await this.programaScolaraService.sendDisciplineDetails(
+    var discip = await this.programaScolaraService.getDisciplineDetails(
       this.student.program_studiu,
       this.student.specializare,
       this.student.an,
       2
     )
     console.log(evenimente)
+    console.log(discip[1].nume)
     for (var i = 0; i < evenimente.length; i++) {
       var eveniment = {
         examen: discip[i].nume,

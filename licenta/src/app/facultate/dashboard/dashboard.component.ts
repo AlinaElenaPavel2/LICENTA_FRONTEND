@@ -113,7 +113,7 @@ export class DashboardComponent implements OnInit {
     // console.log('getYear')
     // console.log(this.years)
 
-    discip = await this.programaScolaraService.sendDisciplineDetails(
+    discip = await this.programaScolaraService.getDisciplineDetails(
       this.student.program_studiu,
       this.student.specializare,
       this.student.an,
@@ -272,7 +272,7 @@ export class DashboardComponent implements OnInit {
   }
 
   async getProcents (disciplina) {
-    var pond = await this.evaluareService.sendProcentsDetails(disciplina)
+    var pond = await this.evaluareService.getProcentsDetails(disciplina)
 
     if (pond.pondere_lab != null) {
       var string = 'Laborator - '
@@ -390,7 +390,7 @@ export class DashboardComponent implements OnInit {
     // console.log(tab)
     this.an = parseInt(tab.split(' ')[1])
     this.discipline.length = 0
-    discip = await this.programaScolaraService.sendDisciplineDetails(
+    discip = await this.programaScolaraService.getDisciplineDetails(
       this.student.program_studiu,
       this.student.specializare,
       this.an,
@@ -415,7 +415,7 @@ export class DashboardComponent implements OnInit {
     // console.log(this.student.specializare)
     // console.log(this.student.program_studiu)
 
-    discip = await this.programaScolaraService.sendDisciplineDetails(
+    discip = await this.programaScolaraService.getDisciplineDetails(
       this.student.program_studiu,
       this.student.specializare,
       this.an,

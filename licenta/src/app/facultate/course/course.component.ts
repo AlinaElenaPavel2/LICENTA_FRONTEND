@@ -77,7 +77,7 @@ export class CourseComponent implements OnInit {
   }
 
   async getData (name) {
-    var discip = await this.disciplinaService.sendDisciplinaDetails(
+    var discip = await this.disciplinaService.getDisciplinaDetails(
       this.disciplinaName
     )
     this.disciplina.setComponents(
@@ -91,7 +91,7 @@ export class CourseComponent implements OnInit {
     console.log('*************')
     console.log(this.disciplina)
 
-    var prof = await this.profesorService.sendProfesorDetails(
+    var prof = await this.profesorService.getProfesorDetails(
       this.disciplina.id_titular
     )
 
@@ -122,7 +122,7 @@ export class CourseComponent implements OnInit {
 
     console.log(this.disciplina.nume)
 
-    var lab = await this.laboratorService.setProfLaboratorDetails(
+    var lab = await this.laboratorService.getProfLaboratorDetails(
       this.disciplinaName,
       this.student.grupa
     )
@@ -131,7 +131,7 @@ export class CourseComponent implements OnInit {
     console.log('*************')
     console.log(this.laborator)
 
-    var profLab = await this.profesorService.sendProfesorDetails(
+    var profLab = await this.profesorService.getProfesorDetails(
       this.laborator.id_profesor
     )
 
@@ -145,7 +145,7 @@ export class CourseComponent implements OnInit {
     console.log('*************')
     console.log(this.profesorLab)
 
-    var pond = await this.evaluareService.sendProcentsDetails(
+    var pond = await this.evaluareService.getProcentsDetails(
       this.disciplinaName
     )
 

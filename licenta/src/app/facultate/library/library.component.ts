@@ -86,14 +86,16 @@ export class LibraryComponent implements OnInit {
       discip[0].nume,
       'Auxiliare'
     )
-    console.log('----------------------------')
-    console.log(descrieri)
+    // console.log('----------------------------')
+    // console.log(descrieri)
 
     for (let i = 0; i < fisiere.length; i++) {
       var book = { titlu: fisiere[i], descriere: descrieri[i] }
       this.books.push(book)
     }
-
+    console.log('----------------------------')
+    console.log(this.books)
+    
     for (let i = 0; i < linkuri.length; i++) {
       this.links.push(linkuri[i])
     }
@@ -117,7 +119,7 @@ export class LibraryComponent implements OnInit {
       stud.grupa,
       stud.program_studiu
     )
-    discip = await this.programaScolaraService.sendDisciplineDetails(
+    discip = await this.programaScolaraService.getDisciplineDetails(
       this.student.program_studiu,
       this.student.specializare,
       this.student.an,

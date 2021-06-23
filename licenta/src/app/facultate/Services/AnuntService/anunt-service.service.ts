@@ -8,19 +8,24 @@ const baseUrl = 'http://localhost:8080/api/licenta/anunturi'
   providedIn: 'root'
 })
 export class AnuntService {
+  private data;
+  private token;
+  constructor(private http: HttpClient) { 
+    this.token = sessionStorage.getItem('token')
+  }
 
-  constructor(private http: HttpClient) { }
 
-  data;
 
-  public getAnunturiRequest (disciplina:string,grupa:string): Observable<any> {
+  private getAnunturiRequest (disciplina:string,grupa:string): Observable<any> {
     return this.http.get<any>(
       `${baseUrl}/disciplina=` + disciplina+"/grupa="+grupa
-    )
+      , {
+        headers: new HttpHeaders().set('Authorization', this.token)
+      })
   }
   private addAnunturiRequest (disciplina, grupa,anunt): Observable<any> {
     return this.http.post(`${baseUrl}/disciplina=` + disciplina+"/grupa="+grupa, anunt, {
-      headers: new HttpHeaders().set('Content-Type', 'application/json')
+      headers: new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', this.token)
     })
   }
 

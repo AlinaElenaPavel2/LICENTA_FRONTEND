@@ -9,16 +9,22 @@ const discipUrl = 'http://localhost:8080/api/licenta/disciplina'
   providedIn: 'root'
 })
 export class StudentService {
-  constructor (private http: HttpClient) {}
-  data
+  private data
+  private token = sessionStorage.getItem('token')
+  constructor (private http: HttpClient) {
+    this.token = sessionStorage.getItem('token')
+  }
 
   private getStudentByName (name): Observable<Student> {
-
-    return this.http.get<any>(`${baseUrl}/fullname=` + name)
+    return this.http.get<any>(`${baseUrl}/fullname=` + name, {
+      headers: new HttpHeaders().set('Authorization', this.token)
+    })
   }
 
   private getStudentById (id): Observable<Student> {
-    return this.http.get<any>(`${baseUrl}/` + id)
+    return this.http.get<any>(`${baseUrl}/` + id, {
+      headers: new HttpHeaders().set('Authorization', this.token)
+    })
   }
 
   private getStudentDetails (name) {
@@ -49,39 +55,51 @@ export class StudentService {
     return this.data
   }
 
-
-  private getStudenttiByGrupaRequest (disciplina:string,profesor:string): Observable<Student[]> {
-    return this.http.get<any>(`${discipUrl}/titlu=` + disciplina+"/profesor="+profesor+"/studenti")
+  private getStudenttiByGrupaRequest (
+    disciplina: string,
+    profesor: string
+  ): Observable<Student[]> {
+    return this.http.get<any>(
+      `${discipUrl}/titlu=` +
+        disciplina +
+        '/profesor=' +
+        profesor +
+        '/studenti',
+      {
+        headers: new HttpHeaders().set('Authorization', this.token)
+      }
+    )
   }
 
-  
-  async getStudentiDetails (disciplina:string,profesor:string) {
+  async getStudentiDetails (disciplina: string, profesor: string) {
     await new Promise(resolve => {
-      this.getStudenttiByGrupaRequest(disciplina, profesor).subscribe(
-        data => {
-          this.data = data
-          resolve(this.data)
-        }
-      )
+      this.getStudenttiByGrupaRequest(disciplina, profesor).subscribe(data => {
+        this.data = data
+        resolve(this.data)
+      })
     })
     return this.data
   }
 
-  private getPrezenteByStudentiRequest (disciplina:string,student:string): Observable<Student[]> {
-    return this.http.get<any>(`${discipUrl}/titlu=` + disciplina+"/student="+student+"/prezente")
+  private getPrezenteByStudentiRequest (
+    disciplina: string,
+    student: string
+  ): Observable<Student[]> {
+    return this.http.get<any>(
+      `${discipUrl}/titlu=` + disciplina + '/student=' + student + '/prezente',
+      {
+        headers: new HttpHeaders().set('Authorization', this.token)
+      }
+    )
   }
 
-  
-  async getPrezente (disciplina:string,student:string) {
+  async getPrezente (disciplina: string, student: string) {
     await new Promise(resolve => {
-      this.getPrezenteByStudentiRequest(disciplina,student).subscribe(
-        data => {
-          this.data = data
-          resolve(this.data)
-        }
-      )
+      this.getPrezenteByStudentiRequest(disciplina, student).subscribe(data => {
+        this.data = data
+        resolve(this.data)
+      })
     })
     return this.data
   }
-
 }

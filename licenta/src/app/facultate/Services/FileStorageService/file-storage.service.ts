@@ -10,20 +10,36 @@ const materialeUrl = 'http://localhost:8080/api/licenta/materiale'
   providedIn: 'root'
 })
 export class FileStorageService {
-  data
-  constructor (private http: HttpClient) {}
+  private data
+  private token
+  private httpOptions
+  constructor (private http: HttpClient) {
+    this.token = sessionStorage.getItem('token')
+    this.httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      }).set('Authorization', this.token)
+    }
+  }
 
   private getFiles (disciplina, tip): Observable<any> {
-    return this.http.get<any>(`${baseUrl}/` + disciplina + '/' + tip)
+    return this.http.get<any>(
+      `${baseUrl}/` + disciplina + '/' + tip,
+      this.httpOptions
+    )
   }
 
   private getLinks (disciplina): Observable<any> {
-    return this.http.get<any>(`${materialeUrl}/disciplina=` + disciplina)
+    return this.http.get<any>(
+      `${materialeUrl}/disciplina=` + disciplina,
+      this.httpOptions
+    )
   }
 
   private getDescriptionRequest (disciplina, tip): Observable<any> {
     return this.http.get<any>(
-      `${baseUrl}/` + disciplina + '/' + tip + '/descriptions'
+      `${baseUrl}/` + disciplina + '/' + tip + '/descriptions',
+      this.httpOptions
     )
   }
 
@@ -57,11 +73,6 @@ export class FileStorageService {
     return this.data
   }
 
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json'
-    })
-  }
   private addLink (disciplina, link): Observable<any> {
     return this.http.post(
       `${materialeUrl}/disciplina=` + disciplina,

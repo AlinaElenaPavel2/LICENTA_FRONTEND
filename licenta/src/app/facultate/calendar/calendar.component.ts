@@ -247,8 +247,8 @@ export class CalendarComponent {
   }
 
   async deleteEvent (eventToDelete: CalendarEvent) {
-    var prof = await this.profesorService.sendProfesorDetails(
-      parseInt(sessionStorage.getItem('ID'))
+    var prof = await this.profesorService.getProfesor(
+      this.userName
     )
     this.profesor.setComponents(
       prof.id_profesor,

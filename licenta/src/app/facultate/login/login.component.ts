@@ -59,10 +59,16 @@ export class LoginComponent implements OnInit {
   async onSubmit () {
     this.submitted = true
 
-    await this.loginservice.authenticate(
+    this.loginservice.getToken(
       this.getCredentials.email.value,
       this.getCredentials.password.value
     )
+    setTimeout(async () => {
+      await this.loginservice.authenticate(
+        this.getCredentials.email.value,
+        this.getCredentials.password.value
+      )
+    }, 300)
 
     setTimeout(() => {
       if (sessionStorage.getItem('role').valueOf() == 'wrongCredentials') {
@@ -73,10 +79,10 @@ export class LoginComponent implements OnInit {
       } else {
         setTimeout(() => {
           this.router.navigate(['/university/announces'])
-        }, 200)
+        }, 300)
         this.invalidLogin = false
       }
-    }, 100)
+    }, 600)
   }
 
   get getCredentials () {

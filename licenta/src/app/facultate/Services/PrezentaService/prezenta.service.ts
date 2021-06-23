@@ -9,15 +9,21 @@ const baseUrl = 'http://localhost:8080/api/licenta/prezenta'
   providedIn: 'root'
 })
 export class PrezentaService {
-  data
-  constructor (private http: HttpClient) {}
+  private data
+  private token
+  constructor (private http: HttpClient) {
+    this.token = sessionStorage.getItem('token')
+  }
 
-  public getPrezByDisciplinaStudent (
+  private getPrezByDisciplinaStudent (
     disciplina: string,
     studentName: string
   ): Observable<Prezenta[]> {
     return this.http.get<any>(
-      `${baseUrl}/disciplina=` + disciplina + '/student=' + studentName
+      `${baseUrl}/disciplina=` + disciplina + '/student=' + studentName,
+      {
+        headers: new HttpHeaders().set('Authorization', this.token)
+      }
     )
   }
 
@@ -33,13 +39,35 @@ export class PrezentaService {
     return this.data
   }
 
-  private addPrezentaRequest (disciplina, student,laborator,durata): Observable<any> {
-    return this.http.post(`${baseUrl}/disciplina=` + disciplina+"/student="+student+"/laborator="+laborator+"/durata="+durata, "")
+  private addPrezentaRequest (
+    disciplina,
+    student,
+    laborator,
+    durata
+  ): Observable<any> {
+    return this.http.post(
+      `${baseUrl}/disciplina=` +
+        disciplina +
+        '/student=' +
+        student +
+        '/laborator=' +
+        laborator +
+        '/durata=' +
+        durata,
+      '',
+      {
+        headers: new HttpHeaders().set('Authorization', this.token)
+      }
+    )
   }
 
- 
-  async addPrezenta (disciplina, student,laborator,durata) {
-    await this.addPrezentaRequest(disciplina, student,laborator,durata).subscribe({
+  async addPrezenta (disciplina, student, laborator, durata) {
+    await this.addPrezentaRequest(
+      disciplina,
+      student,
+      laborator,
+      durata
+    ).subscribe({
       next: data => {
         console.log('POST SUCCESSFULLY! - Added prezenta')
       },
@@ -49,13 +77,36 @@ export class PrezentaService {
     })
   }
 
-  private addPrezentaRecuperariRequest (disciplina, student,laborator,durata): Observable<any> {
-    return this.http.post(`${baseUrl}/disciplina=` + disciplina+"/student="+student+"/laborator="+laborator+"/durata="+durata+"/recuperat", "")
+  private addPrezentaRecuperariRequest (
+    disciplina,
+    student,
+    laborator,
+    durata
+  ): Observable<any> {
+    return this.http.post(
+      `${baseUrl}/disciplina=` +
+        disciplina +
+        '/student=' +
+        student +
+        '/laborator=' +
+        laborator +
+        '/durata=' +
+        durata +
+        '/recuperat',
+      '',
+      {
+        headers: new HttpHeaders().set('Authorization', this.token)
+      }
+    )
   }
 
-  
-  async addPrezentaRecuperari (disciplina, student,laborator,durata) {
-    await this.addPrezentaRecuperariRequest(disciplina, student,laborator,durata).subscribe({
+  async addPrezentaRecuperari (disciplina, student, laborator, durata) {
+    await this.addPrezentaRecuperariRequest(
+      disciplina,
+      student,
+      laborator,
+      durata
+    ).subscribe({
       next: data => {
         console.log('POST SUCCESSFULLY! - Added prezenta')
       },

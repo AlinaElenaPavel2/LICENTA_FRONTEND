@@ -27,7 +27,7 @@ export class AnnouncesComponent implements OnInit {
     ) {
       this.router.navigate(['/university/login'])
       sessionStorage.removeItem('role')
-      sessionStorage.removeItem('ID')
+      sessionStorage.removeItem('token')
       sessionStorage.removeItem('name')
     }
   }

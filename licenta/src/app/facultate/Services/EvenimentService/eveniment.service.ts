@@ -8,31 +8,49 @@ const baseUrl = 'http://localhost:8080/api/licenta/evenimente'
   providedIn: 'root'
 })
 export class EvenimentService {
-  constructor (private http: HttpClient) {}
-  data
-
-  public getExameneRequest (student: String): Observable<any> {
-    return this.http.get<any>(`${baseUrl}/student=` + student)
+  private data
+  private token
+  constructor (private http: HttpClient) {
+    this.token = sessionStorage.getItem('token')
   }
 
-  public getExamenDisciplinaRequest (disciplina: String): Observable<any> {
-    return this.http.get<any>(`${baseUrl}/disciplina=` + disciplina + '/examen')
+  private getExameneRequest (student: String): Observable<any> {
+    return this.http.get<any>(`${baseUrl}/student=` + student, {
+      headers: new HttpHeaders().set('Authorization', this.token)
+    })
   }
 
-  public getEvenimenteByDisciplineRequest (
+  private getExamenDisciplinaRequest (disciplina: String): Observable<any> {
+    return this.http.get<any>(
+      `${baseUrl}/disciplina=` + disciplina + '/examen',
+      {
+        headers: new HttpHeaders().set('Authorization', this.token)
+      }
+    )
+  }
+
+  private getEvenimenteByDisciplineRequest (
     disciplina: String
   ): Observable<any> {
-    return this.http.get<any>(`${baseUrl}/disciplina=` + disciplina)
+    return this.http.get<any>(`${baseUrl}/disciplina=` + disciplina, {
+      headers: new HttpHeaders().set('Authorization', this.token)
+    })
   }
 
   private addEvenimentRequest (disciplina, eveniment): Observable<any> {
     return this.http.post(`${baseUrl}/disciplina=` + disciplina, eveniment, {
-      headers: new HttpHeaders().set('Content-Type', 'application/json')
+      headers: new HttpHeaders()
+        .set('Content-Type', 'application/json')
+        .set('Authorization', this.token)
     })
   }
 
-  public getEvenimenteForStudentRequest (studentName: String): Observable<any> {
-    return this.http.get<any>(`${baseUrl}/student=` + studentName + '/all')
+  private getEvenimenteForStudentRequest (
+    studentName: String
+  ): Observable<any> {
+    return this.http.get<any>(`${baseUrl}/student=` + studentName + '/all', {
+      headers: new HttpHeaders().set('Authorization', this.token)
+    })
   }
 
   private deleteEvenimentRequest (
@@ -41,13 +59,18 @@ export class EvenimentService {
     startDate
   ): Observable<any> {
     return this.http.delete<any>(
-      `${baseUrl}/disciplina=${disciplina}/titlu=${titlu}/startDate=${startDate}`
+      `${baseUrl}/disciplina=${disciplina}/titlu=${titlu}/startDate=${startDate}`,
+      {
+        headers: new HttpHeaders().set('Authorization', this.token)
+      }
     )
   }
 
   private updateEvenimentRequest (id, eveniment): Observable<any> {
     return this.http.put(`${baseUrl}/${id}`, eveniment, {
-      headers: new HttpHeaders().set('Content-Type', 'application/json'),
+      headers: new HttpHeaders()
+        .set('Content-Type', 'application/json')
+        .set('Authorization', this.token),
       responseType: 'text'
     })
   }
@@ -86,18 +109,19 @@ export class EvenimentService {
     })
   }
 
-  public getExameneEveniment (student: String) {
-    return new Promise(resolve => {
+  public async getExameneStudent (student: String) {
+    await new Promise(resolve => {
       this.getExameneRequest(student).subscribe(data => {
         this.data = data
         resolve(this.data)
       })
     })
-  }
-  async getExameneEvenimentStudent (student: String) {
-    await this.getExameneEveniment(student)
     return this.data
   }
+  // async getExameneEvenimentStudent (student: String) {
+  //   await this.getExameneEveniment(student)
+  //   return this.data
+  // }
 
   async getEvenimenteForDiscipline (disciplina) {
     await new Promise(resolve => {
