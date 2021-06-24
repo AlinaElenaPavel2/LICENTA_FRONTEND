@@ -57,9 +57,11 @@ import { MatTooltipModule } from '@angular/material/tooltip'
 import { NotareComponent } from './facultate/dashboard/notare/notare.component'
 import { PrezenteStudentComponent } from './facultate/dashboard/prezente-student/prezente-student.component'
 import { SpinnersAngularModule } from 'spinners-angular'
-import { MatBadgeModule } from '@angular/material/badge';
+import { MatBadgeModule } from '@angular/material/badge'
 import { StatisticsProfesorComponent } from './facultate/statistics-profesor/statistics-profesor.component'
-import {PopoverModule} from 'ngx-smart-popover'
+import { PopoverModule } from 'ngx-smart-popover'
+import { AuthGuardService as AuthGuard } from './facultate/Services/auth.guard'
+import { RoleGuardService as RoleGuard } from './facultate/Services/role.guard'
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -177,14 +179,52 @@ const customNotifierOptions: NotifierOptions = {
       },
 
       { path: 'university/login', component: LoginComponent },
-      { path: 'university/dashboard', component: DashboardComponent },
-      { path: 'university/statistics', component: StatisticsComponent },
-      { path: 'university/statistics/profesor', component: StatisticsProfesorComponent },
-      { path: 'university/announces', component: AnnouncesComponent },
-      { path: 'university/library', component: LibraryComponent },
-      { path: 'university/calendar', component: CalendarComponent },
-      { path: 'university/course/:name', component: CourseComponent },
-      { path: 'university/profile', component: ProfileComponent },
+      {
+        path: 'university/dashboard',
+        component: DashboardComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'university/statistics',
+        component: StatisticsComponent,
+        canActivate: [RoleGuard],
+        data: {
+          expectedRole: 'student'
+        }
+      },
+      {
+        path: 'university/statistics/profesor',
+        component: StatisticsProfesorComponent,
+        canActivate: [RoleGuard],
+        data: {
+          expectedRole: 'profesor'
+        }
+      },
+      {
+        path: 'university/announces',
+        component: AnnouncesComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'university/library',
+        component: LibraryComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'university/calendar',
+        component: CalendarComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'university/course/:name',
+        component: CourseComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'university/profile',
+        component: ProfileComponent,
+        canActivate: [AuthGuard]
+      },
       {
         path:
           'university/course/:name/student/:student/laborator/:laborator/date/:data/ora/:ora/present',
@@ -196,7 +236,7 @@ const customNotifierOptions: NotifierOptions = {
         component: QrScanComponent
       }
     ]),
-
+    
     ReactiveFormsModule,
     NoopAnimationsModule,
     CommonModule,
@@ -209,7 +249,7 @@ const customNotifierOptions: NotifierOptions = {
     MatPaginatorModule,
     MatSortModule
   ],
-  providers: [],
+  providers: [AuthGuard,RoleGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
