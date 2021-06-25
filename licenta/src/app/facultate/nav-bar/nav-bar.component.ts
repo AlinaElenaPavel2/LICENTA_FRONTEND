@@ -82,9 +82,7 @@ export class NavBarComponent implements OnInit {
   }
 
   async getRecupereri (name) {
-    var prof = await this.profesorService.getProfesor(
-      name
-    )
+    var prof = await this.profesorService.getProfesor(name)
 
     this.profesor.setComponents(
       prof.id_profesor,
@@ -146,10 +144,14 @@ export class NavBarComponent implements OnInit {
   ngOnInit (): void {}
 
   logout () {
-    sessionStorage.removeItem('role')
-    sessionStorage.removeItem('name')
-    localStorage.removeItem('Materie')
-    localStorage.removeItem('Componenta')
+    var remember = localStorage.getItem('isLogged')
+    if (remember === 'false') {
+      sessionStorage.clear()
+      localStorage.removeItem('role')
+      localStorage.removeItem('isLogged')
+      localStorage.removeItem('name')
+      localStorage.removeItem('loginTime')
+    }
   }
 
   async accept (recuperare) {

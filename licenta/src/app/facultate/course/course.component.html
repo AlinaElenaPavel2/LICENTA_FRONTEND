@@ -1,6 +1,6 @@
 <app-navigation-bar></app-navigation-bar>
 <div *ngIf="loading; else elseBlockLoading">
-  <h1 class="first">{{ disciplinaName }} {{ disciplina.abreviere }}</h1>
+  <h1 class="first">{{ disciplinaName }} - {{ disciplina.abreviere }}</h1>
   <mat-tab-group
     mat-align-tabs="center"
     class="first"
@@ -54,18 +54,25 @@
       <div class="example-button-container">
         <button
           mat-button
-          style="background-color: red; color: white"
+          style="
+            background-color: red;
+            color: white;
+            margin-left: 75%;
+            margin-top: 20px;
+            margin-bottom: 20px;
+          "
           (click)="recuperare()"
         >
           Recuperare<mat-icon style="margin-left: 10px">email icon</mat-icon>
         </button>
       </div>
       <div *ngIf="loadingData; else elseBlockLoading">
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-          <!--- Note that these columns can be defined in any order.
-        The actual rendered columns are set as a property on the row definition" -->
-
-          <!-- Position Column -->
+        <table
+          mat-table
+          [dataSource]="dataSource"
+          class="mat-elevation-z8"
+          style="margin-left: 10%; margin-bottom: 10%; width: 80%"
+        >
           <ng-container matColumnDef="laborator">
             <th mat-header-cell *matHeaderCellDef>
               <div style="font-size: 15px; margin-top: 10px">Laborator</div>
@@ -84,7 +91,6 @@
             <td mat-cell *matCellDef="let element">{{ element.laborator }}</td>
           </ng-container>
 
-          <!-- Name Column -->
           <ng-container matColumnDef="data">
             <th mat-header-cell *matHeaderCellDef>
               <div style="font-size: 15px; margin-top: 10px">Data</div>
@@ -128,17 +134,16 @@
         </table>
       </div>
     </mat-tab>
-    <mat-tab label="Detalii disciplina si anunturi">
-      <mat-grid-list cols="3" rowHeight="600px">
+    <mat-tab label="Detalii disciplina si anunturi" >
+      <mat-grid-list cols="3" rowHeight="600px" style="margin-bottom: 10%">
         <mat-grid-tile>
           <div
-            class="card text-dark teal lighten-3 mb-3"
-            style="max-width: 25rem; margin-top: 20rem"
+            class="card text-dark light lighten-3 mb-3"
+            style="min-width: 25rem; margin-top: 20rem"
           >
             <h4 class="card-header">
               <img
                 src="assets/images/pin1.png"
-                alt="Girl in a jacket"
                 width="30"
                 height="25"
                 style="margin-right: 25px"
@@ -158,8 +163,15 @@
           </div>
         </mat-grid-tile>
         <mat-grid-tile>
-          <div class="card text-dark bg-light mb-3" style="max-width: 25rem">
-            <h4 class="card-header">Profesori</h4>
+          <div class="card text-dark light mb-3" style="min-width: 25rem">
+            <h4 class="card-header">
+              <img
+                src="assets/images/absent.png"
+                width="50"
+                height="45"
+                style="margin-right: 25px"
+              />Profesori
+            </h4>
             <div class="card-body">
               <h5 class="card-title">Profesor curs: {{ profesorCurs.nume }}</h5>
               <p class="card-text">Email: {{ profesorCurs.email }}</p>
@@ -172,39 +184,48 @@
         </mat-grid-tile>
         <mat-grid-tile>
           <div
-            class="card text-dark bg-light mb-3"
-            style="max-width: 25rem;margin left:20rem"
+            class="card text-dark light mb-3"
+            style="min-width: 25rem;margin left:20rem"
           >
-            <h4 class="card-header">Evaluare</h4>
+            <h4 class="card-header">
+              <img
+                src="assets/images/score.png"
+                width="50"
+                height="45"
+                style="margin-right: 25px"
+              />Evaluare
+            </h4>
             <div class="card-body">
               <h5 class="card-title">
                 Pondere examen: {{ procents.pondere_examen }}%
               </h5>
-              <p class="card-text">
+              <p class="card-text" style="margin-left: 20px">
                 Nota obtinuta: {{ formatNota(note.examen) }}
               </p>
               <h5 class="card-title">
                 Pondere laborator: {{ procents.pondere_lab }}%
               </h5>
-              <p class="card-text">
+              <p class="card-text" style="margin-left: 20px">
                 Nota obtinuta: {{ formatNota(note.laborator) }}
               </p>
               <h5 class="card-title">
                 Pondere partial: {{ procents.pondere_partial }}%
               </h5>
-              <p class="card-text">
+              <p class="card-text" style="margin-left: 20px">
                 Nota obtinuta: {{ formatNota(note.partial) }}
               </p>
               <h5 class="card-title">
                 Pondere proiect: {{ procents.pondere_proiect }}%
               </h5>
-              <p class="card-text">
-                Nota obtinuta: {{ formatNota(note.proiect) }}
+              <p class="card-text" style="margin-left: 20px">
+                Nota obtinuta: <span> {{ formatNota(note.proiect) }} </span>
               </p>
             </div>
           </div>
         </mat-grid-tile>
       </mat-grid-list>
+
+    
     </mat-tab>
   </mat-tab-group>
 </div>

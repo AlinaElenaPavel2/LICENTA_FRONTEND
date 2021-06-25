@@ -29,8 +29,8 @@ html
 }
 
 .spinner{
-  margin-top:400px;
-    margin-left:40%;
+  margin-top:20%;
+    margin-left:45%;
 }
 
   
@@ -54,3 +54,34 @@ table {
 
 ::ng-deep .mat-ink-bar {
   background-color:#00838f !important;}
+
+
+
+  ::ng-deep .mat-focused .mat-form-field-label {
+    /*change color of label*/
+    color: #f4511e !important;
+   }
+  
+   ::ng-deep.mat-form-field-underline {
+    /*change color of underline*/
+    background-color: #f4511e !important;
+  } 
+  
+  ::ng-deep.mat-form-field-ripple {
+   /*change color of underline when focused*/
+   background-color: #f4511e !important;;
+  }
+
+  .example-header-image {
+    background-image: url('C:/Users/Pavel_Alina_Elena/Desktop/JWT-frontend/LICENTA_FRONTEND/licenta/src/assets/images/pin.png');
+    background-size: cover;
+  }
+
+  .example-card {
+    max-width: 300px;
+    margin: 4px;
+    box-shadow: 0 0 15px 9px #00000096;
+  }
+  
+
+  /* /////////////// */

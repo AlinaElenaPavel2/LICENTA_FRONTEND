@@ -1,94 +1,73 @@
-<link
-  href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-  rel="stylesheet"
-  id="bootstrap-css"
-/>
+<div style="margin-top: 20%">
+  <div class="green-panel">
+    <div>
+      <img
+        src="assets/images/elearning (1).png"
+        width="320"
+        height="270"
+        style="margin-left: 50%; margin-top: 8%"
+      />
+    </div>
 
-<div class="background">
-  <div class="login-reg-panel">
-    <div class="white-panel">
-      <div class="icon">
-        <img src="assets/fotografii/5853.jpg" width="300" height="200" />
-      </div>
+    <div
+      class="white-panel"
+      [ngClass]="{ shakeit: invalidCredentials === 'true' }"
+    >
 
-      <div class="right">
-        <div class="form">
-          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-            <div class="form-group">
+      <div>
+ 
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <div class="imgcontainer">
+            <img
+              src="assets/images/users-remove.png"
+              width="180"
+              height="160"
+              style="margin-left: 10%; margin-top: 10%; margin-bottom: 6%"
+            />
+          </div>
+
+          <div class="container">
+            <div class="input-container">
+              <i class="fa fa-envelope icon"></i>
               <input
                 id="email"
-                placeholder="Introducere email"
+                class="input-field"
                 type="text"
                 formControlName="email"
-                class="form-control"
-                [ngClass]="{
-                  'is-invalid': submitted && getCredentials.email.errors
-                }"
+                placeholder="Username"
+                name="email"
               />
-              <div
-                *ngIf="submitted && getCredentials.email.errors"
-                class="invalid-feedback"
-              >
-                <div
-                  class="error-message"
-                  id="error-email-required"
-                  *ngIf="getCredentials.email.errors.required"
-                >
-                  Email is required
-                </div>
-                <div
-                  class="error-message"
-                  id="error-wrong-format"
-                  *ngIf="getCredentials.email.errors.pattern"
-                >
-                  Invalid email
-                </div>
-              </div>
             </div>
-            <div class="form-group">
+
+            <div class="input-container">
+              <i class="fa fa-key icon"></i>
               <input
                 id="password"
-                placeholder="********"
+                class="input-field"
                 type="password"
                 formControlName="password"
-                class="form-control"
-                [ngClass]="{
-                  'is-invalid': submitted && getCredentials.password.errors
-                }"
+                placeholder="Password"
               />
-              <div
-                *ngIf="submitted && getCredentials.password.errors"
-                class="invalid-feedback"
-              >
-                <div
-                  class="error-message"
-                  id="error-password-required"
-                  *ngIf="getCredentials.password.errors.required"
-                >
-                  Password is required
-                </div>
-                <div
-                  class="error-message"
-                  id="error-password-minLength"
-                  *ngIf="getCredentials.password.errors.minLength"
-                >
-                  Password is too short
-                </div>
-              </div>
             </div>
-            <div class="form-group">
-              <button
-                [disabled]="loading"
-                class="button"
-                type="submit"
-                id="submit"
-              >
-                <span>Login </span>
-              </button>
-            </div>
-          </form>
-        </div>
+
+            <button
+              [disabled]="loading"
+              class="button"
+              type="submit"
+              id="submit"
+            >
+              <span>Login </span>
+            </button>
+            <br />
+            <label>
+              <input #checkbox  type="checkbox" [checked]="remember" (change)="onChange(checkbox.checked)"/>
+              Remember me
+            </label>
+          </div>
+        </form>
       </div>
     </div>
   </div>
 </div>
+
+<notifier-container></notifier-container>

@@ -23,7 +23,7 @@
                   />
                   <div class="wrapper">
                     <div *ngFor="let dis of discipline">
-                      <div class="w3-third" style="width: 30%">
+                      <div class="w3-third" style="width: 40%">
                         <div
                           class="w3-card"
                           style="
@@ -33,12 +33,15 @@
                             align-items: center;
                           "
                         >
-                          <a [routerLink]="['/university/course/', dis.nume]"
+                          <a
+                            [routerLink]="['/university/course/', dis.nume]"
+                            style="margin-left: 50px"
                             ><img
                               src="assets/images/online-learning2.png"
-                              style="width: 60%; margin: 30px; padding: 0px"
+                              style="width: 60%"
                           /></a>
                           <div class="w3-container">
+                            <hr />
                             <h5>{{ dis.nume }}</h5>
                           </div>
                         </div>
@@ -96,10 +99,10 @@
                 <h3>{{ dis.nume }} - {{ dis.abreviere }}</h3>
                 <hr />
                 <h3>Cursuri</h3>
+
                 <button mat-button class="uploadButon" (click)="addCurs()">
                   ADAUGARE CURS
                 </button>
-                <hr />
 
                 <br />
                 <div *ngFor="let file of fileCurs">
@@ -124,7 +127,6 @@
                 <button mat-button class="uploadButon" (click)="addLaborator()">
                   ADAUGARE LABORATOR
                 </button>
-                <hr />
 
                 <br />
 

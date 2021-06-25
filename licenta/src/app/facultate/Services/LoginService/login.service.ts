@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core'
 import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { Observable } from 'rxjs'
+import * as moment from 'moment'
 
 const baseUrl = 'http://localhost:8080/api/licenta'
 const loginUrl = 'http://localhost:8080'
@@ -12,7 +13,7 @@ export class LoginService {
 
   private data
   private token
-
+  private remember
   private getStudentByEmail (email: any): Observable<any> {
     return this.http.get(`${baseUrl}/students/email=` + email, {
       headers: new HttpHeaders().set('Authorization', this.token)
@@ -35,6 +36,8 @@ export class LoginService {
 
   public isAuthenticated (): boolean {
     const role = sessionStorage.getItem('role')
+    if(this.remember)
+    {localStorage.setItem("role",role)}
     return role == 'student' || role == 'profesor'
   }
 
@@ -51,10 +54,15 @@ export class LoginService {
         if (user_role == 'student') {
           this.getStudentByEmail(username).subscribe(val => {
             sessionStorage.setItem('name', val.nume)
+            if(this.remember)
+            {localStorage.setItem("name",val.nume)}
+        
           })
         } else {
           this.getProfesorIdByEmail(username).subscribe(val => {
             sessionStorage.setItem('name', val.nume)
+            if(this.remember)
+            {localStorage.setItem("name",val.nume)}
           })
         }
       },
@@ -68,16 +76,17 @@ export class LoginService {
 
   public isUserLoggedIn () {
     let user = sessionStorage.getItem('role')
+
     console.log(!(user === null))
     return !(user === null)
   }
 
   public logOut () {
-    sessionStorage.removeItem('role')
-    sessionStorage.removeItem('name')
+    sessionStorage.clear();
+    localStorage.clear();
   }
 
-  public getTokenRequest (data) {
+  public getTokenRequest (data,remember) {
     this.http
       .post<any>(`${loginUrl}/login`, data, { observe: 'response' })
       .subscribe(response => {
@@ -88,11 +97,23 @@ export class LoginService {
         const headers = keys.map(key => `${key}: ${response.headers.get(key)}`)
         this.token = response.headers.get('authorization')
         sessionStorage.setItem('token', this.token)
+        this.remember=remember;
+        if(remember)
+        {
+          localStorage.setItem('token', this.token)
+          localStorage.setItem('isLogged', 'true')
+          localStorage.setItem('loginTime', moment().format('LT').split(" ")[0])
+      
+         
+        }else{
+        localStorage.setItem('isLogged', 'false')
+        }
       })
   }
 
-  async getToken (username, password) {
+  async getToken (username, password,remember) {
+    console.log(remember)
     var jsonReq = { username: username, password: password }
-    await this.getTokenRequest(jsonReq)
+    await this.getTokenRequest(jsonReq,remember)
   }
 }
