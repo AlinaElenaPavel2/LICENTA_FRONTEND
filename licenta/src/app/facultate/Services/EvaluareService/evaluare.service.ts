@@ -86,6 +86,8 @@ export class EvaluareService {
   }
 
   private updateNoteRequest (student, disciplina, note): Observable<any> {
+    // console.log(note)
+    // console.log(this.token)
     return this.http.put(
       `${catalogUrl}/student=` + student + '/disciplina=' + disciplina,
       note,

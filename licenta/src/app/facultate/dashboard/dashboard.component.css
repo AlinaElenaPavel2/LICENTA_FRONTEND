@@ -73,8 +73,8 @@ a {
   }
 
   .containerNotare{
-    margin-left: 15rem;
-    margin-right: 5rem;
+    margin-left: 10rem;
+    /* margin-right: 5rem; */
 
   }
 
@@ -98,8 +98,8 @@ a {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
-    background-color: #77bda3;
-    color: white;
+    background-color: 	#b2d8d8;
+    color: rgb(3, 3, 3);
     align-items: center;
   }
 

@@ -277,8 +277,8 @@ export class CourseComponent implements OnInit {
     var email = 'alina_pavel98@yahoo.com'
     const dialogData = new EmailRecuperareModel(email, this.disciplinaName)
     const dialogRef = this.dialog.open(EmailRecuperareComponent, {
-      width: '600px',
-      height: '500px',
+      width: '500px',
+      height: '400px',
       data: dialogData
     })
   }

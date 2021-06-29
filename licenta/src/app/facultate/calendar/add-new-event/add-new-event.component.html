@@ -18,7 +18,8 @@
   <textarea
     matInput
     [(ngModel)]="descriere"
-    (change)="onKeyDesc(input.value)"
+    #inputDesc
+    (change)="onKeyDesc(inputDesc.value)"
   ></textarea></mat-form-field
 ><br />
 <h5>Perioada:</h5>

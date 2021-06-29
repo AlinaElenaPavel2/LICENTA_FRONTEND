@@ -225,7 +225,7 @@ export class LibraryComponent implements OnInit {
     console.log(JSON.stringify(postLink))
 
     await this.fileStorage.postareLink(postLink, discip[0].nume)
-    this.reloadCurrentRoute()
+    // this.reloadCurrentRoute()
   }
 
   applyFilter (filterValue: string) {

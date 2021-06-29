@@ -17,6 +17,7 @@ export class UploadFilesComponent implements OnInit {
   hasAnotherDropZoneOver: boolean
   response: string
   materie: string
+  token:string
   componenta: string
   private notifier: NotifierService
 
@@ -33,6 +34,7 @@ export class UploadFilesComponent implements OnInit {
 
     this.uploader = new FileUploader({
       url: this.URL,
+      authToken:this.token,
       // disableMultipart: true, // 'DisableMultipart' must be 'true' for formatDataFunction to be called.
       // formatDataFunctionIsAsync: true,
       formatDataFunction: async item => {
@@ -105,6 +107,7 @@ export class UploadFilesComponent implements OnInit {
     setTimeout(async () => {
       this.materie = localStorage.getItem('Materie')
       this.componenta = localStorage.getItem('Componenta')
+      this.token=sessionStorage.getItem("token")
     }, 1000)
 
     console.log(this.materie)

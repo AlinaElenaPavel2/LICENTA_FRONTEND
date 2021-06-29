@@ -68,9 +68,11 @@ export class EvenimentService {
 
   private updateEvenimentRequest (id, eveniment): Observable<any> {
     return this.http.put(`${baseUrl}/${id}`, eveniment, {
-      headers: new HttpHeaders()
-        .set('Content-Type', 'application/json')
-        .set('Authorization', this.token),
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.token,
+        'Access-Control-Allow-Origin': '*',
+        "Access-Control-Allow-Methods": "GET, PUT, POST, OPTIONS"}),
       responseType: 'text'
     })
   }

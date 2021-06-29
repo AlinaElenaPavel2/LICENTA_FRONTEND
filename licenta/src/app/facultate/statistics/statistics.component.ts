@@ -168,15 +168,16 @@ export class StatisticsComponent implements OnInit {
               backgroundColor: backgroundColor,
               borderColor: borderColor,
               borderWidth: 2
-            },
-            {
-              label: 'Nota finala medie',
-              data: medieGenerala,
-              backgroundColor: ['rgba(255, 206, 86, 0.0)'],
-              borderColor: ['rgba(255,99,132,1)'],
-              borderWidth: 3,
-              type: 'line'
             }
+            // ,
+            // {
+            //   label: 'Nota finala medie',
+            //   data: medieGenerala,
+            //   backgroundColor: ['rgba(255, 206, 86, 0.0)'],
+            //   borderColor: ['rgba(255,99,132,1)'],
+            //   borderWidth: 3,
+            //   type: 'line'
+            // }
           ]
         },
         options: {
@@ -339,7 +340,7 @@ export class StatisticsComponent implements OnInit {
   }
 
   titleFormat () {
-    var given = moment('2021-03-15', 'YYYY-MM-DD')
+    var given = moment('2021-04-15', 'YYYY-MM-DD')
     const currentdate = moment().format('YYYY-MM-DD')
     var weeks = moment.duration(given.diff(currentdate)).asWeeks()
     // console.log(currentdate)
@@ -471,4 +472,10 @@ export class StatisticsComponent implements OnInit {
   //   console.log(note_2)
   //   console.log(note_3)
   // }
+  onTabChanged(event)
+  {
+
+    this.selected=this.years[0];
+  }
+
 }

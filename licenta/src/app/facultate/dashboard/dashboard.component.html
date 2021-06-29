@@ -35,7 +35,7 @@
                         >
                           <a
                             [routerLink]="['/university/course/', dis.nume]"
-                            style="margin-left: 50px"
+                            style="margin-left: 90px"
                             ><img
                               src="assets/images/online-learning2.png"
                               style="width: 60%"
@@ -201,7 +201,8 @@
 
             <div
               class="table-responsive containerNotare"
-              style="margin-top: 40px"
+              style="margin-top: 40px;margin-bottom: 40px"
+        
               id="notare"
             >
               <div *ngIf="loadingDataNotare; else elseBlockLoading">
@@ -237,6 +238,7 @@
                         <input
                           type="text"
                           class="form-control"
+                          value="row.laborator"
                           [(ngModel)]="row.laborator"
                           #input
                         />

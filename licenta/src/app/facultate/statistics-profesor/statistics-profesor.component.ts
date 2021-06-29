@@ -229,7 +229,7 @@ export class StatisticsProfesorComponent implements OnInit {
     }
   }
   titleFormat () {
-    var given = moment('2021-03-15', 'YYYY-MM-DD')
+    var given = moment('2021-04-15', 'YYYY-MM-DD')
     const currentdate = moment().format('YYYY-MM-DD')
     var weeks = moment.duration(given.diff(currentdate)).asWeeks()
     var procents = Math.round((Math.abs(Math.round(weeks)) / 14) * 100)

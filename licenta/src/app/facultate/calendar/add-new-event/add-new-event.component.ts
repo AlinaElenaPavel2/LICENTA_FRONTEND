@@ -68,9 +68,11 @@ export class AddNewEventComponent implements OnInit {
   }
 
   onKeyTitle (titlu: string) {
+    console.log("titlu")
     this.title = titlu
   }
   onKeyDesc (descriere: string) {
+    console.log("descriere")
     this.descriere = descriere
   }
 }

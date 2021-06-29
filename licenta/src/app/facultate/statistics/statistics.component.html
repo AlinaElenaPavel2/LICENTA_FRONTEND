@@ -57,7 +57,7 @@
 </div>
 
 <div class="first">
-  <mat-tab-group mat-align-tabs="center">
+  <mat-tab-group mat-align-tabs="center" (selectedTabChange)="onTabChanged($event);">
     <mat-tab label="Note">
       <div class="grid-container">
         <div class="grid-item">

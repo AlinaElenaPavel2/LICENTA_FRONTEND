@@ -113,7 +113,7 @@ export class NavBarComponent implements OnInit {
           grupa: recuperari[i].grupa,
           data: recuperari[i].data
         }
-        console.log(recuperare)
+        // console.log(recuperare)
         this.recuperari.push(recuperare)
 
         this.loadingRecuperari = true

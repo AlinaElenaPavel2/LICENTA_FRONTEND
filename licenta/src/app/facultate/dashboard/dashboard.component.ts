@@ -39,6 +39,14 @@ interface Notare {
   partial: number
   proiect: number
 }
+interface ExcelFormatter {
+  Student: string
+  Grupa: string
+  Examen: number
+  Laborator: number
+  Partial: number
+  Medie: number
+}
 interface LooseObject {
   [key: string]: any
 }
@@ -81,6 +89,7 @@ export class DashboardComponent implements OnInit {
   displayedColumns = ['Student', 'Grupa']
   loadingDataNotare = false
   notareTable: Notare[] = []
+  excelFormatter: ExcelFormatter[] = []
   notaFinala: number[] = []
   edit: boolean = false
   ponderi: Pondere[] = []
@@ -126,9 +135,7 @@ export class DashboardComponent implements OnInit {
   }
 
   async getDataForProfesor (name) {
-    var prof = await this.profesorService.getProfesor(
-      name
-    )
+    var prof = await this.profesorService.getProfesor(name)
     this.profesor.setComponents(
       prof.id_profesor,
       prof.nume,
@@ -342,11 +349,21 @@ export class DashboardComponent implements OnInit {
       this.notaFinala.push(
         Math.round(this.calculateFinalMark(note, this.ponderi))
       )
+      var excel = {
+        Student: this.studenti[i].nume,
+        Grupa: this.studenti[i].grupa,
+        Examen: this.transform(note.examen),
+        Laborator: this.transform(note.laborator),
+        Partial: this.transform(note.partial),
+        Medie: Math.round(this.calculateFinalMark(note, this.ponderi))
+      }
+
       this.notareTable.push(notare)
+      this.excelFormatter.push(excel)
     }
-    console.log('NOTARE TABLE CONTENT')
-    console.log(this.notareTable)
-    console.log(this.ponderi)
+    // console.log('NOTARE TABLE CONTENT')
+    // console.log(this.notareTable)
+    // console.log(this.ponderi)
   }
   getProcentsByElement (procente, tip) {
     for (let i = 0; i < procente.length; i++) {
@@ -523,11 +540,94 @@ export class DashboardComponent implements OnInit {
       anunt
     )
     this.notifier.notify('success', 'Anuntul a fost postat cu succes!')
-    this.reloadCurrentRoute()
+    // this.reloadCurrentRoute()
   }
-  applyFilter (filterValue, column) {
+  async applyFilter (filterValue, columnName) {
     console.log(filterValue)
-    console.log(column.split(' ')[0])
+    var column = columnName.split(' ')[0].toLowerCase()
+
+    if (column == 'grupa') {
+      var filterdata = this.notareTable.filter(function (val) {
+        return val.grupa
+          .toString()
+          .toLowerCase()
+          .includes(filterValue.toLowerCase())
+      })
+
+      var filterdataExcel= this.excelFormatter.filter(function (val) {
+        return val.Grupa.toString()
+          .toLowerCase()
+          .includes(filterValue.toLowerCase())
+      })
+
+      // console.log(filterdata)
+    }
+    if (column == 'nume') {
+      var filterdata = this.notareTable.filter(function (val) {
+        return val.student
+          .toString()
+          .toLowerCase()
+          .includes(filterValue.toLowerCase())
+      })
+
+      var filterdataExcel = this.excelFormatter.filter(function (val) {
+        return val.Student.toString()
+          .toLowerCase()
+          .includes(filterValue.toLowerCase())
+      })
+    }
+
+    if (column == 'examen') {
+      var filterdata = this.notareTable.filter(function (val) {
+        return val.examen
+          .toString()
+          .toLowerCase()
+          .includes(filterValue.toLowerCase())
+      })
+      var filterdataExcel =this.excelFormatter.filter(function (val) {
+        return val.Examen.toString()
+          .toLowerCase()
+          .includes(filterValue.toLowerCase())
+      })
+    }
+
+    if (column == 'laborator') {
+      var filterdata = this.notareTable.filter(function (val) {
+        return val.laborator
+          .toString()
+          .toLowerCase()
+          .includes(filterValue.toLowerCase())
+      })
+      var filterdataExcel =this.excelFormatter.filter(function (val) {
+        return val.Laborator.toString()
+          .toLowerCase()
+          .includes(filterValue.toLowerCase())
+      })
+    }
+
+    if (column == 'partial') {
+      var filterdata = this.notareTable.filter(function (val) {
+        return val.partial
+          .toString()
+          .toLowerCase()
+          .includes(filterValue.toLowerCase())
+      })
+      var filterdataExcel =this.excelFormatter.filter(function (val) {
+        return val.Partial
+          .toString()
+          .toLowerCase()
+          .includes(filterValue.toLowerCase())
+      })
+
+    }
+
+    this.notareTable = filterdata
+    this.excelFormatter = filterdataExcel
+
+    if (filterValue == '') {
+      this.notareTable.length = 0
+      await this.getNotareTableContent(this.discipline[0].nume)
+    }
   }
 
   editValue (event, i) {
@@ -558,17 +658,18 @@ export class DashboardComponent implements OnInit {
     )
     this.notifier.notify('success', 'Nota s-a modificat cu succes!')
 
-    setTimeout(async () => {
-      this.reloadCurrentRoute()
-      // this.refresh.next()
-    }, 500)
+    // setTimeout(async () => {
+    //   this.reloadCurrentRoute()
+    //   // this.refresh.next()
+    // }, 500)
   }
 
   exportToExcel () {
-    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(
-      this.table.nativeElement
-    )
-    delete ws['G']
+    // const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(
+    //   this.table.nativeElement
+    // )
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.excelFormatter)
+
     const wb: XLSX.WorkBook = XLSX.utils.book_new()
     XLSX.utils.book_append_sheet(wb, ws, 'Note')
 
