@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ViewChild } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
 import { Disciplina } from '../Models/disciplina2'
 import { Profesor } from '../Models/profesor'
@@ -33,6 +33,8 @@ interface Book {
   styleUrls: ['./course.component.css']
 })
 export class CourseComponent implements OnInit {
+ 
+
   disciplina: Disciplina = new Disciplina()
   profesorCurs: Profesor = new Profesor()
   profesorLab: Profesor = new Profesor()
@@ -190,6 +192,7 @@ export class CourseComponent implements OnInit {
     }
     console.log(this.prezente)
     this.dataSource = new MatTableDataSource<Prezenta>(this.prezente)
+    
     if (this.prezente.length > 0) {
       this.loadingData = true
     }
@@ -209,6 +212,7 @@ export class CourseComponent implements OnInit {
     }
   }
 
+ 
   async getFisiere (disciplina) {
     var fisiereCurs = await this.fileStorage.getFilesForDisciplineComponent(
       disciplina,

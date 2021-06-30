@@ -1,4 +1,6 @@
 <app-navigation-bar></app-navigation-bar>
+<link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/confetti.css">
+
 <div *ngIf="loadingData; else elseBlockLoading">
   <div class="wrapper">
     <div class="row text-center">
@@ -171,7 +173,7 @@
                       [convertModelValue]="true"
                       [enableTime]="true"
                       dateFormat="Y-m-dTH:i"
-                      altFormat="F j, Y H:i"
+                      altFormat="D, M d Y h:i"
                       placeholder="Not set"
                     />
                   </td>
@@ -186,10 +188,9 @@
                       [convertModelValue]="true"
                       [enableTime]="true"
                       dateFormat="Y-m-dTH:i"
-                      altFormat="F j, Y H:i"
+                      altFormat="D, M d Y h:i"
                       placeholder="Not set"
                     />
-                    <p>{{event.end }}</p>
                   </td>
                   <td>
                     <mat-icon

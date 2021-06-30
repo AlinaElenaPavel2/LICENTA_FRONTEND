@@ -36,6 +36,7 @@ import { Profesor } from '../Models/profesor'
 import { Disciplina } from '../Models/disciplina2'
 import { Student } from '../Models/student'
 import { NotifierService } from 'angular-notifier'
+import { Router, ActivatedRoute } from '@angular/router'
 
 import {
   DetailsDialogComponent,
@@ -44,6 +45,8 @@ import {
 
 import { AddNewEventComponent } from './add-new-event/add-new-event.component'
 import * as moment from 'moment'
+import { Romanian } from 'flatpickr/dist/l10n/ro'
+import flatpickr from 'flatpickr'
 
 const colors: any = {
   red: {
@@ -60,6 +63,10 @@ const colors: any = {
   }
 }
 
+export function flatpickrFactory () {
+  flatpickr.localize(Romanian)
+  return flatpickr
+}
 @Component({
   selector: 'app-calendar',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -77,7 +84,7 @@ export class CalendarComponent {
   editEvents: boolean = false
   descrieri: string[] = []
   indexi: number[] = []
-  format1 = 'YYYY-MM-DD HH:mm:ss'
+  format1 = 'YYYY-MM-DD HH:mm'
 
   view: CalendarView = CalendarView.Month
   private notifier: NotifierService
@@ -96,14 +103,13 @@ export class CalendarComponent {
 
   events: CalendarEvent[] = []
 
+
   activeDayIsOpen: boolean = false
 
   loadingData: boolean = true
 
   async geEvenimenteProfesor () {
-    var prof = await this.profesorService.getProfesor(
-     this.userName
-    )
+    var prof = await this.profesorService.getProfesor(this.userName)
     this.profesor.setComponents(
       prof.id_profesor,
       prof.nume,
@@ -131,6 +137,8 @@ export class CalendarComponent {
         },
         draggable: true
       }
+     
+  
       this.events.push(ev)
       this.descrieri.push(evenimente[i].descriere)
       this.indexi.push(evenimente[i].id)
@@ -185,7 +193,9 @@ export class CalendarComponent {
       }
     }, 300)
   }
-  ngOnInit (): void {}
+  ngOnInit (): void {
+    flatpickrFactory()
+  }
 
   dayClicked ({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate)) {
@@ -247,9 +257,7 @@ export class CalendarComponent {
   }
 
   async deleteEvent (eventToDelete: CalendarEvent) {
-    var prof = await this.profesorService.getProfesor(
-      this.userName
-    )
+    var prof = await this.profesorService.getProfesor(this.userName)
     this.profesor.setComponents(
       prof.id_profesor,
       prof.nume,
@@ -313,10 +321,11 @@ export class CalendarComponent {
 
     var ev = {
       start_date: moment(eventToEdit.start).format(format1),
-      end_date: moment(eventToEdit.start).format(format1),
+      end_date: moment(eventToEdit.end).format(format1),
       titlu: eventToEdit.title,
       descriere: this.descrieri[index]
     }
+    console.log(ev)
 
     await this.evenimentService.updateEveniment(this.indexi[index], ev)
     this.notifier.notify(

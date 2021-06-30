@@ -4,6 +4,7 @@ import * as moment from 'moment'
 import { NotifierService } from 'angular-notifier'
 import { EvenimentService } from 'src/app/facultate/Services/EvenimentService/eveniment.service'
 import { Subject } from 'rxjs'
+import { Router, ActivatedRoute } from '@angular/router'
 
 @Component({
   selector: 'app-add-new-event',
@@ -22,7 +23,8 @@ export class AddNewEventComponent implements OnInit {
   constructor (
     public dialog: MatDialogRef<AddNewEventComponent>,
     private evenimentService: EvenimentService,
-    notifier: NotifierService
+    notifier: NotifierService,
+    private router: Router
   ) {
     this.notifier = notifier
 
@@ -59,7 +61,11 @@ export class AddNewEventComponent implements OnInit {
 
       this.dialog.close()
       this.notifier.notify('success', 'Evenimentul a fost adaugat cu success!')
-      this.refresh.next();
+
+      setTimeout(async () => {
+        this.reloadCurrentRoute()
+    
+      }, 1000)
     }
   }
 
@@ -74,5 +80,11 @@ export class AddNewEventComponent implements OnInit {
   onKeyDesc (descriere: string) {
     console.log("descriere")
     this.descriere = descriere
+  }
+  reloadCurrentRoute () {
+    let currentUrl = this.router.url
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate([currentUrl])
+    })
   }
 }
