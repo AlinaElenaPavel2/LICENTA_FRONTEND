@@ -90,8 +90,6 @@ export class CourseComponent implements OnInit {
       discip.abreviere
     )
 
-    console.log('*************')
-    console.log(this.disciplina)
 
     var prof = await this.profesorService.getProfesorDetails(
       this.disciplina.id_titular
@@ -104,9 +102,7 @@ export class CourseComponent implements OnInit {
       prof.telefon,
       prof.functia
     )
-    console.log('*************')
-    console.log(this.profesorCurs)
-    console.log(name)
+
     var stud = await this.studentService.sendStudentDetails(name)
 
     this.student.add(
@@ -119,10 +115,7 @@ export class CourseComponent implements OnInit {
       stud.grupa,
       stud.program_studiu
     )
-    console.log('*************')
-    console.log(this.student)
 
-    console.log(this.disciplina.nume)
 
     var lab = await this.laboratorService.getProfLaboratorDetails(
       this.disciplinaName,
@@ -130,8 +123,7 @@ export class CourseComponent implements OnInit {
     )
     this.laborator.setComponents(lab.id_disciplina, lab.id_profesor, lab.grupa)
 
-    console.log('*************')
-    console.log(this.laborator)
+
 
     var profLab = await this.profesorService.getProfesorDetails(
       this.laborator.id_profesor
@@ -144,8 +136,7 @@ export class CourseComponent implements OnInit {
       profLab.telefon,
       profLab.functia
     )
-    console.log('*************')
-    console.log(this.profesorLab)
+
 
     var pond = await this.evaluareService.getProcentsDetails(
       this.disciplinaName
@@ -170,27 +161,22 @@ export class CourseComponent implements OnInit {
       this.procents.setPondereLaborator(0)
     }
 
-    // console.log('*************')
-    // console.log(this.procents)
 
     this.note= await this.evaluareService.getNote(
       this.disciplinaName,
       this.student.nume
     )
 
-    console.log('*************')
-    console.log( this.note)
 
     var prezent = await this.prezentaService.getPrezente(
       this.disciplinaName,
       this.student.nume
     )
-    console.log('_____________')
-    // console.log(prezent)
+  
     for (let i = 0; i < prezent.length; i++) {
       this.prezente.push(prezent[i])
     }
-    console.log(this.prezente)
+
     this.dataSource = new MatTableDataSource<Prezenta>(this.prezente)
     
     if (this.prezente.length > 0) {
@@ -201,7 +187,6 @@ export class CourseComponent implements OnInit {
       this.disciplinaName,
       this.student.grupa
     )
-    console.log(this.anunturi)
     this.loading = true
   }
   formatNota (nota) {
@@ -228,8 +213,7 @@ export class CourseComponent implements OnInit {
       var book = { path: fisiereCurs[i], descriere: descrieriCurs[i] }
       this.fisiereCurs.push(book)
     }
-    console.log('----------------------------')
-    console.log(this.fisiereCurs)
+   
 
     var fisiereLaborator = await this.fileStorage.getFilesForDisciplineComponent(
       disciplina,
@@ -245,8 +229,7 @@ export class CourseComponent implements OnInit {
       var book = { path: fisiereLaborator[i], descriere: descrieriLab[i] }
       this.fisiereLaborator.push(book)
     }
-    console.log('----------------------------')
-    console.log(this.fisiereLaborator)
+   
   }
 
   getFileName (path) {
@@ -257,9 +240,7 @@ export class CourseComponent implements OnInit {
   sub
   async ngOnInit (): Promise<void> {
     this.sub = this._Activatedroute.paramMap.subscribe(params => {
-      console.log(params)
       this.disciplinaName = params.get('name')
-      console.log(this.disciplinaName)
     })
     setTimeout(async () => {
       this.name = sessionStorage.getItem('name')
@@ -292,7 +273,6 @@ export class CourseComponent implements OnInit {
 
   applyLabFilter (filterValue: string) {
     var filterdata = this.dataSource.data.filter(function (val) {
-      console.log(val.laborator)
       return val.laborator
         .toString()
         .toLowerCase()

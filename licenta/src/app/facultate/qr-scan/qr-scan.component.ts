@@ -13,7 +13,7 @@ export class QrScanComponent implements OnInit {
   student: string
   laborator: string
   data: string
-  ora: string
+  time: string
   success: boolean = false
 
   constructor (
@@ -30,26 +30,14 @@ export class QrScanComponent implements OnInit {
       this.disciplinaName = params.get('name')
       this.student = params.get('student')
       this.laborator = params.get('laborator')
-      this.data = params.get('data')
-      this.ora = params.get('ora')
+      this.time = params.get('time')
     })
 
-    var arr = this.data.split('_')
-    var dateFormat =
-      arr[0] +
-      '-' +
-      arr[1] +
-      '-' +
-      arr[2] +
-      ' ' +
-      this.ora.split(':')[0] +
-      ':' +
-      this.ora.split(':')[1]
-    const sendingTime = moment(dateFormat)
-
-    var minutes = moment.duration(currentdateMom.diff(sendingTime)).asMinutes()
-    console.log('DIFERENTA')
-    console.log(Math.round(minutes))
+    var currentTime=moment().valueOf()
+    var diff=currentTime-parseInt(this.time)
+    var d = moment.duration(diff, 'milliseconds');
+    var minutes = Math.floor(d.asMinutes());
+    console.log(minutes)
     if (Math.round(minutes) < 10) {
       this.success = true
     }
@@ -59,13 +47,10 @@ export class QrScanComponent implements OnInit {
       this.laborator,
       Math.round(minutes)
     )
-    console.log(this.disciplinaName)
-    console.log(this.student)
-    console.log(this.laborator)
-    console.log('----------------')
-    console.log(sendingTime)
-    console.log(currentdateMom)
-    if (this.router.url.split('/')[12] == 'recuperare') {
+  
+  
+    if (this.router.url.split('/')[9] == 'recuperare') {
+      console.log("RECUPERAT")
       this.addPrezentaRecuperari(
         this.disciplinaName,
         this.student,

@@ -143,9 +143,8 @@ export class CalendarComponent {
       this.descrieri.push(evenimente[i].descriere)
       this.indexi.push(evenimente[i].id)
     }
-    console.log(this.events)
-    console.log(this.descrieri)
-    // this.loadingData=true
+   
+    this.loadingData=true
     this.refresh.next()
   }
   async getEvenimenteForStudent () {
@@ -218,7 +217,7 @@ export class CalendarComponent {
   formatDateInput (date) {
     return moment(date)
       .format('LLL')
-      .slice(0, -2) // June 22, 2021 9:16 AM
+      .slice(0, -2) 
   }
 
   eventTimesChanged ({
@@ -280,9 +279,7 @@ export class CalendarComponent {
       descriere: this.descrieri[index]
     }
 
-    // console.log(ev)
-    // console.log(moment(eventToDelete.start).format(format1))
-    // console.log(discip[0].nume)
+    
     await this.evenimentService.deleteEveniment(
       discip[0].nume,
       eventToDelete.title,
@@ -325,15 +322,22 @@ export class CalendarComponent {
       titlu: eventToEdit.title,
       descriere: this.descrieri[index]
     }
-    console.log(ev)
+    
+    try {
+      await this.evenimentService.updateEveniment(this.indexi[index], ev)
+      this.notifier.notify(
+        'success',
+        'Modificarea evenimentului a fost realizata cu succes!'
+      )
+      this.refresh.next()
+    } catch (error) {
+      this.notifier.notify('error', 'Detaliile evenimentului nu au fost modificate')
 
-    await this.evenimentService.updateEveniment(this.indexi[index], ev)
-    this.notifier.notify(
-      'success',
-      'Modificarea evenimentului a fost realizata cu succes!'
-    )
+    }
+  
     this.refresh.next()
   }
+
   onKey (descriere, i) {
     this.descrieri[i] = descriere
   }

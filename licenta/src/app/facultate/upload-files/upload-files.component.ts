@@ -86,7 +86,7 @@ export class UploadFilesComponent implements OnInit {
         // setTimeout(async () => {
         //   window.location.reload()
         // }, 200)
-        this.reloadCurrentRoute()
+        // this.reloadCurrentRoute()
       } else {
         this.showNotification('error', 'Fisierele nu s-au putut incarca!')
       }

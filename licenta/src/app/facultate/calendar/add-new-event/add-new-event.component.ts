@@ -52,11 +52,7 @@ export class AddNewEventComponent implements OnInit {
         titlu: this.title,
         descriere: this.descriere
       }
-      // var start1 = moment(this.start_date).format(format1)
-      // var end1 = moment(this.end_date).format(format1)
-      // console.log(start1)
-      // console.log(end1)
-
+     
       await this.evenimentService.addEveniment(this.materie, ev)
 
       this.dialog.close()

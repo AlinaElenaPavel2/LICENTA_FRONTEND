@@ -77,7 +77,7 @@ const customNotifierOptions: NotifierOptions = {
   },
   theme: 'material',
   behaviour: {
-    autoHide: 4000,
+    autoHide: 5000,
     onClick: 'hide',
     onMouseover: 'pauseAutoHide',
     showDismissButton: true,
@@ -183,7 +183,8 @@ const customNotifierOptions: NotifierOptions = {
         path: 'university/dashboard',
         component: DashboardComponent,
         canActivate: [AuthGuard]
-      },
+      }
+      ,
       {
         path: 'university/statistics',
         component: StatisticsComponent,
@@ -227,12 +228,12 @@ const customNotifierOptions: NotifierOptions = {
       },
       {
         path:
-          'university/course/:name/student/:student/laborator/:laborator/date/:data/ora/:ora/present',
+          'university/course/:name/student/:student/laborator/:laborator/prezent/:time',
         component: QrScanComponent
       },
       {
         path:
-          'university/course/:name/student/:student/laborator/:laborator/date/:data/ora/:ora/recuperare',
+          'university/course/:name/student/:student/laborator/:laborator/recuperare/:time',
         component: QrScanComponent
       }
     ]),

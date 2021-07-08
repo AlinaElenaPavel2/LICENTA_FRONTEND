@@ -64,8 +64,7 @@ export class PrezenteTableComponent implements AfterViewInit {
   }
 
   OpenDialog (row,disciplina) {
-    console.log(row)
-    console.log('detalii Studenti')
+  
     const dialogData = new PrezenteStudentDialogModel(row.name,row.grupa,disciplina)
     const dialogRef = this.dialog.open(PrezenteStudentComponent, {
       width: '900px',
@@ -75,8 +74,7 @@ export class PrezenteTableComponent implements AfterViewInit {
   }
 
   OpenDialogNotare (row) {
-    console.log(row.name)
-    console.log('notare Studenti')
+   
     const dialogData = new NotareDialogModel(row.name,row.grupa)
     const dialogRef = this.dialog.open(NotareComponent, {
       width: '600px',

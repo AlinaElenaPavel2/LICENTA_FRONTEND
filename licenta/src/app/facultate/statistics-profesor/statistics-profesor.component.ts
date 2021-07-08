@@ -49,7 +49,7 @@ export class StatisticsProfesorComponent implements OnInit {
   displayed: string[] = []
   userName: string
   userRole: string
-  selectedLabels: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  selectedLabels: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
   selectedData: number[] = []
   barBackgroundColor: string[] = [
     'rgba(242, 185, 87, 0.2)',

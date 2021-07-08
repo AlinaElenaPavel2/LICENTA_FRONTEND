@@ -38,12 +38,7 @@ export class LoginComponent implements OnInit {
     notifier: NotifierService
   ) {
     this.notifier = notifier
-    // this.previousUrl = localStorage.getItem('previousUrl')
-    // if (this.previousUrl != undefined) {
-    //   sessionStorage.removeItem('role')
-    //   sessionStorage.removeItem('name')
-    //   localStorage.removeItem('previousUrl')
-    // }
+ 
     if (
       localStorage.getItem('name') != undefined &&
       localStorage.getItem('role') != undefined
@@ -104,7 +99,7 @@ export class LoginComponent implements OnInit {
           this.getCredentials.email.value,
           this.getCredentials.password.value
         )
-      }, 300)
+      }, 500)
 
       setTimeout(() => {
         if (sessionStorage.getItem('role').valueOf() == 'wrongCredentials') {
@@ -118,7 +113,7 @@ export class LoginComponent implements OnInit {
           }, 300)
           this.invalidLogin = false
         }
-      }, 600)
+      }, 1000)
     } else {
       this.notifier.notify('error', 'Username or password are not valid!')
     }

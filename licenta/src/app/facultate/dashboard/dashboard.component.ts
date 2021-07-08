@@ -119,8 +119,7 @@ export class DashboardComponent implements OnInit {
     }
     this.years.reverse()
     this.an = this.years.length
-    // console.log('getYear')
-    // console.log(this.years)
+    
 
     discip = await this.programaScolaraService.getDisciplineDetails(
       this.student.program_studiu,
@@ -165,8 +164,7 @@ export class DashboardComponent implements OnInit {
       }
     }
 
-    // console.log( this.anunturi)
-    // console.log(files)
+    
     for (let i = 0; i < files.length; i++) {
       this.fileLab.push(files[i])
     }
@@ -176,7 +174,7 @@ export class DashboardComponent implements OnInit {
       'Curs'
     )
 
-    // console.log(f)
+    
     for (let i = 0; i < f.length; i++) {
       this.fileCurs.push(f[i])
     }
@@ -197,7 +195,7 @@ export class DashboardComponent implements OnInit {
     console.log(this.studenti)
 
     for (let i = 0; i < this.studenti.length; i++) {
-      // console.log(this.studenti[i])
+     
       var nbOfPrezente = await this.studentService.getPrezente(
         this.discipline[0].nume,
         this.studenti[i].nume
@@ -207,13 +205,6 @@ export class DashboardComponent implements OnInit {
     console.log(this.nbOfPrezente)
     this.loadingData = true
 
-    // for (let i = 0; i < this.studenti.length; i++) {
-    //   var nbOfPrezente = await this.prezentaService.getPrezente(
-    //     this.discipline[0].nume,
-    //     this.studenti[i].nume
-    //   )
-    //   console.log(nbOfPrezente)
-    // }
   }
 
   getFileName (path) {
@@ -221,16 +212,7 @@ export class DashboardComponent implements OnInit {
     var fileName = array[8]
     return fileName
   }
-  // async getStudentsDetails(discipline)
-  // {
-  //   var dis=discipline
-  //   console.log(dis[0])
-  //   // var studenti = await this.studentService.getStudentiDetails(
-  //   //   this.discipline[0].titlu,this.profesor.nume
-  //   // )
 
-  //   // console.log(studenti)
-  // }
   constructor (
     private studentService: StudentService,
     private programaScolaraService: ProgramaScolaraService,
@@ -246,18 +228,7 @@ export class DashboardComponent implements OnInit {
     private router: Router
   ) {
     this.notifier = notifier
-    // setTimeout(async () => {
-    //   this.name = sessionStorage.getItem('name')
-    //   this.userRole = sessionStorage.getItem('role')
-
-    //   if (this.userRole == 'student') {
-    //     this.getDataForStudent(this.name)
-    //   } else {
-    //     this.getDataForProfesor()
-    //   }
-    // }, 100)
-
-    // console.log(this.student)
+  
   }
 
   ngOnInit (): void {
@@ -325,7 +296,7 @@ export class DashboardComponent implements OnInit {
     this.displayedColumns.push('Nota finala')
     this.displayedColumns.push('Actiuni')
 
-    // console.log(this.displayedColumns)
+  
 
     this.loadingDataNotare = true
   }
@@ -336,7 +307,7 @@ export class DashboardComponent implements OnInit {
         disciplina,
         this.studenti[i].nume
       )
-      // console.log(note)
+     
       var notare = {
         student: this.studenti[i].nume,
         grupa: this.studenti[i].grupa,
@@ -361,9 +332,7 @@ export class DashboardComponent implements OnInit {
       this.notareTable.push(notare)
       this.excelFormatter.push(excel)
     }
-    // console.log('NOTARE TABLE CONTENT')
-    // console.log(this.notareTable)
-    // console.log(this.ponderi)
+    
   }
   getProcentsByElement (procente, tip) {
     for (let i = 0; i < procente.length; i++) {
@@ -404,7 +373,7 @@ export class DashboardComponent implements OnInit {
   async getYearDiscipline (event) {
     var discip
     const tab = event.tab.textLabel
-    // console.log(tab)
+   
     this.an = parseInt(tab.split(' ')[1])
     this.discipline.length = 0
     discip = await this.programaScolaraService.getDisciplineDetails(
@@ -423,14 +392,8 @@ export class DashboardComponent implements OnInit {
     var discip
     this.discipline.length = 0
     const tab = event.tab.textLabel
-    // console.log(tab)
+
     this.semestru = parseInt(tab.split(' ')[1])
-    // console.log(this.semestru)
-    // console.log('******************')
-    // console.log(this.an)
-    // console.log(this.semestru)
-    // console.log(this.student.specializare)
-    // console.log(this.student.program_studiu)
 
     discip = await this.programaScolaraService.getDisciplineDetails(
       this.student.program_studiu,
@@ -442,15 +405,14 @@ export class DashboardComponent implements OnInit {
     for (var i = 0; i < discip.length; i++) {
       this.discipline.push(discip[i])
     }
-    // console.log('********discipline**********')
-    // console.log(this.discipline)
+   
   }
 
   getSelectedDiscipline () {}
 
   upload (event) {
     const tab = event.tab.textLabel
-    // console.log(tab)
+
   }
 
   addLaborator () {
@@ -460,7 +422,6 @@ export class DashboardComponent implements OnInit {
       this.discipline[0].nume
     )
 
-    // console.log(this.discipline[0].nume)
 
     localStorage.setItem('Materie', this.discipline[0].nume)
     localStorage.setItem('Componenta', component)
@@ -478,8 +439,7 @@ export class DashboardComponent implements OnInit {
       component,
       this.discipline[0].nume
     )
-    // console.log(component)
-    // console.log(this.discipline[0].nume)
+    
 
     localStorage.setItem('Materie', this.discipline[0].nume)
     localStorage.setItem('Componenta', component)
@@ -560,7 +520,6 @@ export class DashboardComponent implements OnInit {
           .includes(filterValue.toLowerCase())
       })
 
-      // console.log(filterdata)
     }
     if (column == 'nume') {
       var filterdata = this.notareTable.filter(function (val) {
@@ -650,7 +609,6 @@ export class DashboardComponent implements OnInit {
     if (eventToEdit.proiect != '-') {
       updateNote.proiect = eventToEdit.proiect
     }
-    // console.log(eventToEdit)
     await this.evaluareService.updateNote(
       eventToEdit.student,
       this.discipline[0].nume,
@@ -658,16 +616,11 @@ export class DashboardComponent implements OnInit {
     )
     this.notifier.notify('success', 'Nota s-a modificat cu succes!')
 
-    // setTimeout(async () => {
-    //   this.reloadCurrentRoute()
-    //   // this.refresh.next()
-    // }, 500)
+ 
   }
 
   exportToExcel () {
-    // const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(
-    //   this.table.nativeElement
-    // )
+    
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.excelFormatter)
 
     const wb: XLSX.WorkBook = XLSX.utils.book_new()

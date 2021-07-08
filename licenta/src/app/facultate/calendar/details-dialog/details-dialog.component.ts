@@ -29,14 +29,8 @@ export class DetailsDialogComponent implements OnInit {
     var start = moment(this.eveniment.start)
     var end = moment(this.eveniment.end)
 
-    //   console.log(start)
-    // console.log(end)
-
     this.start_date = start.format('L')
     this.start_hour = start.format('LT')
-
-    // console.log(this.start_date)
-    // console.log(this.start_hour)
 
     this.end_date = end.format('L')
     this.end_hour = end.format('LT')

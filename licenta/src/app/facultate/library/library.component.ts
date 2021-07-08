@@ -86,20 +86,18 @@ export class LibraryComponent implements OnInit {
       discip[0].nume,
       'Auxiliare'
     )
-    // console.log('----------------------------')
-    // console.log(descrieri)
+
 
     for (let i = 0; i < fisiere.length; i++) {
       var book = { titlu: fisiere[i], descriere: descrieri[i] }
       this.books.push(book)
     }
-    console.log('----------------------------')
-    console.log(this.books)
+
     
     for (let i = 0; i < linkuri.length; i++) {
       this.links.push(linkuri[i])
     }
-    console.log(this.links)
+   
     this.loadingData = true
     localStorage.setItem('Materie', discip[0].nume)
     localStorage.setItem('Componenta', 'Auxiliare')
@@ -125,7 +123,7 @@ export class LibraryComponent implements OnInit {
       this.student.an,
       2
     )
-    console.log(discip)
+    
     for (var i = 0; i < discip.length; i++) {
       this.discipline.push(discip[i])
 
@@ -139,8 +137,7 @@ export class LibraryComponent implements OnInit {
           discip[i].nume,
           'Auxiliare'
         )
-        console.log('----------------------------')
-        console.log(descrieri)
+        
 
         for (let j = 0; j < fisiere.length; j++) {
           var book = {
@@ -169,8 +166,6 @@ export class LibraryComponent implements OnInit {
     }
     this.loadingData = true
 
-    console.log(this.links)
-    console.log(this.studentBooks)
   }
   constructor (
     private profesorService: ProfesorService,

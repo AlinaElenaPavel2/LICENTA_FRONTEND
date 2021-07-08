@@ -41,13 +41,11 @@ export class EmailRecuperareComponent implements OnInit {
 
   async onSubmit () {
     const format1 = 'YYYY-MM-DD'
-    console.log(moment(this.sendEmail.value.dataRecuperare).format(format1))
-    console.log('---------')
+ 
     this.studentName = sessionStorage.getItem('name')
 
     this.dialog.close()
 
-    // console.log(this.profesor_email)
     var email = {
       laborator: this.sendEmail.value.laborator,
       grupa: this.sendEmail.value.grupa,

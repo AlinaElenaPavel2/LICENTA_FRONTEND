@@ -28,8 +28,7 @@ export class PrezenteStudentComponent implements OnInit {
     for (let i = 0; i < prezente.length; i++) {
       array.push(prezente[i])
     }
-    console.log('********')
-    console.log(array.length)
+ 
     return array
   }
   constructor (
@@ -50,14 +49,12 @@ export class PrezenteStudentComponent implements OnInit {
     for (let i = 0; i < prezente.length; i++) {
       this.prezente.push(prezente[i])
     }
-    console.log('********')
-    console.log(this.prezente.length)
+
     this.dataSource = new MatTableDataSource<Prezenta>(this.prezente)
     if (this.prezente.length > 0) {
       this.loadingData = true
     }
-    console.log(this.loadingData)
-    console.log(this.dataSource)
+    
   }
 
   onClick (): void {
